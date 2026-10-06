@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Insert Tendons</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+<style>
+  :root {
+    --paper:        #f3f2f0;
+    --surface:      #fbfbfa;
+    --surface-sunk: #e8e7e3;
+    --ink:          #1b1a18;
+    --ink-soft:     #55524d;
+    --ink-faint:    #837e77;
+    --hairline:     #dcdad5;
+    --hairline-hard:#bfbcb5;
+
+    --flag:         #b93326;
+    --flag-soft:    #f7e3e0;
+    --pass:         #2f6a4d;
+    --pass-soft:    #dfeee6;
+    --hold:         #96661a;
+    --hold-soft:    #f6e9d4;
+    --cool:         #3f5b78;
+    --cool-soft:    #e2e9f0;
+
+    --measure: 67ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #16150f;
+      --surface:      #1e1d18;
+      --surface-sunk: #272620;
+      --ink:          #ece9e2;
+      --ink-soft:     #b3aea4;
+      --ink-faint:    #857f74;
+      --hairline:     #35332c;
+      --hairline-hard:#4b483f;
+
+      --flag:         #ef8275;
+      --flag-soft:    #3a1f1b;
+      --pass:         #6ec298;
+      --pass-soft:    #16281f;
+      --hold:         #dfae62;
+      --hold-soft:    #332715;
+      --cool:         #8fadc9;
+      --cool-soft:    #1c2530;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #16150f;
+    --surface:      #1e1d18;
+    --surface-sunk: #272620;
+    --ink:          #ece9e2;
+    --ink-soft:     #b3aea4;
+    --ink-faint:    #857f74;
+    --hairline:     #35332c;
+    --hairline-hard:#4b483f;
+
+    --flag:         #ef8275;
+    --flag-soft:    #3a1f1b;
+    --pass:         #6ec298;
+    --pass-soft:    #16281f;
+    --hold:         #dfae62;
+    --hold-soft:    #332715;
+    --cool:         #8fadc9;
+    --cool-soft:    #1c2530;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 63rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* --- masthead --- */
+
+  .masthead {
+    padding-block: 3.25rem 1.5rem;
+    border-bottom: 1px solid var(--hairline-hard);
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin: 0 0 1rem;
+  }
+  .masthead h1 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.4rem, 7.5vw, 4rem);
+    line-height: 1.0;
+    letter-spacing: -0.022em;
+    margin: 0 0 0.85rem;
+    text-wrap: balance;
+  }
+  .deck {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 44ch;
+    margin: 0;
+  }
+
+  /* --- the measured run --- */
+
+  .run-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border-bottom: 1px solid var(--hairline-hard);
+  }
+  .run-strip > div { background: var(--paper); padding: 1.25rem 0.25rem 1.4rem; }
+  .run-strip dt {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.45rem;
+  }
+  .run-strip dd {
+    margin: 0;
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .run-strip dd .unit { font-size: 0.95rem; color: var(--ink-faint); margin-left: 0.15em; }
+  .run-strip dd.flagged { color: var(--flag); }
+  .run-strip .sub {
+    display: block;
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    line-height: 1.4;
+    margin-top: 0.4rem;
+    letter-spacing: 0;
+  }
+  .provenance {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    padding-block: 0.8rem 0;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* --- sections --- */
+
+  section { margin-block-start: 3.5rem; }
+
+  h2 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 4vw, 2.1rem);
+    letter-spacing: -0.018em;
+    line-height: 1.12;
+    margin: 0 0 0.35rem;
+    text-wrap: balance;
+  }
+  .sec-mark {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 0.7rem;
+    padding-top: 0.9rem;
+    border-top: 3px solid var(--ink);
+  }
+  h3 {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    letter-spacing: 0.01em;
+    margin: 2rem 0 0.5rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.15rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.4rem; }
+  li::marker { color: var(--flag); }
+  .lede { font-size: 1.08rem; color: var(--ink-soft); }
+
+  code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.83em;
+    background: var(--surface-sunk);
+    padding: 0.1em 0.34em;
+    border-radius: 2px;
+  }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+  a { color: var(--flag); }
+  a:focus-visible { outline: 2px solid var(--flag); outline-offset: 3px; }
+
+  /* --- band figure --- */
+
+  figure { margin: 1.75rem 0; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.4rem 1.1rem 1rem;
+  }
+  .figframe svg { display: block; min-width: 600px; width: 100%; height: auto; }
+  figcaption {
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+    margin-top: 0.75rem;
+    max-width: var(--measure);
+    line-height: 1.55;
+  }
+  .dead  { fill: var(--flag-soft); }
+  .band  { fill: var(--pass); }
+  .fullw { fill: none; stroke: var(--cool); stroke-width: 1.6; stroke-dasharray: 5 3; }
+  .axis  { stroke: var(--ink-faint); stroke-width: 1; }
+  .tickl { stroke: var(--ink-faint); stroke-width: 1; }
+  .lbl   { fill: var(--ink-soft); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; }
+  .lbl-b { fill: var(--pass); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; font-weight: 700; }
+  .lbl-d { fill: var(--flag); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.06em; }
+  .lbl-c { fill: var(--cool); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; }
+
+  /* --- tables --- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); margin-bottom: 1.25rem; }
+  table { border-collapse: collapse; width: 100%; min-width: 31rem; }
+  caption {
+    text-align: left;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.55rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.62rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.9rem;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  thead th {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    font-weight: 500;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.82rem;
+  }
+  td.code-cell {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.79rem;
+    white-space: nowrap;
+    color: var(--flag);
+  }
+
+  /* --- cut matrix --- */
+
+  .matrix {
+    display: grid;
+    grid-template-columns: minmax(7rem, auto) 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin-bottom: 1.25rem;
+    font-size: 0.88rem;
+  }
+  .matrix > * { background: var(--surface); padding: 0.85rem 0.95rem; }
+  .matrix .mh {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .matrix .rowh { font-weight: 700; }
+  .matrix .key {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--flag);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .matrix .lim {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- ordered steps --- */
+
+  .steps { list-style: none; padding: 0; margin: 0 0 1.25rem; max-width: none; counter-reset: s; }
+  .steps > li {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 0 0.9rem;
+    padding-block: 0.95rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+    counter-increment: s;
+  }
+  .steps > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .steps > li::before {
+    content: counter(s, decimal-leading-zero);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    padding-top: 0.22em;
+  }
+  .steps h4 { font-family: "Atkinson Hyperlegible", sans-serif; font-size: 0.98rem; font-weight: 700; margin: 0 0 0.15rem; }
+  .steps p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+
+  /* --- limitations --- */
+
+  .limits { list-style: none; padding: 0; margin: 0 0 1.5rem; max-width: none; }
+  .limits > li { border-top: 1px solid var(--hairline); padding-block: 0.9rem; margin: 0; }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.55rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+  .chip {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2em 0.5em;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: 2px;
+  }
+  .chip.scope   { background: var(--cool-soft); color: var(--cool); }
+  .chip.geom    { background: var(--hold-soft); color: var(--hold); }
+  .chip.durable { background: var(--flag-soft); color: var(--flag); }
+  .chip.ux      { background: var(--surface-sunk); color: var(--ink-soft); }
+  .chip.good    { background: var(--pass-soft); color: var(--pass); }
+
+  /* --- callout --- */
+
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-left: 4px solid var(--flag);
+    padding: 1rem 1.2rem;
+    margin: 1.4rem 0;
+    max-width: var(--measure);
+  }
+  .note p { margin-bottom: 0.6rem; font-size: 0.94rem; }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl2 {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--flag);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  /* --- time ledger --- */
+
+  .ledger {
+    border: 1px solid var(--hairline);
+    background: var(--surface);
+    margin: 1.5rem 0;
+  }
+  .ledger-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1.2rem;
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .ledger-row:first-child { border-top: none; }
+  .ledger-row .who {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    flex: 0 0 9.5rem;
+  }
+  .ledger-row .figure {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 1.65rem;
+    font-weight: 500;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    flex: 0 0 auto;
+  }
+  .ledger-row .figure.slow { color: var(--flag); }
+  .ledger-row .figure.fast { color: var(--pass); }
+  .ledger-row .what { flex: 1 1 14rem; font-size: 0.9rem; color: var(--ink-soft); min-width: 0; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.2rem;
+    border-top: 3px solid var(--ink);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 560px) {
+    .matrix { grid-template-columns: 1fr; }
+    .matrix .mh:first-child { display: none; }
+    .steps > li { grid-template-columns: 1fr; gap: 0.25rem; }
+    .ledger-row .who { flex-basis: 100%; }
+  }
+</style>
+<style>
+  .soffit  { stroke: var(--ink); stroke-width: 1.4; }
+  .tendon  { fill: none; stroke: var(--flag); stroke-width: 2; stroke-linejoin: round; }
+  .station { fill: var(--flag); }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <p class="eyebrow">Tekla Structures &middot; precast modelling</p>
+    <h1>Insert Tendons</h1>
+    <p class="deck">Post-tensioning tendons and their ducts, modelled from the designer's Excel sheet into every beam of a position &mdash; following each beam's slope, rotation and soffit.</p>
+  </header>
+
+  <dl class="run-strip">
+    <div>
+      <dt>The macro</dt>
+      <dd>1,445</dd>
+      <span class="sub">lines of C#, one file, 74 KB</span>
+    </div>
+    <div>
+      <dt>Rotation followed</dt>
+      <dd>&minus;2.89<span class="unit">&deg;</span></dd>
+      <span class="sub">JPT-107, Rotation TOP with an offset</span>
+    </div>
+    <div>
+      <dt>Start face error found</dt>
+      <dd>2.79<span class="unit">mm</span></dd>
+      <span class="sub">tendons outside the concrete, before the fix</span>
+    </div>
+    <div>
+      <dt>Beams in one run</dt>
+      <dd>59</dd>
+      <span class="sub">17 positions, 0 skipped, 0 failed</span>
+    </div>
+    <div>
+      <dt>With the macro</dt>
+      <dd>~5<span class="unit">min</span></dd>
+      <span class="sub">end to end: open, scan, files, profiles, insert</span>
+    </div>
+    <div>
+      <dt>By hand</dt>
+      <dd class="flagged">~40<span class="unit">h</span></dd>
+      <span class="sub">the team's estimate for the same set, not timed</span>
+    </div>
+  </dl>
+  <p class="provenance">Measured on a live project model in Tekla Structures 2023.0: the 2.79 mm and &minus;2.89&deg; with a read-only probe macro, the 5 minutes as one session over the full set of 59 beams, setup included. The 40 hours is the team's estimate for modelling the same set by hand, not a stopwatch.</p>
+
+  <section>
+    <span class="sec-mark">01 &mdash; the input</span>
+    <h2>A tendon arrives as a column of numbers</h2>
+
+    <p class="lede">The designer sends one Excel sheet per beam position. Cell A1 names the position. Each tendon is a group of three columns, <code>Xn Yn Zn</code>, with one row per station until X runs out.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>What the columns mean</caption>
+        <thead><tr><th>Column</th><th>Measured</th></tr></thead>
+        <tbody>
+          <tr><td class="code-cell">X</td><td>Along the beam, from its start face. The beam must be modelled from PA to PG. On a polybeam, along the chord from its first to its last point.</td></tr>
+          <tr><td class="code-cell">Y</td><td>Across the width, from the beam's centre, positive to the left looking from start to end.</td></tr>
+          <tr><td class="code-cell">Z</td><td>Up from the bottom face directly below the point, to the underside of the tendon. These are the handle points.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <div class="figframe">
+        <svg viewBox="0 0 760 230" role="img" aria-label="Elevation of tendon 2 from sheet JPT-104: 37 stations over 36.2 metres, starting and ending 340 millimetres above the soffit, peaking at 495 three times and dipping to 60 twice, with the vertical scale exaggerated about eighteen times.">
+          <line class="soffit" x1="60" y1="190" x2="720" y2="190"/>
+          <polyline class="tendon" points="60.0,77.9 81.9,66.4 100.1,56.5 118.3,44.9 136.6,35.1 149.7,26.8 174.1,58.1 192.4,99.3 210.6,130.7 228.8,152.1 247.1,165.3 265.3,170.2 283.5,165.3 301.8,152.1 320.0,130.7 338.2,99.3 356.5,58.1 374.7,30.1 380.9,26.8 407.5,61.4 425.7,101.0 444.0,130.7 462.2,152.1 480.4,165.3 498.7,170.2 516.9,165.3 535.1,150.4 553.4,130.7 571.6,101.0 589.8,61.4 608.1,31.8 616.4,26.8 643.4,43.3 661.7,54.8 679.9,66.4 701.8,77.9 720.0,77.9"/>
+          <g class="station">
+            <circle cx="60.0" cy="77.9" r="2.4"/><circle cx="149.7" cy="26.8" r="2.4"/><circle cx="265.3" cy="170.2" r="2.4"/>
+            <circle cx="380.9" cy="26.8" r="2.4"/><circle cx="498.7" cy="170.2" r="2.4"/><circle cx="616.4" cy="26.8" r="2.4"/><circle cx="720.0" cy="77.9" r="2.4"/>
+          </g>
+          <g class="lbl">
+            <text x="60" y="210">X 0</text>
+            <text x="720" y="210" text-anchor="end">36 200 mm</text>
+            <text x="52" y="194" text-anchor="end">0</text>
+            <text x="68" y="72">340</text>
+            <text x="149.7" y="20" text-anchor="middle">495</text>
+            <text x="265.3" y="184" text-anchor="middle">60</text>
+            <text x="498.7" y="184" text-anchor="middle">60</text>
+          </g>
+          <text class="lbl-c" x="720" y="226" text-anchor="end">Z above the soffit, mm &mdash; vertical scale about 18&times;</text>
+        </svg>
+      </div>
+      <figcaption>Tendon 2 of <code>JPT-104.xlsx</code>: 37 stations, the sheet's own numbers. The same sheet carries two more tendons at Y = &minus;350 and +350 with the same profile. <code>JPT-107</code> has four tendons of 23 points and starts each one at X = &minus;1000, a metre outside the beam.</figcaption>
+    </figure>
+
+    <p>By hand, that is a poly beam per tendon and per duct with every point typed in, in the beam's own coordinates. On a level box that is tedious. On these beams &mdash; sloping, rotated about their own axis, some of them polybeams whose soffit changes slope part-way along &mdash; it is easy to get slightly wrong, and a tendon 25&nbsp;mm off is not visible until someone sections it.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">02 &mdash; running it</span>
+    <h2>Scan, assign, insert &mdash; and the window stays open</h2>
+
+    <ol class="steps">
+      <li>
+        <div>
+          <h4>Scan</h4>
+          <p>Lists the concrete beams, polybeams and slabs that are the main part of their cast unit, whose assembly prefix starts with the prefix field. The selection when there is one, the whole model otherwise. One row per position &mdash; the <code>EK_MARK</code> UDA, or the assembly position when that is empty &mdash; with a beam count.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Give each position its sheet</h4>
+          <p>Browse per row, or <em>From folder</em>, which matches file names to positions: <code>JPT-104.xlsx</code> goes to <code>JPT-104</code>. The row shows the sheet's tendon count, in red if it cannot be read or its A1 names another position. A position left without a file gets nothing.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Set the tendon and the duct</h4>
+          <p>Profile and material from the Tekla catalog, the last five used on top, anything typable &mdash; parametric profiles such as <code>BL65*16</code> included. Name, class, numbering, and the duct's offset from the tendon. The duct is optional.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Insert</h4>
+          <p>Every ticked position with a sheet, every beam of it. The parts go into each beam's cast unit as a steel sub-assembly, or in as loose parts.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Read the results</h4>
+          <p>One row per beam: inserted, skipped because it already holds tendons, no Excel file, or failed with the reason. Double-click to select and zoom. The window stays open for the next set.</p>
+        </div>
+      </li>
+    </ol>
+
+    <p>Settings, recent profiles and materials, and each position's sheet are kept per model, in <code>InsertTendons.settings</code> in the model folder.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">03 &mdash; the hard part</span>
+    <h2>What X, Y and Z mean on this beam</h2>
+
+    <p>Placing a point is arithmetic once the frame is right. Every bug in the build was a wrong frame, and each came from trusting something Tekla hands over.</p>
+
+    <ul>
+      <li><strong>A beam's local Y is not &ldquo;up&rdquo;.</strong> It follows the Rotation setting. At TOP it points up. At FRONT it is horizontal, and the tendons came out lying on their side.</li>
+      <li><strong>Pure vertical is not &ldquo;up&rdquo; either.</strong> Forcing global Z fixed FRONT and threw away <code>JPT-107</code>'s &minus;2.89&deg; rotation. The height axis is whichever of the beam's own local Y and Z points most nearly upward, with its tilt kept and squared to the length.</li>
+      <li><strong>A polybeam's own system follows its first segment only.</strong> Along the length, X is the chord from the first to the last point.</li>
+      <li><strong>&ldquo;At depth&rdquo; is judged against the work plane.</strong> Depth FRONT puts a profile's lower face on its handle points only while the work plane's Z is up. So the parts are inserted in a work plane built on the sheet's frame, and the sheet's numbers go in exactly as written.</li>
+    </ul>
+
+    <div class="note">
+      <span class="lbl2">The bug the maths did not have</span>
+      <p><code>JPT-104</code>'s tendons came out running along global X, from the beam's side face. A probe macro replayed the tool's frame maths on the real beam and got them right.</p>
+      <p>The fault was upstream. A polybeam carries its points on the object, fetched in whatever work plane the view had at the time, and those were then used as if they were global. A straight beam asks Tekla for its axis each time, so it was never affected. Every beam is now re-read in the global plane before its frame is built.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="sec-mark">04 &mdash; measuring</span>
+    <h2>From the right surface, at the right height</h2>
+
+    <ul>
+      <li><strong>Z follows the soffit point by point.</strong> At each station a vertical line is cast through the beam's solid and its lowest hit is the bottom face there. A polybeam's changing slope and a sloping soffit are followed without knowing anything about the shape.</li>
+      <li><strong>Cuts are ignored.</strong> The solid is read without them, so a dapped end or a recess does not lift a tendon.</li>
+      <li><strong>X starts at the face, at the tendon's own height.</strong> The first version took X = 0 at the rearmost point of the solid. On <code>JPT-104</code>, whose first segment slopes more than its chord, the end face is tilted in that frame, and every tendon started <strong>2.79&nbsp;mm outside the concrete</strong>. The face is now found by casting along the length at each tendon's first point.</li>
+    </ul>
+
+    <div class="note">
+      <span class="lbl2">Knowing what is already there</span>
+      <p>The first duplicate check looked for a tendon whose <em>first</em> point lay inside the beam. <code>JPT-107</code> starts every tendon a metre outside it, so its beams were filled a second time.</p>
+      <p>The check now takes the <strong>middle</strong> point of every tendon and duct in the model, once per run, transforms it into each beam's frame and tests it against the beam's box. It works for sub-assemblies and loose parts alike.</p>
+    </div>
+  </section>
+
+  <section>
+    <span class="sec-mark">05 &mdash; platform</span>
+    <h2>What Tekla does that a macro has to answer</h2>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Traps met in the build</caption>
+        <thead><tr><th>Trap</th><th>What happened, and the answer</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Macros run on an MTA thread</strong></td><td>WinForms' OLE parts need STA. The combo box autocomplete failed with a <code>ThreadStateException</code>, and the file dialog had simply left the window unresponsive for ten minutes. The window now runs on a thread of its own set to STA. The Open API talks to Tekla over IPC, so its calls work from there.</td></tr>
+          <tr><td><strong>Steel in a concrete cast unit prompts</strong></td><td>Adding the tendons straight to the cast unit opened Tekla's &ldquo;add steel parts as subassembly?&rdquo; dialog. The macro does what answering yes does: gathers the parts into one steel assembly and adds that as a sub-assembly.</td></tr>
+          <tr><td><strong><code>#pragma reference</code> resolves from Tekla's bin</strong></td><td><code>System.IO.Compression</code> could not be found. The sheet is read with <code>DotNetZip</code>, which Tekla ships, so the xlsx opens without Excel installed and while it is still open in Excel.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="sec-mark">06 &mdash; limitations</span>
+    <h2>What it does not do</h2>
+
+    <ul class="limits">
+      <li>
+        <h4>Straight segments between stations <span class="chip geom">geometry</span></h4>
+        <p>A soffit whose slope changes between two rows is not followed there. Add a row at that station.</p>
+      </li>
+      <li>
+        <h4>Bends in plan are not followed <span class="chip geom">geometry</span></h4>
+        <p>A polybeam is assumed straight in plan. Only its bends in elevation are followed.</p>
+      </li>
+      <li>
+        <h4>Beam direction decides X = 0 <span class="chip durable">silent</span></h4>
+        <p>X runs from the start face, so the beam must be modelled from PA to PG. A beam modelled the other way gets its profile mirrored, with no warning.</p>
+      </li>
+      <li>
+        <h4>The duplicate check is by name <span class="chip scope">by design</span></h4>
+        <p>A beam holding parts named like the current tendon or duct is skipped. A second set under a different name is allowed on purpose &mdash; that is how more tendons are added to a beam.</p>
+      </li>
+      <li>
+        <h4>Beams are found by assembly prefix <span class="chip durable">silent</span></h4>
+        <p>Which requires numbering to be up to date. A beam never numbered is not found, and the A1 check compares against a stale position.</p>
+      </li>
+      <li>
+        <h4>The window blocks while inserting <span class="chip ux">interface</span></h4>
+        <p>Every Tekla call runs on the window's thread, so it is unresponsive during a scan or an insert. Deliberate: inserting moves the work plane, and the Open API is not thread-safe.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="sec-mark">07 &mdash; time</span>
+    <h2>What it saves</h2>
+
+    <p>The macro's side is one session over the whole project set, setup included. The manual side is an estimate, and is marked as one.</p>
+
+    <div class="ledger">
+      <div class="ledger-row">
+        <span class="who">With the macro</span>
+        <span class="figure fast">~5 min</span>
+        <span class="what">59 beams in 17 positions, from opening the macro to the results: Scan, assigning the files, setting the profiles, Insert. 424 parts &mdash; 212 tendons and 212 ducts &mdash; and 11,282 points, none skipped, none failed. Almost all of it is a person filling in the window.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="who">Estimated</span>
+        <span class="figure slow">~40 hours</span>
+        <span class="what">The team's estimate for modelling the same set by hand. The positions differ mostly in slope and orientation, so each beam's 190-odd points are placed in a frame of its own.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="who">Per revision</span>
+        <span class="figure fast">one run</span>
+        <span class="what">A revised sheet is a delete and a re-run. By hand, it is most of the original work again.</span>
+      </div>
+    </div>
+
+    <h3>The honest framing</h3>
+    <p>Five minutes against forty hours is the comparison, but only one side of it is a stopwatch. The forty hours is the team's estimate, so no multiplier is quoted. What the numbers show beyond doubt is where the cost goes: the job becomes preparing correct sheets, which has to happen either way.</p>
+    <p>The larger saving is the one that repeats. Every design revision used to mean retyping a position; now it is a re-run. And the frame, the fall and the soffit are handled by geometry rather than by the person typing, which is where the millimetres used to go.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">08 &mdash; build notes</span>
+    <h2>How it is put together</h2>
+    <ul>
+      <li><strong>One file.</strong> All 1,445 lines travel as a single macro in <code>XS_MACRO_DIRECTORY\modeling</code>. Tekla compiles it at startup.</li>
+      <li><strong>Written to a pre-C#6 subset,</strong> matching the other macros in the repository: no interpolation, no null-conditional, no null-coalescing.</li>
+      <li><strong>Styled with HC Check</strong> &mdash; the same flat palette, hairline cards and tab bar, so the macros read as one toolset.</li>
+      <li><strong>Debugged by probe.</strong> Each geometry bug was settled by a throwaway read-only macro, run through the MCP server's <code>run_macro</code>, writing the beam's frame, box and the tendons' points to a text file. It never ships.</li>
+      <li><strong>Compiled before it is run.</strong> Every change was built against the framework C# compiler and the Tekla 2023 DLLs, and the Excel reader tested against the sample sheets, before a round trip through the model.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/macros/modeling/Insert Tendons.cs &middot; written 2026-09-24 against macro source, the probe runs and a 5-minute session over 59 beams<br>
+    One file &middot; 1,445 lines &middot; C# against Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0
+  </footer>
+
+</div>
+
+</body></html>

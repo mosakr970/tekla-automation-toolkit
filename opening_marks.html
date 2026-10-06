@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Opening Marks</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:        #f7f9fb;
+    --surface:      #ffffff;
+    --surface-sunk: #eef2f6;
+    --ink:          #16202b;
+    --ink-soft:     #4a5765;
+    --ink-faint:    #798696;
+    --hairline:     #dbe2ea;
+    --hairline-hard:#c2cddb;
+    --accent:       #0068bd;
+    --accent-soft:  #e3eefa;
+    --warn:         #a05a05;
+    --warn-soft:    #fbeedb;
+    --stop:         #a3241b;
+    --stop-soft:    #fbe6e4;
+    --ok:           #15694a;
+    --ok-soft:      #dff0e8;
+
+    --measure: 68ch;
+    --step-0: 1rem;
+    --step-1: 1.15rem;
+    --step-2: 1.45rem;
+    --step-3: 1.9rem;
+    --step-4: clamp(2.1rem, 6vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #0e141a;
+      --surface:      #151d25;
+      --surface-sunk: #1b242e;
+      --ink:          #e2e9f0;
+      --ink-soft:     #a7b4c2;
+      --ink-faint:    #7d8b9a;
+      --hairline:     #2a3641;
+      --hairline-hard:#3b4a58;
+      --accent:       #56a9ec;
+      --accent-soft:  #142838;
+      --warn:         #e0a758;
+      --warn-soft:    #2e2415;
+      --stop:         #ef8b80;
+      --stop-soft:    #331a18;
+      --ok:           #63c69c;
+      --ok-soft:      #12281f;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #0e141a;
+    --surface:      #151d25;
+    --surface-sunk: #1b242e;
+    --ink:          #e2e9f0;
+    --ink-soft:     #a7b4c2;
+    --ink-faint:    #7d8b9a;
+    --hairline:     #2a3641;
+    --hairline-hard:#3b4a58;
+    --accent:       #56a9ec;
+    --accent-soft:  #142838;
+    --warn:         #e0a758;
+    --warn-soft:    #2e2415;
+    --stop:         #ef8b80;
+    --stop-soft:    #331a18;
+    --ok:           #63c69c;
+    --ok-soft:      #12281f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: var(--step-0);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* ---- masthead ---- */
+
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-block: 3rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .masthead h1 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead h1 span { display: block; color: var(--accent); }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.85rem;
+  }
+  .stamp {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.74rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0 1.1rem;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .stamp dt { color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; }
+  .stamp dd { margin: 0; }
+
+  .standfirst {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 1.75rem 0 2.5rem;
+  }
+
+  /* ---- section scaffolding: grid bubbles, as on a drawing ---- */
+
+  section { margin-block-start: 3.75rem; }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+  .bubble {
+    flex: 0 0 auto;
+    width: 2.05rem;
+    height: 2.05rem;
+    border: 1.5px solid var(--hairline-hard);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--surface);
+  }
+  .head h2 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-3);
+    letter-spacing: -0.018em;
+    margin: 0;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .head::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--hairline);
+  }
+
+  h3 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+    margin: 2rem 0 0.55rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.45rem; }
+  li::marker { color: var(--ink-faint); }
+
+  code, .num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.86em;
+    font-variant-numeric: tabular-nums;
+  }
+  code {
+    background: var(--surface-sunk);
+    padding: 0.08em 0.36em;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---- the drawing figure ---- */
+
+  figure { margin: 0 0 1.5rem; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.25rem 1rem 0.75rem;
+  }
+  .figframe svg { display: block; min-width: 620px; width: 100%; height: auto; }
+  figcaption {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    margin-top: 0.7rem;
+    max-width: var(--measure);
+    line-height: 1.6;
+  }
+
+  .part      { fill: var(--surface-sunk); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .void      { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1.1; stroke-dasharray: 4 3; }
+  .gridline  { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 10 4 2 4; }
+  .gridbub   { fill: var(--surface); stroke: var(--ink-faint); stroke-width: 1.2; }
+  .witness   { stroke: var(--accent); stroke-width: 0.9; opacity: 0.55; }
+  .dimline   { stroke: var(--accent); stroke-width: 1.5; }
+  .tick      { stroke: var(--accent); stroke-width: 1.5; }
+  .dimtext   { fill: var(--accent); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500; }
+  .anno      { fill: var(--ink-faint); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.07em; }
+  .gridtext  { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; font-weight: 600; }
+
+  /* ---- the run: a real sequence, so it is numbered ---- */
+
+  .run { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .run > li {
+    display: grid;
+    grid-template-columns: 3.1rem 1fr;
+    gap: 0 1rem;
+    padding-block: 1.05rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+  }
+  .run > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .run .step {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    padding-top: 0.2em;
+  }
+  .run h4 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+  }
+  .run p { margin: 0; color: var(--ink-soft); max-width: var(--measure); }
+
+  /* ---- tables ---- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  caption {
+    text-align: left;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.6rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  thead th {
+    font-family: "Archivo", sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.84rem;
+  }
+
+  /* ---- limitations ---- */
+
+  .limits { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .limits > li {
+    border-top: 1px solid var(--hairline);
+    padding-block: 1rem;
+    margin: 0;
+  }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Archivo", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); }
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 0.18em 0.5em;
+    border-radius: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chip.hard  { background: var(--stop-soft); color: var(--stop); }
+  .chip.soft  { background: var(--warn-soft); color: var(--warn); }
+  .chip.known { background: var(--accent-soft); color: var(--accent); }
+  .chip.ok    { background: var(--ok-soft);   color: var(--ok); }
+
+  /* ---- callout ---- */
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    max-width: var(--measure);
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ---- estimate panel ---- */
+
+  .est {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin: 1.5rem 0;
+  }
+  .est > div { background: var(--surface); padding: 1.1rem 1.1rem 1.2rem; }
+  .est dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+  }
+  .est dd {
+    margin: 0;
+    font-family: "Archivo", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .est dd small {
+    display: block;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--ink);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+
+  /* ---- opening marks figure ---- */
+  .mark      { stroke: var(--accent); stroke-width: 1.6; }
+  .joint     { stroke: var(--paper); stroke-width: 3; }
+  .hole      { fill: var(--paper); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .pocket    { fill: var(--surface); stroke: var(--ink-faint); stroke-width: 1.1; stroke-dasharray: 4 3; }
+
+  @media (max-width: 540px) {
+    .head { gap: 0.65rem; }
+    .bubble { width: 1.75rem; height: 1.75rem; font-size: 0.72rem; }
+    .run > li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <p class="kicker">Tekla Structures &middot; drawing macro</p>
+      <h1>Opening Marks <span>for floor plans</span></h1>
+    </div>
+    <dl class="stamp">
+      <dt>Files</dt><dd>config/macros/drawings/</dd>
+      <dt>Language</dt><dd>C# &middot; Tekla macro runtime</dd>
+      <dt>Built</dt><dd>2026-09-29 &rarr; 2026-10-05</dd>
+      <dt>Current</dt><dd>Opening Marks.cs &middot; 1983 lines</dd>
+    </dl>
+  </header>
+
+  <p class="standfirst">Select a floor plan view, press <em>Scan</em>, tick what you want, press <em>Mark</em>. The macro finds every opening and recess in the view and crosses it out: two diagonals for an opening, one for a recess. That includes the holes no cut makes, like a stair hole left between three planks and a cast-in-place strip.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 760 250" role="img" aria-label="A floor plan with three hollow-core planks. A hole cut through one plank is crossed with two diagonals. A stair hole left between planks is crossed with two diagonals. A recess that stops inside a plank is crossed with one diagonal.">
+        <rect class="part" x="40"  y="30" width="680" height="62"/>
+        <rect class="part" x="40"  y="96" width="400" height="62"/>
+        <rect class="part" x="600" y="96" width="120" height="62"/>
+        <rect class="part" x="40"  y="162" width="680" height="62"/>
+        <text class="anno" x="48" y="24">HC PLANKS</text>
+
+        <!-- opening inside one element: two diagonals -->
+        <rect class="hole" x="120" y="44" width="70" height="36"/>
+        <line class="mark" x1="120" y1="80" x2="190" y2="44"/>
+        <line class="mark" x1="120" y1="44" x2="190" y2="80"/>
+        <text class="anno" x="155" y="108" text-anchor="middle">INSIDE ELEMENT</text>
+
+        <!-- opening between elements: no cut, two diagonals -->
+        <line class="mark" x1="440" y1="158" x2="600" y2="96"/>
+        <line class="mark" x1="440" y1="96"  x2="600" y2="158"/>
+        <text class="anno" x="520" y="244" text-anchor="middle">BETWEEN ELEMENTS - NO CUT</text>
+
+        <!-- recess: one diagonal -->
+        <rect class="pocket" x="290" y="176" width="90" height="36"/>
+        <line class="mark" x1="290" y1="212" x2="380" y2="176"/>
+        <text class="anno" x="335" y="244" text-anchor="middle">RECESS</text>
+      </svg>
+    </div>
+    <figcaption>Two diagonals for an opening, one for a recess. The stair hole in the middle has no cut in any element. It is only a space where no element is, and the macro finds it from the silhouette of the view.</figcaption>
+  </figure>
+
+  <section>
+    <div class="head"><span class="bubble">A</span><h2>What it does</h2></div>
+
+    <p>It runs inside the drawing editor, on the view you have selected, and writes lines and dimensions straight into the drawing. The window stays open over the drawing, with two tabs: <em>Openings</em>, which lists what the scan found, and <em>Results</em>, a log of every run in the session. A run goes through four stages.</p>
+
+    <ol class="run">
+      <li>
+        <span class="step">01</span>
+        <div>
+          <h4>Scan the view</h4>
+          <p>Nothing is read until <em>Scan</em> is pressed. Every part shown in the view is read, not only main parts, as long as it lies at least partly inside the view's depth. Openings are found two ways, from the silhouette of the view and from the parts' cuts, and each one gets one of five types.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">02</span>
+        <div>
+          <h4>Review the list</h4>
+          <p>The openings are listed under their type. Click a type's name to expand it to its openings, and again to collapse it. Each opening has a <code>MARK</code> tick for the crossing and a <code>DIMS</code> tick for its size, and a type's ticks set the whole group. Marks are ticked by default, dimensions only when asked for. Selecting rows outlines those openings in the drawing with a temporary magenta rectangle, so it is always clear which one a row is.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">03</span>
+        <div>
+          <h4>Mark</h4>
+          <p>Every opening ticked under <code>MARK</code> gets two diagonals fitted to its real shape, and a recess gets one diagonal over its box. Every opening ticked under <code>DIMS</code> gets its width along the top edge and its height along the left edge. Earlier marks are kept, and a line or dimension already in the same place is not drawn again.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">04</span>
+        <div>
+          <h4>Remove, when needed</h4>
+          <p>Every line and dimension the macro places carries a user property, <code>MCP_OPEN_MARK</code>, with its type. <em>Remove</em> takes off the macro's own lines of the types ticked under <code>MARK</code> and its dimensions of the types ticked under <code>DIMS</code>, and nothing else in the drawing.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="note">
+      <span class="lbl">What the Results tab reports</span>
+      <p>Parts read &middot; openings marked, per type &middot; lines drawn &middot; dimensions added &middot; failed to insert &middot; already there, not redrawn. If a mark could not be tagged, it warns that <em>Remove</em> will not find it.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">B</span><h2>The five types</h2></div>
+
+    <p>The type decides how an opening is listed and which group's ticks it follows. It also lets <em>Remove</em> take off one kind of mark without touching the others.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Opening types &middot; in list order</caption>
+        <thead>
+          <tr><th>Type</th><th>Crossing</th><th>What it is</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Inside element</td><td class="v">2 lines</td><td>Bounded by one element only.</td></tr>
+          <tr><td>Edge / corner</td><td class="v">2 lines</td><td>At an element's edge or corner. The cuts of the flat elements around it make most of the opening and a neighbour closes it.</td></tr>
+          <tr><td>Outer edge notch</td><td class="v">2 lines</td><td>A cut at the outer edge, open to the outside of the view.</td></tr>
+          <tr><td>Between elements</td><td class="v">2 lines</td><td>A gap wider than the joint limit that no cut makes.</td></tr>
+          <tr><td>Recess</td><td class="v">1 line</td><td>A cut that stops inside the element, with material left behind it, wherever in the element it lies.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">C</span><h2>Finding an opening that no cut makes</h2></div>
+
+    <p>Tekla draws each element's outline but has no notion of "the opening". Many openings on a precast floor are not cuts at all. A stair hole between three planks and a cast-in-place strip has no cut in any element, only a space where no element is.</p>
+
+    <p>So the view is rasterized into a silhouette. Every face of every part in the view's depth is filled into a bitmap, each part in its own colour, so every empty pixel also knows which parts are next to it. The cell is 5 mm, and grows only when the view is so large that the bitmap would pass 2500 pixels on its longer side. Material is then grown by half the joint limit, which closes the plank joints, and every empty region that cannot be reached from the border is an enclosed opening. Without that closing, one 20 mm joint would connect a stair hole to the outside and hide it.</p>
+
+    <p>The cuts are read as well, for what the silhouette cannot enclose: notches open to the outside, and holes narrower than the joint limit, which the closing fills in. A ray cast along the viewing direction through the middle of each cut tells a through opening (no material) from a recess (material behind it) from a cut that something else fills.</p>
+
+    <p>An enclosed opening counts as <em>Edge / corner</em> when the cuts of the flat elements around it cover at least half of its area. Otherwise it is <em>Between elements</em>.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">D</span><h2>The measuring</h2></div>
+
+    <p>The bitmap only says where an opening is. Its edges are measured on the real solids: rays are cast across each edge on three lines, and the change from empty to material is found by bisection. The cell size limits what is <em>found</em>, not how exactly it is measured.</p>
+
+    <p>The first version snapped each edge to the nearest corner of a part around it instead. A check on a live view found edges from a few millimetres to about 36 mm off the real boundary. A hollow-core plank has many corners close together around its cores, and the snap picked the wrong one.</p>
+
+    <h3>The lone point</h3>
+    <p>The rays hid a trap of their own. Through a cut hole in a hollow-core plank, Tekla's <code>Solid.Intersect</code> returns one point, on the plank's top face plane, where there is no material at all. A ray that starts and ends outside a part crosses its surface an even number of times, so a lone point is now read as empty. Before that, every hollow-core hole looked solid, its edges were never measured, and the same trap made cut openings look filled and dropped them.</p>
+
+    <p>After both fixes, every line end of the 37 openings marked on the test view lay within 1 mm of the real edge.</p>
+
+    <h3>Round openings</h3>
+    <p>A round opening is crossed inside its circle. Each half-diagonal steps out from the centre in 20 mm steps and stops at the first material of a flat element. Stepping matters: bisecting the whole half-diagonal landed on a later edge when the line crossed a wall and came out into empty space.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">E</span><h2>Telling the floor from what stands in it</h2></div>
+
+    <p>A plan view's depth reaches below the slab, so walls, columns and their corbels are in the view too. Their cuts are not openings of the floor. The pockets at a wall head showed up as 85 &times; 140 mm "edge openings".</p>
+
+    <p>An element is now treated as standing when it is taller along the viewing direction than it is wide <strong>and</strong> reaches out of the view's depth. Both are needed: the cast-in-place strips between planks are narrower than their 265 mm thickness, but lie within the floor. On the test view 1,288 parts are flat and 284 stand.</p>
+
+    <p>Standing elements still fill the silhouette, so they still close the gaps they stand in. But they have no openings of their own, stop no crossing, and their door and pocket cuts do not decide an opening's type.</p>
+
+    <h3>The tie-bar cores</h3>
+    <p>The hollow cores opened at plank ends for tie bars are recesses to the geometry. On the test view there were 846 of them, 100 to 150 mm wide. A filter on cut class would depend on how each model names them, so the recess limit is a size instead: below 200 mm on the narrower side, a recess is ignored. That leaves 0 of them on the test view.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">F</span><h2>The settings</h2></div>
+
+    <p>The limits and the line style sit on one line under the list. Change a limit, then scan again for it to apply. All sizes are model millimetres, measured in the view.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Window settings</caption>
+        <thead>
+          <tr><th>Field</th><th>Default</th><th>What it controls</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Min</code></td><td class="v">50</td><td>Smallest opening found. Below this a cut is a bolt hole, a chamfer or a drip groove</td></tr>
+          <tr><td><code>Joint</code></td><td class="v">150</td><td>Widest gap between elements that is still a joint and not an opening</td></tr>
+          <tr><td><code>Recess</code></td><td class="v">200</td><td>Smallest recess, on its narrower side. Keeps out the tie-bar cores at plank ends</td></tr>
+          <tr><td><code>Color</code></td><td class="v">Gray</td><td>Line colour, cycled by clicking. Tekla's own 'Gray' from the line colour list</td></tr>
+          <tr><td><code>Line</code></td><td class="v">Solid</td><td>Line type, cycled by clicking: solid, dashed, dash-dot, dotted</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:1.5rem">The rest are constants at the top of the macro.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Tuning constants</caption>
+        <thead>
+          <tr><th>Constant</th><th>Value</th><th>What it controls</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>MinCell</code> / <code>MaxPixels</code></td><td class="v">5 / 2500</td><td>Silhouette cell in mm, and the most pixels on the bitmap's longer side</td></tr>
+          <tr><td><code>EdgeCutShare</code></td><td class="v">0.5</td><td>Share of an enclosed opening the flat elements' cuts must cover for it to be Edge / corner</td></tr>
+          <tr><td><code>DiagonalStep</code></td><td class="v">20</td><td>Step along a round opening's half-diagonal when looking for material</td></tr>
+          <tr><td><code>DimPaperOffset</code></td><td class="v">6</td><td>Distance of a size dimension from its opening's edge, in paper mm</td></tr>
+          <tr><td><code>ThroughTolerance</code></td><td class="v">1</td><td>How close a cut's depth must come to the part's depth to pass right through it</td></tr>
+          <tr><td><code>DuplicateTolerance</code></td><td class="v">1</td><td>Two openings whose boxes agree this closely are one opening cut twice</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">G</span><h2>Results</h2></div>
+
+    <p>Checked in Tekla 2025 on a 1:100 floor plan, line end by line end against the solids.</p>
+
+    <div class="est">
+      <div><dt>Line ends</dt><dd>&le; 1 mm<small>from the real edge, every one</small></dd></div>
+      <div><dt>Openings marked</dt><dd>37<small>on the test view</small></dd></div>
+      <div><dt>Parts in the view</dt><dd>1,572<small>1,288 flat, 284 standing</small></dd></div>
+      <div><dt>Duplicate lines</dt><dd>0<small>after marking again</small></dd></div>
+    </div>
+
+    <p>No time saving is quoted, because none has been measured. Timing a floor plan crossed out by hand against the same plan by macro plus review would give a number.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">H</span><h2>Limitations</h2></div>
+
+    <ul class="limits">
+      <li>
+        <h4>Walls under a slab hole can split it <span class="chip hard">structural</span></h4>
+        <p>Standing walls still fill the silhouette, so a stair hole with a room of walls below it comes out as two openings. Dropping walls that do not reach the slab layer was tried and made many openings wrong, so it was taken out.</p>
+      </li>
+      <li>
+        <h4>A recess keeps its cut box <span class="chip soft">quality</span></h4>
+        <p>There is material under a recess everywhere, so the rays cannot find its edges. It keeps its cut box, clamped to the element. A cutting part larger than the pocket makes the line too long, and a recess cut across two elements shows as two halves.</p>
+      </li>
+      <li>
+        <h4>Dimension placement is unchecked <span class="chip known">open</span></h4>
+        <p>Dimensions sit a fixed 6 mm from the edge on paper, width on top and height on the left. Openings close together will overlap theirs, and their placement has not been checked on a drawing.</p>
+      </li>
+      <li>
+        <h4>Recesses unchecked on a real view <span class="chip known">open</span></h4>
+        <p>The test view's only recesses were the tie-bar cores, which the recess limit removes. Recess marking has not yet been checked on a view that has real ones.</p>
+      </li>
+      <li>
+        <h4>Edge / corner is a judgement <span class="chip soft">quality</span></h4>
+        <p>An opening counts as Edge / corner when flat-element cuts cover at least half of it. The half was set on the stair holes of one model.</p>
+      </li>
+      <li>
+        <h4>Remove works by type, not by opening <span class="chip soft">workflow</span></h4>
+        <p>One opening's marks are removed by hand.</p>
+      </li>
+      <li>
+        <h4>An old tag can outlive a type change <span class="chip soft">workflow</span></h4>
+        <p><em>Mark</em> skips a line already drawn in the same place without looking at the old line's type. After an opening's type changes, the old tag stays until <em>Remove</em> is run for that type.</p>
+      </li>
+      <li>
+        <h4>Select the view again before scanning <span class="chip soft">workflow</span></h4>
+        <p>After rows are selected, the view is no longer selected in Tekla, and has to be selected again before the next <em>Scan</em>.</p>
+      </li>
+      <li>
+        <h4>Loaded once per Tekla session <span class="chip known">process</span></h4>
+        <p>Editing a deployed <code>.cs</code> makes Tekla recompile it, but the assembly already in memory keeps running. Restart Tekla after updating the macro.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">I</span><h2>Where it stands</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td>Opening Marks</td><td>1,983 lines, 103 KB</td></tr>
+          <tr><td>Compiled against</td><td>Tekla Structures 2023.0 and 2025.0</td></tr>
+          <tr><td>Verified on a live drawing</td><td>The marks placed in Tekla 2025 on a 1:100 floor plan of 1,572 parts: 37 openings, every end within 1 mm, no duplicate lines <span class="chip ok">verified</span></td></tr>
+          <tr><td>Not yet checked</td><td>The dimensions' placement, and recesses on a view that has real ones <span class="chip soft">open</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">J</span><h2>Running it</h2></div>
+    <ol>
+      <li>Copy the macro into the <code>drawings</code> subfolder of <code>XS_MACRO_DIRECTORY</code>, then <strong>restart Tekla</strong>. Macros are registered only at startup.</li>
+      <li>Open the drawing and select <strong>exactly one view</strong>, a floor plan.</li>
+      <li>Run <em>Opening Marks</em> from Applications &amp; components.</li>
+      <li>Set <em>Min</em>, <em>Joint</em> and <em>Recess</em> if the defaults do not suit the model, then press <em>Scan</em>.</li>
+      <li>Expand the types, check the openings by selecting rows, and untick any you do not want. Tick <code>DIMS</code> where you want sizes.</li>
+      <li>Set the colour and line type, then press <em>Mark</em>. The status line and the Results tab show what was drawn.</li>
+      <li>To undo the macro's marks of one type, tick that type and press <em>Remove</em>.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/macros/drawings &middot; revised 2026-10-06 against macro source and docs/case_studies.md<br>
+    Opening Marks.cs &middot; 1983 lines &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2025.0, compiled against 2023.0 and 2025.0 &middot; dimension placement and real recesses not yet checked
+  </footer>
+
+</div>
+
+</body></html>

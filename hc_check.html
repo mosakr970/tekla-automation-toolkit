@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>HC Check</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+<style>
+  :root {
+    --paper:        #f3f2f0;
+    --surface:      #fbfbfa;
+    --surface-sunk: #e8e7e3;
+    --ink:          #1b1a18;
+    --ink-soft:     #55524d;
+    --ink-faint:    #837e77;
+    --hairline:     #dcdad5;
+    --hairline-hard:#bfbcb5;
+
+    --flag:         #b93326;
+    --flag-soft:    #f7e3e0;
+    --pass:         #2f6a4d;
+    --pass-soft:    #dfeee6;
+    --hold:         #96661a;
+    --hold-soft:    #f6e9d4;
+    --cool:         #3f5b78;
+    --cool-soft:    #e2e9f0;
+
+    --measure: 67ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #16150f;
+      --surface:      #1e1d18;
+      --surface-sunk: #272620;
+      --ink:          #ece9e2;
+      --ink-soft:     #b3aea4;
+      --ink-faint:    #857f74;
+      --hairline:     #35332c;
+      --hairline-hard:#4b483f;
+
+      --flag:         #ef8275;
+      --flag-soft:    #3a1f1b;
+      --pass:         #6ec298;
+      --pass-soft:    #16281f;
+      --hold:         #dfae62;
+      --hold-soft:    #332715;
+      --cool:         #8fadc9;
+      --cool-soft:    #1c2530;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #16150f;
+    --surface:      #1e1d18;
+    --surface-sunk: #272620;
+    --ink:          #ece9e2;
+    --ink-soft:     #b3aea4;
+    --ink-faint:    #857f74;
+    --hairline:     #35332c;
+    --hairline-hard:#4b483f;
+
+    --flag:         #ef8275;
+    --flag-soft:    #3a1f1b;
+    --pass:         #6ec298;
+    --pass-soft:    #16281f;
+    --hold:         #dfae62;
+    --hold-soft:    #332715;
+    --cool:         #8fadc9;
+    --cool-soft:    #1c2530;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 63rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* --- masthead --- */
+
+  .masthead {
+    padding-block: 3.25rem 1.5rem;
+    border-bottom: 1px solid var(--hairline-hard);
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin: 0 0 1rem;
+  }
+  .masthead h1 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.4rem, 7.5vw, 4rem);
+    line-height: 1.0;
+    letter-spacing: -0.022em;
+    margin: 0 0 0.85rem;
+    text-wrap: balance;
+  }
+  .deck {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 44ch;
+    margin: 0;
+  }
+
+  /* --- the measured run --- */
+
+  .run-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border-bottom: 1px solid var(--hairline-hard);
+  }
+  .run-strip > div { background: var(--paper); padding: 1.25rem 0.25rem 1.4rem; }
+  .run-strip dt {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.45rem;
+  }
+  .run-strip dd {
+    margin: 0;
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .run-strip dd .unit { font-size: 0.95rem; color: var(--ink-faint); margin-left: 0.15em; }
+  .run-strip dd.flagged { color: var(--flag); }
+  .run-strip .sub {
+    display: block;
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    line-height: 1.4;
+    margin-top: 0.4rem;
+    letter-spacing: 0;
+  }
+  .provenance {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    padding-block: 0.8rem 0;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* --- sections --- */
+
+  section { margin-block-start: 3.5rem; }
+
+  h2 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 4vw, 2.1rem);
+    letter-spacing: -0.018em;
+    line-height: 1.12;
+    margin: 0 0 0.35rem;
+    text-wrap: balance;
+  }
+  .sec-mark {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 0.7rem;
+    padding-top: 0.9rem;
+    border-top: 3px solid var(--ink);
+  }
+  h3 {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    letter-spacing: 0.01em;
+    margin: 2rem 0 0.5rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.15rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.4rem; }
+  li::marker { color: var(--flag); }
+  .lede { font-size: 1.08rem; color: var(--ink-soft); }
+
+  code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.83em;
+    background: var(--surface-sunk);
+    padding: 0.1em 0.34em;
+    border-radius: 2px;
+  }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+  a { color: var(--flag); }
+  a:focus-visible { outline: 2px solid var(--flag); outline-offset: 3px; }
+
+  /* --- band figure --- */
+
+  figure { margin: 1.75rem 0; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.4rem 1.1rem 1rem;
+  }
+  .figframe svg { display: block; min-width: 600px; width: 100%; height: auto; }
+  figcaption {
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+    margin-top: 0.75rem;
+    max-width: var(--measure);
+    line-height: 1.55;
+  }
+  .dead  { fill: var(--flag-soft); }
+  .band  { fill: var(--pass); }
+  .fullw { fill: none; stroke: var(--cool); stroke-width: 1.6; stroke-dasharray: 5 3; }
+  .axis  { stroke: var(--ink-faint); stroke-width: 1; }
+  .tickl { stroke: var(--ink-faint); stroke-width: 1; }
+  .lbl   { fill: var(--ink-soft); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; }
+  .lbl-b { fill: var(--pass); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; font-weight: 700; }
+  .lbl-d { fill: var(--flag); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.06em; }
+  .lbl-c { fill: var(--cool); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; }
+
+  /* --- tables --- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); margin-bottom: 1.25rem; }
+  table { border-collapse: collapse; width: 100%; min-width: 31rem; }
+  caption {
+    text-align: left;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.55rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.62rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.9rem;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  thead th {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    font-weight: 500;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.82rem;
+  }
+  td.code-cell {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.79rem;
+    white-space: nowrap;
+    color: var(--flag);
+  }
+
+  /* --- cut matrix --- */
+
+  .matrix {
+    display: grid;
+    grid-template-columns: minmax(7rem, auto) 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin-bottom: 1.25rem;
+    font-size: 0.88rem;
+  }
+  .matrix > * { background: var(--surface); padding: 0.85rem 0.95rem; }
+  .matrix .mh {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .matrix .rowh { font-weight: 700; }
+  .matrix .key {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--flag);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .matrix .lim {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- ordered steps --- */
+
+  .steps { list-style: none; padding: 0; margin: 0 0 1.25rem; max-width: none; counter-reset: s; }
+  .steps > li {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 0 0.9rem;
+    padding-block: 0.95rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+    counter-increment: s;
+  }
+  .steps > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .steps > li::before {
+    content: counter(s, decimal-leading-zero);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    padding-top: 0.22em;
+  }
+  .steps h4 { font-family: "Atkinson Hyperlegible", sans-serif; font-size: 0.98rem; font-weight: 700; margin: 0 0 0.15rem; }
+  .steps p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+
+  /* --- limitations --- */
+
+  .limits { list-style: none; padding: 0; margin: 0 0 1.5rem; max-width: none; }
+  .limits > li { border-top: 1px solid var(--hairline); padding-block: 0.9rem; margin: 0; }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.55rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+  .chip {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2em 0.5em;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: 2px;
+  }
+  .chip.scope   { background: var(--cool-soft); color: var(--cool); }
+  .chip.geom    { background: var(--hold-soft); color: var(--hold); }
+  .chip.durable { background: var(--flag-soft); color: var(--flag); }
+  .chip.ux      { background: var(--surface-sunk); color: var(--ink-soft); }
+  .chip.good    { background: var(--pass-soft); color: var(--pass); }
+
+  /* --- callout --- */
+
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-left: 4px solid var(--flag);
+    padding: 1rem 1.2rem;
+    margin: 1.4rem 0;
+    max-width: var(--measure);
+  }
+  .note p { margin-bottom: 0.6rem; font-size: 0.94rem; }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl2 {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--flag);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  /* --- time ledger --- */
+
+  .ledger {
+    border: 1px solid var(--hairline);
+    background: var(--surface);
+    margin: 1.5rem 0;
+  }
+  .ledger-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1.2rem;
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .ledger-row:first-child { border-top: none; }
+  .ledger-row .who {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    flex: 0 0 9.5rem;
+  }
+  .ledger-row .figure {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 1.65rem;
+    font-weight: 500;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    flex: 0 0 auto;
+  }
+  .ledger-row .figure.slow { color: var(--flag); }
+  .ledger-row .figure.fast { color: var(--pass); }
+  .ledger-row .what { flex: 1 1 14rem; font-size: 0.9rem; color: var(--ink-soft); min-width: 0; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.2rem;
+    border-top: 3px solid var(--ink);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 560px) {
+    .matrix { grid-template-columns: 1fr; }
+    .matrix .mh:first-child { display: none; }
+    .steps > li { grid-template-columns: 1fr; gap: 0.25rem; }
+    .ledger-row .who { flex-basis: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <p class="eyebrow">Tekla Structures &middot; precast QA</p>
+    <h1>HC Check</h1>
+    <p class="deck">Every hollow-core panel in the model, measured against what the factory can actually saw - before anything reaches fabrication.</p>
+  </header>
+
+  <dl class="run-strip">
+    <div>
+      <dt>Panels found</dt>
+      <dd>901</dd>
+      <span class="sub">by assembly prefix</span>
+    </div>
+    <div>
+      <dt>Checked</dt>
+      <dd>851</dd>
+      <span class="sub">50 skipped: profiles with no ranges entered</span>
+    </div>
+    <div>
+      <dt>Cuts analysed</dt>
+      <dd>742</dd>
+      <span class="sub">639 surface recesses, 103 real openings</span>
+    </div>
+    <div>
+      <dt>Cross-check</dt>
+      <dd>0</dd>
+      <span class="sub">disagreements against a second implementation</span>
+    </div>
+    <div>
+      <dt>Runtime</dt>
+      <dd class="flagged">not timed</dd>
+      <span class="sub">the macro has never been stopwatched</span>
+    </div>
+  </dl>
+  <p class="provenance">Figures from one measured run over a live project model, cross-checked panel by panel against a second independent implementation of the same rules. Not a benchmark model, not an average. No count of failing panels is quoted: that run used the shipped worked example rather than a real factory catalog, so a failure count from it would mean nothing.</p>
+
+  <section>
+    <span class="sec-mark">01 - the constraint</span>
+    <h2>A hollow-core panel cannot be sawn to any width</h2>
+
+    <p class="lede">The saw has to land between the cores rather than through a web. So a factory catalog does not offer a range of widths - it offers a handful of discontinuous <strong>bands</strong>, with dead ground in between. Openings carry their own limits, and those limits change depending on where the opening sits on the panel.</p>
+
+    <p>Checking that by hand means opening every panel, measuring it, and comparing against a catalog table. On a model with 900 panels nobody does that. It gets spot-checked, and the misses surface at the factory.</p>
+
+    <figure>
+      <div class="figframe">
+        <svg viewBox="0 0 760 168" role="img" aria-label="A number line from 0 to 1250 millimetres showing the four permitted cut widths for profile HCE265: an exact 300, then bands 525 to 670, 750 to 890 and 970 to 1115, with unmakeable gaps between them, and the delivered full width of 1200 marked separately.">
+          <rect class="dead" x="50" y="46" width="670" height="30"/>
+
+          <rect class="band" x="209" y="46" width="4" height="30"/>
+          <rect class="band" x="331" y="46" width="78" height="30"/>
+          <rect class="band" x="452" y="46" width="75" height="30"/>
+          <rect class="band" x="570" y="46" width="78" height="30"/>
+          <rect class="fullw" x="688" y="46.8" width="5" height="28.4"/>
+
+          <line class="axis" x1="50" y1="88" x2="720" y2="88"/>
+          <g class="tickl">
+            <line x1="50"  y1="88" x2="50"  y2="94"/>
+            <line x1="211" y1="88" x2="211" y2="94"/>
+            <line x1="317" y1="88" x2="317" y2="94"/>
+            <line x1="452" y1="88" x2="452" y2="94"/>
+            <line x1="586" y1="88" x2="586" y2="94"/>
+            <line x1="720" y1="88" x2="720" y2="94"/>
+          </g>
+          <g class="lbl" text-anchor="middle">
+            <text x="50"  y="106">0</text>
+            <text x="317" y="106">500</text>
+            <text x="452" y="106">750</text>
+            <text x="586" y="106">1000</text>
+            <text x="720" y="106">1250 mm</text>
+          </g>
+
+          <g class="lbl-b" text-anchor="middle">
+            <text x="211" y="38">300</text>
+            <text x="370" y="38">525-670</text>
+            <text x="489" y="38">750-890</text>
+            <text x="609" y="38">970-1115</text>
+          </g>
+          <text class="lbl-c" x="691" y="38" text-anchor="middle">1200</text>
+          <text class="lbl-c" x="691" y="126" text-anchor="end">delivered full width - uncut, exempt</text>
+
+          <text class="lbl-d" x="50" y="146">RED = NO SAW LANDS HERE. A PANEL MEASURING IN THE GAPS CANNOT BE PRODUCED.</text>
+        </svg>
+      </div>
+      <figcaption>Profile HCE265, from the HCE catalog shipped as the worked example. Four permitted bands, one of them a single exact width, and roughly half the number line unusable. Nothing about a manufacturer is hard-coded - bands are entered per profile, so the tool works with whichever catalog applies.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <span class="sec-mark">02 - what it reports</span>
+    <h2>Seven findings, and the four zones a cut can sit in</h2>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Finding codes</caption>
+        <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td class="code-cell">width_out_of_range</td><td>A cut panel's width matches none of the allowed bands for its profile. A panel <em>wider</em> than the delivered width also lands here.</td></tr>
+          <tr><td class="code-cell">varying_width</td><td>Width is not constant along the length, so no single band applies. Sampled away from cuts reaching a side face, so notches at the supports do not trigger it.</td></tr>
+          <tr><td class="code-cell">cut_too_long</td><td>An opening exceeds the max length allowed for its zone and position.</td></tr>
+          <tr><td class="code-cell">cut_too_wide</td><td>An opening exceeds the max width allowed for its zone and position.</td></tr>
+          <tr><td class="code-cell">rib_partially_cut</td><td>A cut goes part way through a rib instead of taking it away whole or leaving it alone. Applies to openings inside the panel and to notches cutting in from a side face alike.</td></tr>
+          <tr><td class="code-cell">no_width_windows</td><td>A cut panel was found, but its profile has no width bands entered.</td></tr>
+          <tr><td class="code-cell">no_rules</td><td>The profile has no ranges at all. Unreachable from the window or the tool, which skip unlisted profiles - it appears only if the rule logic is called directly.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Cuts are classified on two axes - along the span and across the width - which gives four limit rows per profile, each with its own maximum length and width:</p>
+
+    <div class="matrix">
+      <span class="mh"></span>
+      <span class="mh">edge - reaches a side face</span>
+      <span class="mh">mid - clear of both side faces</span>
+
+      <span class="rowh">Support cut<br><small style="font-weight:400;color:var(--ink-faint)">reaches a panel end</small></span>
+      <span><span class="key">support_edge</span><span class="lim">800 &times; 450 mm</span></span>
+      <span><span class="key">support_mid</span><span class="lim">800 &times; 500 mm</span></span>
+
+      <span class="rowh">Mid span cut<br><small style="font-weight:400;color:var(--ink-faint)">does not</small></span>
+      <span><span class="key">mid_span_edge</span><span class="lim">1500 &times; 430 mm</span></span>
+      <span><span class="key">mid_span_mid</span><span class="lim">1500 &times; 450 mm</span></span>
+    </div>
+    <p style="font-size:0.85rem;color:var(--ink-faint)">Limits shown are HCE265 from the sample catalog. A blank cell means the catalog sets no limit there.</p>
+
+    <div class="note">
+      <span class="lbl2">The distinction that keeps the noise down</span>
+      <p>A cut that does not go all the way through the panel is a surface recess, not an opening - the top-layer slots over the cores that take the ring-beam tie bars, for instance. By default those are skipped rather than measured against the opening limits.</p>
+      <p>In the measured run that was <strong>639 of 742 cuts</strong>. Without that rule the report would have been nine parts noise. They are never hidden, but neither are they counted as checked: the <code>Cuts</code> column counts only the cuts actually judged, the status line totals the skipped ones, and the report file carries both per panel.</p>
+    </div>
+
+    <h3>Cores and ribs</h3>
+    <p>A rib must be left whole or taken away whole. Each cut is measured across the width, and each of its two boundaries either lands in a core, taking the ribs beside it away whole or leaving them alone, or lands inside a rib, leaving a sliver standing that carries nothing. The second case is <code>rib_partially_cut</code>.</p>
+    <p>There is no number to look up and none to enter. The cores are read off the panel solid, so the section's own geometry is the rule. The only setting is <strong>Flag part-cut ribs</strong>, beside <strong>Ignore partial-depth cuts</strong> under the cut limits, on by default.</p>
+    <p>It agrees with the width bands for a reason. On the TAM22 sheet the panel is 1196 wide over six 120 cores, with 69 ribs between them, and its cut bands (255-375, 444-564, 633-753, 822-942, 1010-1130) are precisely the spans of cores 2 to 6. The gaps between the bands are precisely the ribs. A catalog's cut widths <em>are</em> the positions at which a saw splits no rib.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">03 - the hard part</span>
+    <h2>Measuring a panel's width is not trivial</h2>
+
+    <p>The rules engine is the easy half. Reading a reliable width off a Tekla panel is where the work went.</p>
+
+    <ul>
+      <li><strong>The width is not in the profile.</strong> A panel sawn narrower is routinely narrowed by a boolean cut, not by a profile change. Read the profile and every narrowed panel reports its full delivered width.</li>
+      <li><strong>The bounding box lies the other way.</strong> Measure the cut solid's box and an end notch makes the whole panel read narrow.</li>
+      <li><strong>So the panel is sampled.</strong> Intersection lines are cast across the panel at interior stations along the span, taking the outermost hits. An interior opening only adds hits between them, so it cannot affect the answer. The widest width still comes from the bounding box - no opening can widen a panel.</li>
+      <li><strong>Height matters.</strong> At mid-thickness the sawn edge is an open void a line never reaches, and the side faces are shear-keyed, so they are recessed towards mid-height. Only near a flange is the section solid right across. Each station samples several heights and keeps the widest.</li>
+      <li><strong>Cut-outs at supports are not taper.</strong> A panel with a notch at each end is still a constant-width panel, so stations falling inside an edge-reaching cut are dropped. Where every station falls inside one, the width comes from the bounding box alone.</li>
+      <li><strong>Cores and ribs come from the one height width avoids.</strong> A line cast at mid-thickness, where the cores are widest, crosses the walls in pairs, and the pairs are the ribs. An odd count means the cast grazed a face, so that station is dropped. Stations inside a cut are skipped, and of the rest the most common rib count wins, because cores are routinely plugged at the panel ends.</li>
+      <li><strong>Which axis is the width</strong> is decided from the uncut blank, whose section is the full delivered width by the panel thickness. That stays unambiguous even for a panel sawn narrower than it is thick, and it means panels modelled as beams and as slabs both work without configuration.</li>
+    </ul>
+
+    <div class="note">
+      <span class="lbl2">The bug that cost an afternoon</span>
+      <p>The very first solid-intersection call in a process returns zero hits. No exception, no error - just nothing. One lost sample dropped a station to the next-widest height, and a perfectly good 1200 mm panel was reported as <code>1169-1200, width not constant</code>. Retrying the cast once removes it.</p>
+    </div>
+
+    <p>Everything is measured in the panel's own local coordinates, with the work plane set per panel and restored afterwards. Cutting parts are clipped to the panel body first, since they are normally modelled oversized to guarantee a clean cut.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">04 - running it</span>
+    <h2>One file in, one ranges file out</h2>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Delivery routes</caption>
+        <thead><tr><th>Route</th><th>Who it is for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>The macro</strong></td><td>Drop <code>HC Check.cs</code> into <code>XS_MACRO_DIRECTORY\modeling</code> and restart Tekla. It then sits in Applications &amp; components as <code>HC Check</code> - no installer, no command line, no runtime to match.</td></tr>
+          <tr><td><strong>The window</strong></td><td>Non-modal and topmost, so Tekla stays usable while it is open - which matters, because double-clicking a result row selects and zooms that panel in the model.</td></tr>
+          <tr><td><strong>The self-test</strong></td><td>Built into the same file, needs no model, and reports a pass or fail count. It stands where 422 lines of pytest used to, because a macro has no CI, no linter and no type checker behind it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ol class="steps">
+      <li>
+        <div>
+          <h4>Scan the model</h4>
+          <p>Finds the panels by assembly prefix and lists every profile they use, with a count. Profiles not seen before are added with empty ranges.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Enter the ranges</h4>
+          <p>Per profile: the delivered full width, the permitted width bands, the four cut limit rows, and the two switches for partial-depth cuts and part-cut ribs. Plus four shared tolerances - width, cut size, face reach (which decides a cut's category) and full depth (which decides whether a cut counts as an opening at all).</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Save</h4>
+          <p>Writes <code>hc_check.json</code> beside the macro, falling back to a per-user folder when the macro folder cannot be written to. Unknown keys are rejected rather than ignored, so a typo fails loudly instead of quietly dropping a limit. A fresh install is seeded from <code>hc_check.sample.json</code>, which carries real HCE profile values rather than placeholders.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Run the check</h4>
+          <p>Measures the panels, fills the results table, colours the failures red. Double-click a row to select and zoom that panel in Tekla. Nothing is written to the model - the colour is a temporary state, and <code>Clear colours</code> removes it.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Read the Log</h4>
+          <p>Its first line says how many panels had their ribs checked and how many did not, on a clean run too, so a quiet run cannot hide one that checked nothing. Below it, whatever went wrong is grouped and counted, with the panels named by assembly mark. <code>Write report</code> dumps every measured number, including each panel's core count and the ribs each cut severs or leaves part-standing.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <span class="sec-mark">05 - limitations</span>
+    <h2>What it does not do</h2>
+
+    <p>Taken from the code and the README rather than from intent. Several of these are deliberate.</p>
+
+    <ul class="limits">
+      <li>
+        <h4>Only widths, cut sizes and part-cut ribs are enforced <span class="chip scope">rule scope</span></h4>
+        <p>Deliberately not checked: the maximum number of ribs one opening may sever, the minimum clear distance between openings, the maximum openings per panel, and the critical support length. Those come from a catalog's opening tables rather than from the section, so there is nothing in the model to derive them from.</p>
+      </li>
+      <li>
+        <h4>A profile modelled without its cores is skipped for ribs <span class="chip geom">geometry</span></h4>
+        <p>A solid section has no cores to find, so the rib check is skipped rather than failed. The Log's first line counts those panels and its <code>RIBS NOT CHECKED</code> group names them.</p>
+      </li>
+      <li>
+        <h4>An unconfigured profile is skipped, not failed <span class="chip durable">silent</span></h4>
+        <p>Nothing tells you a profile is unconfigured except a count in the status line. In the measured run that was 50 of 901 panels - about 6% of the model passed through untouched. Read the status line after every run.</p>
+      </li>
+      <li>
+        <h4>Only boolean cuts are measured <span class="chip scope">rule scope</span></h4>
+        <p>Polygon cuts, line cuts, fittings and chamfers have no cutting part and are invisible to the check. If a narrowing was not made with a boolean, the panel reports its full width.</p>
+      </li>
+      <li>
+        <h4>Panels are assumed prismatic on local X <span class="chip geom">geometry</span></h4>
+        <p>A curved or twisted panel is not handled meaningfully. If a blank's section is near-square, width and thickness cannot be told apart - the wider axis is used and a <code>near-square blank</code> warning goes to the Log under <code>WIDTH FELL BACK TO THE BOUNDING BOX</code>.</p>
+      </li>
+      <li>
+        <h4>Taper is sampled, not traced <span class="chip geom">geometry</span></h4>
+        <p>A width change confined to a short stretch between stations can be missed, and a panel whose cuts cover every station is judged on its bounding box alone, so a genuine taper there goes unseen.</p>
+      </li>
+      <li>
+        <h4>Panels are found by assembly prefix <span class="chip durable">silent</span></h4>
+        <p>Which requires numbering to be up to date. A panel that has never been numbered is not found at all. A mark ending in <code>(?)</code> is Tekla telling you that panel's numbering is stale.</p>
+      </li>
+      <li>
+        <h4>Nothing durable is written to the model <span class="chip durable">volatile</span></h4>
+        <p>The red is a Tekla temporary state. Any view redraw, filter change or model reopen drops it, and the results live only as long as the window stays open. Note the failures before closing it - or simply re-run.</p>
+      </li>
+      <li>
+        <h4>The window is fixed size and blocks while running <span class="chip ux">interface</span></h4>
+        <p>It cannot be resized; what overflows scrolls instead. Tekla calls run on the main thread, so the window is unresponsive during a scan or a check. That is deliberate: the Open API is not thread-safe and the check moves the work plane per panel, so a background thread could corrupt the geometry being read.</p>
+      </li>
+      <li>
+        <h4>One profile edited at a time <span class="chip ux">interface</span></h4>
+        <p>Ranges cannot be copied between profiles, and <code>Scan</code> re-adds profiles you removed.</p>
+      </li>
+      <li>
+        <h4>The rule half is fully self-tested; the measuring half is not <span class="chip good">by design</span></h4>
+        <p>The verdict logic touches no Tekla API, so the built-in self-test exercises all of its cases with no model open and no licence in use. The measuring can only be verified against a live model, by running it - a macro has no CI to run it in.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="sec-mark">06 - time</span>
+    <h2>What it saves</h2>
+
+    <p>One side of this is measured. The other is an estimate, and is marked as one. The macro's runtime is neither - it has never been timed, so no seconds-per-model figure appears here.</p>
+
+    <div class="ledger">
+      <div class="ledger-row">
+        <span class="who">Measured</span>
+        <span class="figure fast">851 panels</span>
+        <span class="what">One run, every panel measured and every one of its 742 cuts classified - then checked panel by panel against a second independent implementation of the same rules, with zero disagreements. This is the claim that is actually evidenced.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="who">Estimated</span>
+        <span class="figure slow">7-28 hours</span>
+        <span class="what">The same 851 panels by hand, at 30-120 seconds each to open, measure and compare against the catalog table. The range is wide because it depends entirely on how carefully you look.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="who">Not timed</span>
+        <span class="figure"> - </span>
+        <span class="what">How long a run takes. An earlier build measured 24 ms per panel, but that was a different implementation and the macro has never been stopwatched. Time one run before quoting a number.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="who">Per revision</span>
+        <span class="figure fast">one run</span>
+        <span class="what">And it is never a one-off. Every design revision needs the whole model checked again, which is where the manual version quietly stops happening.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="who">One-off cost</span>
+        <span class="figure">~1 hour</span>
+        <span class="what">Entering a factory catalog's bands and cut limits per profile, once. Reused by every model using that catalog.</span>
+      </div>
+    </div>
+
+    <h3>The honest framing</h3>
+    <p>The hours saved are the weaker claim, because on a 900-panel model <em>nobody was doing the manual pass in the first place</em>. What actually changes is that a check which was previously spot-sampled becomes exhaustive - every panel, every revision.</p>
+    <p>No count of failing panels is quoted here on purpose. The measured run used the worked example shipped with the tool, not a real factory catalog, so its failure count describes the example rather than the model. The counts above describe the <em>measuring</em>, which is independent of whichever catalog is loaded. Run it against your own catalog before putting a failure count in front of anyone.</p>
+    <p>The value sits in where a failure gets caught. A width that no saw can land on is found in the model, in one run, instead of on the factory floor, where it becomes a redesign, a delayed delivery, or a panel remade.</p>
+    <p>What it does not save: entering the catalog ranges, and reading the findings. Reviewing the flagged panels is real work - it is just work on the handful flagged rather than on all 851.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">07 - build notes</span>
+    <h2>How it is put together</h2>
+    <ul>
+      <li><strong>One file, by requirement.</strong> The tool is handed to people with no repository, no Python and no permission to run an executable, so all 4,086 lines travel as a single macro. Tekla compiles it at startup.</li>
+      <li><strong>Written to a pre-C#6 subset.</strong> No string interpolation, no null-conditional, no null-coalescing - matching what Tekla's macro compiler reliably accepts. Every number is formatted with <code>InvariantCulture</code>, because Tekla runs in locales where the decimal separator is a comma, and a stray comma would corrupt both the messages and the ranges file.</li>
+      <li><strong>Ranges are data, not code.</strong> <code>hc_check.json</code> is re-read on every run, so edits made outside the window take effect without restarting anything. Nothing about a manufacturer is hardcoded.</li>
+      <li><strong>Read-only in fact.</strong> Nothing is written to the model. The red on a failing panel is temporary display state, not a stored attribute, so a run leaves the model exactly as it found it.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/macros/modeling/HC Check.cs &middot; revised 2026-10-06 against macro source and the measured run<br>
+    One file &middot; 4,086 lines &middot; built-in self-test &middot; C# against Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0
+  </footer>
+
+</div>
+
+</body></html>

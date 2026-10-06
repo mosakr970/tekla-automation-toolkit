@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Tekla Auto Dimension</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:        #f7f9fb;
+    --surface:      #ffffff;
+    --surface-sunk: #eef2f6;
+    --ink:          #16202b;
+    --ink-soft:     #4a5765;
+    --ink-faint:    #798696;
+    --hairline:     #dbe2ea;
+    --hairline-hard:#c2cddb;
+    --accent:       #0068bd;
+    --accent-soft:  #e3eefa;
+    --warn:         #a05a05;
+    --warn-soft:    #fbeedb;
+    --stop:         #a3241b;
+    --stop-soft:    #fbe6e4;
+    --ok:           #15694a;
+    --ok-soft:      #dff0e8;
+
+    --measure: 68ch;
+    --step-0: 1rem;
+    --step-1: 1.15rem;
+    --step-2: 1.45rem;
+    --step-3: 1.9rem;
+    --step-4: clamp(2.1rem, 6vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #0e141a;
+      --surface:      #151d25;
+      --surface-sunk: #1b242e;
+      --ink:          #e2e9f0;
+      --ink-soft:     #a7b4c2;
+      --ink-faint:    #7d8b9a;
+      --hairline:     #2a3641;
+      --hairline-hard:#3b4a58;
+      --accent:       #56a9ec;
+      --accent-soft:  #142838;
+      --warn:         #e0a758;
+      --warn-soft:    #2e2415;
+      --stop:         #ef8b80;
+      --stop-soft:    #331a18;
+      --ok:           #63c69c;
+      --ok-soft:      #12281f;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #0e141a;
+    --surface:      #151d25;
+    --surface-sunk: #1b242e;
+    --ink:          #e2e9f0;
+    --ink-soft:     #a7b4c2;
+    --ink-faint:    #7d8b9a;
+    --hairline:     #2a3641;
+    --hairline-hard:#3b4a58;
+    --accent:       #56a9ec;
+    --accent-soft:  #142838;
+    --warn:         #e0a758;
+    --warn-soft:    #2e2415;
+    --stop:         #ef8b80;
+    --stop-soft:    #331a18;
+    --ok:           #63c69c;
+    --ok-soft:      #12281f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: var(--step-0);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* ---- masthead ---- */
+
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-block: 3rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .masthead h1 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead h1 span { display: block; color: var(--accent); }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.85rem;
+  }
+  .stamp {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.74rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0 1.1rem;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .stamp dt { color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; }
+  .stamp dd { margin: 0; }
+
+  .standfirst {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 1.75rem 0 2.5rem;
+  }
+
+  /* ---- section scaffolding: grid bubbles, as on a drawing ---- */
+
+  section { margin-block-start: 3.75rem; }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+  .bubble {
+    flex: 0 0 auto;
+    width: 2.05rem;
+    height: 2.05rem;
+    border: 1.5px solid var(--hairline-hard);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--surface);
+  }
+  .head h2 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-3);
+    letter-spacing: -0.018em;
+    margin: 0;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .head::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--hairline);
+  }
+
+  h3 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+    margin: 2rem 0 0.55rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.45rem; }
+  li::marker { color: var(--ink-faint); }
+
+  code, .num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.86em;
+    font-variant-numeric: tabular-nums;
+  }
+  code {
+    background: var(--surface-sunk);
+    padding: 0.08em 0.36em;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---- the drawing figure ---- */
+
+  figure { margin: 0 0 1.5rem; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.25rem 1rem 0.75rem;
+  }
+  .figframe svg { display: block; min-width: 620px; width: 100%; height: auto; }
+  figcaption {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    margin-top: 0.7rem;
+    max-width: var(--measure);
+    line-height: 1.6;
+  }
+
+  .part      { fill: var(--surface-sunk); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .void      { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1.1; stroke-dasharray: 4 3; }
+  .gridline  { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 10 4 2 4; }
+  .gridbub   { fill: var(--surface); stroke: var(--ink-faint); stroke-width: 1.2; }
+  .witness   { stroke: var(--accent); stroke-width: 0.9; opacity: 0.55; }
+  .dimline   { stroke: var(--accent); stroke-width: 1.5; }
+  .tick      { stroke: var(--accent); stroke-width: 1.5; }
+  .dimtext   { fill: var(--accent); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500; }
+  .anno      { fill: var(--ink-faint); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.07em; }
+  .gridtext  { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; font-weight: 600; }
+
+  /* ---- the run: a real sequence, so it is numbered ---- */
+
+  .run { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .run > li {
+    display: grid;
+    grid-template-columns: 3.1rem 1fr;
+    gap: 0 1rem;
+    padding-block: 1.05rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+  }
+  .run > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .run .step {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    padding-top: 0.2em;
+  }
+  .run h4 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+  }
+  .run p { margin: 0; color: var(--ink-soft); max-width: var(--measure); }
+
+  /* ---- tables ---- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  caption {
+    text-align: left;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.6rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  thead th {
+    font-family: "Archivo", sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.84rem;
+  }
+
+  /* ---- limitations ---- */
+
+  .limits { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .limits > li {
+    border-top: 1px solid var(--hairline);
+    padding-block: 1rem;
+    margin: 0;
+  }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Archivo", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); }
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 0.18em 0.5em;
+    border-radius: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chip.hard  { background: var(--stop-soft); color: var(--stop); }
+  .chip.soft  { background: var(--warn-soft); color: var(--warn); }
+  .chip.known { background: var(--accent-soft); color: var(--accent); }
+  .chip.ok    { background: var(--ok-soft);   color: var(--ok); }
+
+  /* ---- callout ---- */
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    max-width: var(--measure);
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ---- estimate panel ---- */
+
+  .est {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin: 1.5rem 0;
+  }
+  .est > div { background: var(--surface); padding: 1.1rem 1.1rem 1.2rem; }
+  .est dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+  }
+  .est dd {
+    margin: 0;
+    font-family: "Archivo", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .est dd small {
+    display: block;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--ink);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 540px) {
+    .head { gap: 0.65rem; }
+    .bubble { width: 1.75rem; height: 1.75rem; font-size: 0.72rem; }
+    .run > li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <p class="kicker">Tekla Structures &middot; drawing macro</p>
+      <h1>Auto Dimension <span>for drawing views</span></h1>
+    </div>
+    <dl class="stamp">
+      <dt>Files</dt><dd>config/macros/drawings/</dd>
+      <dt>Language</dt><dd>C# &middot; Tekla macro runtime</dd>
+      <dt>Built</dt><dd>2026-09-01 &rarr; 2026-10-05</dd>
+      <dt>Current</dt><dd>Auto Dimension.cs &middot; 2416 lines</dd>
+    </dl>
+  </header>
+
+  <p class="standfirst">Select one view, press <em>Scan view</em>, pick which numbering series matter, press <em>Add dimensions</em>. The macro measures every assembly in that view off the structural grid &mdash; or element to element, with <em>Grids</em> off &mdash; ties whole rows into a single chain instead of stacking one dimension per element, folds each element's openings into that same chain, and steps around the marks and texts that are already there.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 760 252" role="img" aria-label="A drawing view showing grid axis B, two wall panels with an opening, and one dimension chain running from the grid through each panel end, the opening edges and the joint.">
+        <line class="gridline" x1="80" y1="44" x2="80" y2="205"/>
+        <circle class="gridbub" cx="80" cy="28" r="14"/>
+        <text class="gridtext" x="80" y="33" text-anchor="middle">B</text>
+
+        <rect class="part" x="160" y="80" width="240" height="70"/>
+        <rect class="void" x="220" y="98" width="80" height="52"/>
+        <rect class="part" x="420" y="80" width="260" height="70"/>
+        <text class="anno" x="166" y="73">W-101</text>
+        <text class="anno" x="426" y="73">W-102</text>
+        <text class="anno" x="260" y="167" text-anchor="middle">OPENING</text>
+
+        <line class="witness" x1="80"  y1="150" x2="80"  y2="196"/>
+        <line class="witness" x1="160" y1="152" x2="160" y2="196"/>
+        <line class="witness" x1="220" y1="152" x2="220" y2="196"/>
+        <line class="witness" x1="300" y1="152" x2="300" y2="196"/>
+        <line class="witness" x1="400" y1="152" x2="400" y2="196"/>
+        <line class="witness" x1="420" y1="152" x2="420" y2="196"/>
+        <line class="witness" x1="680" y1="152" x2="680" y2="196"/>
+
+        <line class="dimline" x1="80" y1="202" x2="680" y2="202"/>
+        <g class="tick">
+          <line x1="75"  y1="209" x2="85"  y2="195"/>
+          <line x1="155" y1="209" x2="165" y2="195"/>
+          <line x1="215" y1="209" x2="225" y2="195"/>
+          <line x1="295" y1="209" x2="305" y2="195"/>
+          <line x1="395" y1="209" x2="405" y2="195"/>
+          <line x1="415" y1="209" x2="425" y2="195"/>
+          <line x1="675" y1="209" x2="685" y2="195"/>
+        </g>
+        <g class="dimtext" text-anchor="middle">
+          <text x="120" y="192">800</text>
+          <text x="190" y="192">600</text>
+          <text x="260" y="192">800</text>
+          <text x="350" y="192">1000</text>
+          <text x="550" y="192">2600</text>
+          <text x="410" y="234">200</text>
+        </g>
+        <line class="witness" x1="410" y1="224" x2="410" y2="207"/>
+        <text class="anno" x="80" y="228" text-anchor="middle">GRID</text>
+      </svg>
+    </div>
+    <figcaption>One dimension set, not six. The chain starts at the nearest grid axis, then carries each panel end, each opening edge and the joint between panels &mdash; so the sheet reads the gap to the axis, both panel lengths, the opening and the joint off a single line.</figcaption>
+  </figure>
+
+  <section>
+    <div class="head"><span class="bubble">A</span><h2>What it does</h2></div>
+
+    <p>It is a Tekla drawing macro, not a server tool: it runs inside the drawing editor, on the view you have selected, and writes dimension sets straight into the drawing. Scanning and dimensioning are separate presses, and the window stays open between them, so one scan can be dimensioned a series at a time with a look at the drawing in between. A run goes through seven stages.</p>
+
+    <ol class="run">
+      <li>
+        <span class="step">01</span>
+        <div>
+          <h4>Scan the view</h4>
+          <p>Nothing is read from the drawing until <em>Scan view</em> is pressed. Every top-level assembly drawn in the view is then collected once, grouped by its assembly numbering prefix. An assembly's extents come from its <strong>main part alone</strong> &mdash; an end bracket or corbel never stretches the measurement. With <em>Every part</em> ticked, each part shown in the view becomes an element of its own instead, filed under its assembly's series; the parts are listed during the scan and read the first time a run asks for them. A part's solid is read once and yields both its projected box and its outline vertices.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">02</span>
+        <div>
+          <h4>Choose what to dimension</h4>
+          <p>The window lists the prefixes found, with a count each. Per series you choose the direction (<code>length + cross-section</code>, <code>length only</code>, <code>cross-section only</code>), whether elements seen end-on are included, and whether openings are measured. Four further settings apply to the whole run, on one line under the list: <code>Grids</code> (dimension to the nearest grid line, on by default), <code>Every part</code>, <code>No recesses</code>, and <code>Min</code>, the smallest opening worth dimensioning. Tekla stays usable while the window is open, and every run of the session is appended to a Results tab rather than replacing the last one.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">03</span>
+        <div>
+          <h4>Work out which way each element runs</h4>
+          <p>Direction is decided per element, not per sheet axis. A beam-type part's own axis &mdash; its reference line, start to end &mdash; is projected into the view, so a wall standing taller than it is long in elevation still gets its length dimensioned along its length. A contour plate has no start and end, and its local X follows whichever contour edge was picked first &mdash; on one plan both MPV- strips had it on their short side, so <code>cross-section only</code> dimensioned their long sides. A contour plate's length is therefore the longer side of its outline in the view. An element whose axis points through the sheet is reported end-on and skipped unless its series opted in.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">04</span>
+        <div>
+          <h4>Measure the openings</h4>
+          <p>Only for the series that asked, and only after prefix filtering, so a filtered-out series costs nothing. Each boolean cut's operative part is projected and clamped to the element's own box, because a cutting body is routinely modelled far larger than the hole it makes. A cut counts only if it lies at least partly inside the volume the view actually shows, which is what keeps a recess on another storey off this sheet. Cuts under the threshold, cuts reaching the element's end along the measured axis, and &mdash; when asked &mdash; cuts that do not pass through, are all dropped.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">05</span>
+        <div>
+          <h4>Choose the line to sit on</h4>
+          <p>The placement line must lie inside <strong>every</strong> member's width and be a <strong>real face coordinate</strong> of at least one of them &mdash; never an average, which would sit on neither. Among the lines that qualify, the one carrying the most real corners wins, where a corner is an element end that actually reaches that face; ties go to the outermost line, which keeps witness lines short.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">06</span>
+        <div>
+          <h4>Chain the rows, dimension the loners</h4>
+          <p>Assemblies on the same line and within <code>2000 mm</code> of each other become <strong>one gap chain</strong> &mdash; grid, then every element end and opening edge in position order, so lengths, holes and joints all read off one line. A run is split again wherever no single face reaches every member, and whatever falls out gets its own overall dimension instead. Never both: two lines for one row is exactly the clutter this removes.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">07</span>
+        <div>
+          <h4>Place it clear of what is already there</h4>
+          <p>Each dimension starts <code>800 mm</code> out and is pushed in <code>150 mm</code> steps until its predicted footprint clears existing marks, texts and dimensions &mdash; and the dimensions this run has already placed. The search is pinned to the side the chosen face points outward to, so a dimension cannot jump across and end up measuring from the wrong face; it decides only how far out to sit. Part geometry is deliberately <em>not</em> an obstacle: a dimension belongs next to its element. Then commit, and a summary.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="note">
+      <span class="lbl">What the summary reports</span>
+      <p>Assemblies dimensioned (parts, with <em>Every part</em>) &middot; gap chains inserted &middot; single-element dimensions (and skipped/failed) &middot; openings measured, with the threshold and recess setting that produced them &middot; existing annotations avoided &middot; skipped as seen end-on &middot; skipped for no main part geometry &middot; how many elements got their length axis from the element itself versus from its outline.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">B</span><h2>The drawing rules it encodes</h2></div>
+
+    <p>The behaviour is not generic auto-dimensioning &mdash; it is this office's convention, written down in code.</p>
+
+    <ul>
+      <li><strong>Elements reference the axis, not each other.</strong> With <em>Grids</em> on, every chain starts at the nearest grid line of the matching orientation. Grid-to-grid spacing dimensions are deliberately not produced, because the drawing already carries those. With <em>Grids</em> off, a chain measures only the elements, their gaps and their openings.</li>
+      <li><strong>The main part is the truth.</strong> Secondary parts are ignored for measurement, so a bracket cannot silently lengthen a panel. <em>Every part</em> is the deliberate exception: then each part is measured as an element of its own, and still never stretches another.</li>
+      <li><strong>Joints are never swallowed.</strong> Only coordinates within <code>1 mm</code> collapse. A narrow joint between two panels keeps its own segment, however small.</li>
+      <li><strong>A grid line that merely grazes an edge is that edge.</strong> Within <code>50 mm</code> the grid coordinate is dropped in favour of the real part edge, so no chain carries a junk near-zero segment whose endpoint attaches to nothing.</li>
+      <li><strong>Dimensions stay orthogonal.</strong> Floating-point residue in the perpendicular vector is zeroed out, otherwise Tekla renders an aligned (sloped) dimension where a horizontal one was meant.</li>
+      <li><strong>Openings join the element's own chain.</strong> Window, door and service holes extend the existing line rather than needing a second one, so a wall reads grid, end, opening, opening, end.</li>
+      <li><strong>A hole is not a shape.</strong> A cut reaching the element's end along the axis being measured is a rebate or an end cut-back, not an opening, and its edge is the outline's own end point already. That is judged on the measured axis only &mdash; judging it on both throws out every real opening, since a door or window is cut clean through and touches the outline on the perpendicular axis by definition.</li>
+      <li><strong>Only what the view shows.</strong> A cut is dimensioned only if it lies at least partly inside the view's own volume, so a recess on another storey stays off the sheet.</li>
+      <li><strong>The line sits on real geometry.</strong> A chain is placed on an actual face of one of its members, never on a centre line and never on the average of two faces. A witness line starts on the drawn outline rather than in mid-air.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">C</span><h2>The numbers it is tuned to</h2></div>
+
+    <p>All values are model millimetres. The smallest opening worth dimensioning is a field in the window, next to the ticks for recesses, grids and every part. The rest live as constants at the top of the macro, so changing them for a different typology means editing the source.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Tuning constants</caption>
+        <thead>
+          <tr><th>Constant</th><th>Value</th><th>What it controls</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>ElementOffset</code> / <code>ChainOffset</code></td><td class="v">800</td><td>Starting distance of a dimension line from what it measures</td></tr>
+          <tr><td><code>OffsetStep</code> &times; <code>MaxOffsetAttempts</code></td><td class="v">150 &times; 20</td><td>Outward search, on the chosen face's side only, before settling for the fewest overlaps</td></tr>
+          <tr><td><code>TextClearance</code></td><td class="v">150</td><td>Padding around a dimension's predicted footprint for its text and arrows</td></tr>
+          <tr><td><code>SnapEdgeTolerance</code></td><td class="v">50</td><td>How close a grid line must come to the main part to count as touching it</td></tr>
+          <tr><td><code>CoordMergeTolerance</code></td><td class="v">50</td><td>Grid coordinate this close to a part edge is dropped in favour of the edge</td></tr>
+          <tr><td><code>DuplicateTolerance</code></td><td class="v">1</td><td>Coordinates this close are the same point &mdash; the only collapse that happens</td></tr>
+          <tr><td><code>DefaultMinOpening</code></td><td class="v">50</td><td>Cuts smaller than this on either projected axis are chamfers or bolt holes, not openings. Overridden per run from the window</td></tr>
+          <tr><td><code>EdgeCutTolerance</code></td><td class="v">1</td><td>How close a cut may come to the element's end and still count as a hole rather than a cut-back</td></tr>
+          <tr><td><code>CornerTolerance</code></td><td class="v">2</td><td>How close an outline vertex must come to a candidate point for that point to be a real corner</td></tr>
+          <tr><td><code>LineInsideTolerance</code></td><td class="v">1</td><td>How far outside a member's width a chain line may sit and still count as running through it</td></tr>
+          <tr><td><code>AlignmentTolerance</code></td><td class="v">300</td><td>Placement lines this close count as the same row or column</td></tr>
+          <tr><td><code>MaxChainGap</code></td><td class="v">2000</td><td>Beyond this clear gap, neighbours are no longer chained together</td></tr>
+          <tr><td><code>EndOnProjectionFraction</code></td><td class="v">0.05</td><td>Fraction of its true length an axis must keep in the view to count as lying in it</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">D</span><h2>Limitations</h2></div>
+
+    <p>These are the real boundaries, taken from the code rather than from intent. Several were deliberately accepted. Several more were measured on live drawings before the code was written, and one of those measurements refuted the fix it was meant to justify.</p>
+
+    <ul class="limits">
+      <li>
+        <h4>The box still measures, even though the face now places <span class="chip hard">structural</span></h4>
+        <p>A dimension is <em>placed</em> on a real face of a real member, but the coordinate it <em>measures</em> is the main part's axis-aligned projected bounding box. For a chamfered, notched or stepped end that is the outermost point, which lies on no drawn edge, so the segment reads a number that appears nowhere on the sheet. Measured on a live view: two panels reported an end edge of <code>70 mm</code> on a <code>180 mm</code> section &mdash; roughly 55 mm of chamfer per arris, with no corner where the end edge and the face meet.</p>
+      </li>
+      <li>
+        <h4>Offsets are model units, not paper units <span class="chip soft">quality</span></h4>
+        <p>A dimension sits <code>800 mm</code> from what it measures in model space, so the gap on the sheet shrinks and grows with the view scale instead of staying constant in paper millimetres.</p>
+      </li>
+      <li>
+        <h4>Segments too small to print are still drawn <span class="chip soft">quality</span></h4>
+        <p>Only coordinates within <code>1 mm</code> collapse, deliberately, so real joints survive. But a genuine 5 mm erection joint is 0.08 mm on a 1:60 sheet &mdash; correct and unreadable. Whether to drop, collapse or overlap those segments is undecided.</p>
+      </li>
+      <li>
+        <h4>Neighbour parts shown for context are dimensioned too <span class="chip soft">quality</span></h4>
+        <p>An element drawn only to give context is measured like any other. Series filtering is the only lever, and it works only when context parts happen to carry a different prefix.</p>
+      </li>
+      <li>
+        <h4>Without grids, the line still follows a grid <span class="chip known">open</span></h4>
+        <p>With <em>Grids</em> off no grid point is measured, and a view with no grid can be dimensioned at all. But a dimension is still <em>placed</em> along a grid line that crosses the element where there is one, because that decides where the line sits rather than what it measures. Whether that should go with the tick is undecided.</p>
+      </li>
+      <li>
+        <h4>Every part means every part <span class="chip known">open</span></h4>
+        <p><em>Every part</em> is one tick for the whole run, so embeds, plates, brackets and insulation in every ticked series get dimensions too, and aligned parts close together are chained like assemblies are. Whether it should be per series, like openings, is undecided.</p>
+      </li>
+      <li>
+        <h4>A contour plate is never seen end-on <span class="chip soft">quality</span></h4>
+        <p>A contour plate's length now comes from its outline, so it is never skipped as seen end-on. A contour-plate wall standing in a section is dimensioned as a thin strip instead of being left out.</p>
+      </li>
+      <li>
+        <h4>Multi-area views defeat the depth test <span class="chip known">api</span></h4>
+        <p>The depth test uses the view's overall restriction box, which is the only place the API exposes depth at all. A view assembled from several visible areas keeps those under <code>GetVisibleAreaRestrictionBoxes()</code>, and a cut lying between two of them passes the test while being drawn in neither.</p>
+      </li>
+      <li>
+        <h4>Collision avoidance is predicted, never read back <span class="chip known">api</span></h4>
+        <p>Tekla exposes no bounding box for a dimension set, so the placement is computed analytically and tested against a padded box. It is an approximation: overlaps can still happen, and after 20 steps the macro settles for the position with the fewest overlaps rather than a clean one. The search is confined to the side the chosen face points to, so it has one direction to work in rather than two.</p>
+      </li>
+      <li>
+        <h4>Horizontal and vertical only <span class="chip soft">quality</span></h4>
+        <p>Dimension lines are forced orthogonal in view coordinates. A skewed element is measured along the sheet axes, not along itself.</p>
+      </li>
+      <li>
+        <h4>Openings are approximated by their cut's bounding box <span class="chip soft">quality</span></h4>
+        <p>Only boolean cuts with a readable solid are read, projected as a box and clamped to the part. A circular or shaped penetration is dimensioned as the rectangle around it, and anything under the threshold is discarded.</p>
+      </li>
+      <li>
+        <h4>Auto-update is unmeasured <span class="chip known">open</span></h4>
+        <p>Dimensions were believed not to bind to the model, because their points sit on a centre line rather than on a corner of the drawn outline. That was tested before anything was built, by reading the associativity rules back point by point. The negative control came back positive: a chain deliberately placed on a centre line bound <strong>all 20 of its points</strong>, each to the part whose end it measured, and across the drawing 52 of 52 points bound with none floating. Binding does not need a corner, and the grid point binds to the grid. What remains untested is whether a bound point <em>follows</em> the model to the right number when an element moves &mdash; which is what the original complaint was actually about.</p>
+      </li>
+      <li>
+        <h4>Re-running adds, it does not replace <span class="chip soft">workflow</span></h4>
+        <p>There is no "remove what I placed last time". A second run on the same view stacks a second set of dimensions on the first; cleanup is Undo or manual deletion. The run does at least avoid its own earlier output, since existing annotations are re-read every run.</p>
+      </li>
+      <li>
+        <h4>One view at a time <span class="chip soft">workflow</span></h4>
+        <p>Exactly one view must be selected in the drawing editor. One scan can be dimensioned repeatedly, a series at a time, but there is no batching across the views of a drawing and none across a set of drawings.</p>
+      </li>
+      <li>
+        <h4>Series selection is by numbering prefix only <span class="chip known">scope</span></h4>
+        <p>The window groups by assembly prefix. There is no filtering by name, class, phase or selection filter, so two different element types sharing a prefix cannot be told apart.</p>
+      </li>
+      <li>
+        <h4>Not covered by the test suite <span class="chip known">process</span></h4>
+        <p>It is C# running inside Tekla's macro engine, so none of the repository's unit tests touch it &mdash; every change is verified by running it on a real drawing. Unlike the print, export and selection macros it is also not auto-installed by the server: it has to be placed in <code>XS_MACRO_DIRECTORY</code> by hand. Worse, a macro is loaded <strong>once per Tekla session</strong>: editing a deployed <code>.cs</code> makes Tekla recompile it, but the assembly already in memory keeps running, so the first version run in a session is the version you keep. Measured to the second &mdash; the cached DLL written at 19:12:29 held the new code, and the report written at 19:12:30 came from the old one. Restart Tekla whenever a change &ldquo;has not applied&rdquo;.</p>
+      </li>
+      <li>
+        <h4>Most tuning is still hard-coded <span class="chip soft">workflow</span></h4>
+        <p>The opening threshold and the recess, grid and every-part ticks are in the window. The 300 mm alignment window and 2000 mm chaining gap are not &mdash; they are tuned for rows of precast panels, and another typology needs editing and reinstalling the macro.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">E</span><h2>Time saved</h2></div>
+
+    <p>Nothing in the repository measures this, so the figures below are a model, not a measurement &mdash; stated so they can be checked rather than believed.</p>
+
+    <div class="est">
+      <div>
+        <dt>Manual, per view</dt>
+        <dd>10&ndash;20 min<small>~30 elements, 20&ndash;40 dimension sets at 20&ndash;30 s each including point picking and nudging</small></dd>
+      </div>
+      <div>
+        <dt>Macro, per view</dt>
+        <dd>2&ndash;5 min<small>Seconds of run time; the rest is review and fixing what landed badly</small></dd>
+      </div>
+      <div>
+        <dt>Net per view</dt>
+        <dd>8&ndash;15 min<small>Roughly 60&ndash;75% of the dimensioning step, not of the whole drawing</small></dd>
+      </div>
+      <div>
+        <dt>Across 50 views</dt>
+        <dd>1&ndash;2 days<small>The saving compounds with drawing count, which is where it actually shows</small></dd>
+      </div>
+    </div>
+
+    <h3>What the saving really is</h3>
+    <p>The macro removes the <em>placing</em>, not the <em>judging</em>. Picking points, dragging lines apart and re-picking after a model change is the part that disappears. Deciding whether a drawing reads correctly does not, and the review time above is real work, not a rounding error.</p>
+
+    <p>The chaining is where most of the minutes go. A row of eight panels dimensioned by hand is eight overall dimensions plus seven joints, each picked and nudged; the macro emits it as one chain. Openings compound it further: a wall with two holes is three more picks per element by hand, and no extra work at all here, because the edges join a chain that is being drawn anyway.</p>
+
+    <p>Two second-order effects matter as much as the minutes:</p>
+    <ul>
+      <li><strong>Consistency.</strong> Every view dimensioned by the macro follows the same rule, so the same detail is dimensioned the same way in January and in June, by whoever is on the job.</li>
+      <li><strong>Re-issue cost.</strong> After a model change, re-dimensioning a view by hand costs close to the full original time. Deleting and re-running costs one run plus a review.</li>
+    </ul>
+
+    <h3>How to measure it properly</h3>
+    <p>The Results tab already reports assemblies dimensioned, chains inserted, single-element dimensions and openings measured. Timing one draughtsman across five representative views by hand, against the same five by macro plus correction, would replace the whole estimate above with a number. That has not been done.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">F</span><h2>What ships</h2></div>
+
+    <p>The tool ships as a single macro in <code>config/macros/drawings/</code>. The first version has been retired to <code>config/macros/_archive/</code>, outside the deployable macro tree.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Files &middot; config/macros/</caption>
+        <thead>
+          <tr><th>File</th><th class="v">Lines</th><th>Status</th><th>What distinguishes it</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>drawings/Auto Dimension.cs</code></td>
+            <td class="v">2416</td>
+            <td><span class="chip ok">current</span></td>
+            <td>The tool. Series filtering, per-element direction, gap chains, opening dimensioning with a view-depth test, face-based placement lines, optional grid reference and every-part dimensioning, and a window that stays open. This is the one to run.</td>
+          </tr>
+          <tr>
+            <td><code>_archive/Auto Dimension V01.cs</code></td>
+            <td class="v">1489</td>
+            <td><span class="chip known">archived</span></td>
+            <td>The first build, kept for reference. It is outside <code>config/macros/drawings/</code>, so it is not deployed to Tekla.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The MCP-tool siblings</h3>
+    <p>Two server tools in <code>drawings_provider.py</code> place the same kind of dimension from a chat client, driven by an explicit GUID list rather than a whole view. They are the earlier logic: neither dimensions openings, neither tests the view depth, and both still place on a grid or centre line rather than a face.</p>
+    <ul>
+      <li><code>add_element_dimensions</code> &mdash; a three-point chain per assembly: grid, then the element's own two ends.</li>
+      <li><code>add_dimension_chain</code> &mdash; one chain across two or more assemblies plus the grid, ordered by actual position. All of it succeeds or none of it does.</li>
+    </ul>
+    <p>Those are what an assistant can call conversationally on named elements. The macro is what a draughtsman runs on a whole view.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">G</span><h2>Running it</h2></div>
+    <ol>
+      <li>Copy the macro into a <code>drawings</code> subfolder of <code>XS_MACRO_DIRECTORY</code>, then <strong>restart Tekla</strong> &mdash; macro content is registered only at startup, and a macro already loaded in the session is never replaced.</li>
+      <li>Open the drawing and select <strong>exactly one view</strong>. With <em>Grids</em> ticked the view must show the grid.</li>
+      <li>Run the macro from Applications &amp; components, or through the server's <code>run_macro</code> tool.</li>
+      <li>Press <em>Scan view</em>. The series list fills with the prefixes found and their counts.</li>
+      <li>Tick the series, set each one's direction, end-on and openings, set the run-wide <em>Grids</em>, <em>Every part</em>, <em>No recesses</em> and <em>Min</em>, then press <em>Add dimensions</em>.</li>
+      <li>Read the Results tab. A high <em>skipped, seen end-on</em> count usually means a series needs its end-on toggle; a high <em>no main part geometry</em> count means parts whose solid could not be read; <em>openings measured</em> of zero on a wall series usually means the threshold or the view depth excluded them.</li>
+      <li>The window stays open. Adjust the ticks and press <em>Add dimensions</em> again for the next series &mdash; the run avoids what the previous one placed.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/macros/drawings &middot; revised 2026-10-05 against macro source and commit history<br>
+    Auto Dimension.cs &middot; 2416 lines &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0, compiled against 2023.0 and 2025.0 &middot; Grids, Every part and the contour-plate length rule not yet run inside Tekla
+  </footer>
+
+</div>
+
+</body></html>

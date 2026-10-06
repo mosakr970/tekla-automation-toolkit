@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Precast Macro Catalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a drawing-sheet catalog - title block header, index table, then one sheet per macro */
+:root {
+  --bg: #f3f4f2;
+  --sheet: #ffffff;
+  --ink: #1b2026;
+  --muted: #5c6670;
+  --rule: #d5d9dc;
+  --accent: #1f4fa8;
+  --accent-soft: #e6edf8;
+  --ok: #1d7a46;
+  --ok-soft: #e3f3ea;
+  --warn: #9a5b00;
+  --warn-soft: #fbf0dc;
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161b; --sheet: #1a2027; --ink: #e6e9ec; --muted: #9aa5b0; --rule: #2e3740;
+    --accent: #7ea6ef; --accent-soft: #1d2a40; --ok: #6fcf97; --ok-soft: #173023;
+    --warn: #f0b860; --warn-soft: #33270f; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161b; --sheet: #1a2027; --ink: #e6e9ec; --muted: #9aa5b0; --rule: #2e3740;
+  --accent: #7ea6ef; --accent-soft: #1d2a40; --ok: #6fcf97; --ok-soft: #173023;
+  --warn: #f0b860; --warn-soft: #33270f; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.6 var(--f-body);
+  padding-inline: 16px; padding-block: 32px 64px;
+}
+.wrap { max-width: 980px; margin: 0 auto; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+p { margin: 0; }
+code, .mono { font-family: var(--f-mono); font-size: 0.88em; }
+code { background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Title block */
+.titleblock {
+  background: var(--sheet); border: 1.5px solid var(--ink);
+  display: grid; grid-template-columns: 1fr auto;
+}
+.tb-main { padding: 24px 24px 22px; display: grid; gap: 10px; min-width: 0; }
+.eyebrow { font: 500 11px/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.titleblock h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 800; letter-spacing: -0.01em; }
+.tb-main p { max-width: 62ch; color: var(--muted); }
+.tb-cells { border-left: 1.5px solid var(--ink); display: grid; grid-template-rows: repeat(3, 1fr); min-width: 200px; }
+.tb-cell { padding: 10px 16px; border-bottom: 1px solid var(--rule); display: grid; gap: 2px; align-content: center; }
+.tb-cell:last-child { border-bottom: 0; }
+.tb-cell b { font: 600 15px/1.2 var(--f-body); }
+@media (max-width: 640px) {
+  .titleblock { grid-template-columns: 1fr; }
+  .tb-cells { border-left: 0; border-top: 1.5px solid var(--ink); grid-template-rows: none; grid-template-columns: repeat(3, 1fr); min-width: 0; }
+  .tb-cell { border-bottom: 0; border-right: 1px solid var(--rule); padding: 10px 12px; }
+  .tb-cell:last-child { border-right: 0; }
+}
+
+/* Section headings */
+.section-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.section-head h2 { font-size: 20px; font-weight: 700; }
+.section-head span { color: var(--muted); font-size: 13px; }
+
+/* Index table */
+.table-scroll { overflow-x: auto; background: var(--sheet); border: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font: 500 11px/1.3 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td a { font-weight: 600; text-decoration: none; }
+td a:hover { text-decoration: underline; }
+.nowrap { white-space: nowrap; }
+
+/* Pills */
+.pill { display: inline-block; font: 500 11px/1.4 var(--f-mono); letter-spacing: 0.04em; padding: 2px 8px; border-radius: 99px; white-space: nowrap; }
+.pill.mod { background: var(--accent-soft); color: var(--accent); }
+.pill.drw { background: var(--sheet); color: var(--ink); border: 1px solid var(--ink); }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+
+/* Install strip */
+.install { background: var(--sheet); border: 1px solid var(--rule); padding: 20px 22px; display: grid; gap: 14px; }
+.steps { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.note { font-size: 13.5px; color: var(--muted); border-left: 3px solid var(--warn); padding-left: 12px; }
+
+/* Macro sheets */
+.sheet { background: var(--sheet); border: 1px solid var(--rule); scroll-margin-top: 16px; }
+.sheet-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 18px 22px; border-bottom: 1px solid var(--rule); }
+.sheet-no { font: 500 12px/1 var(--f-mono); color: var(--muted); border: 1px solid var(--rule); padding: 5px 7px; }
+.sheet-head h3 { font-size: 22px; font-weight: 700; flex: 1 1 auto; }
+.sheet-head .pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.sheet-body { display: grid; grid-template-columns: 1.25fr 1fr; }
+.sheet-body > div { padding: 18px 22px; display: grid; gap: 16px; align-content: start; min-width: 0; }
+.sheet-body > div + div { border-left: 1px solid var(--rule); }
+@media (max-width: 760px) {
+  .sheet-body { grid-template-columns: 1fr; }
+  .sheet-body > div + div { border-left: 0; border-top: 1px solid var(--rule); }
+}
+.lede { font-size: 16px; }
+.block { display: grid; gap: 6px; }
+.label { font: 500 11px/1.2 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+ul.tight { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.fig { background: var(--sheet); padding: 10px 12px; display: grid; gap: 2px; }
+.fig b { font: 700 20px/1.1 var(--f-display); font-variant-numeric: tabular-nums; }
+.fig span { font-size: 12.5px; color: var(--muted); line-height: 1.35; }
+.fig.hi b { color: var(--accent); }
+.status { font-size: 13.5px; padding: 10px 12px; border-radius: 4px; }
+.status.ok { background: var(--ok-soft); }
+.status.warn { background: var(--warn-soft); }
+.status strong { font-weight: 600; }
+
+footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border-top: 1px solid var(--rule); padding-top: 18px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="titleblock">
+    <div class="tb-main">
+      <span class="eyebrow">Tekla Structures · Precast tools</span>
+      <h1>Precast Macro Catalog</h1>
+      <p>Five macros that take the repetitive measuring, marking and modelling out of precast work. Each one is a single <code>.cs</code> file. You don't need an installer, Python or a server: copy the file, restart Tekla and run it.</p>
+    </div>
+    <div class="tb-cells">
+      <div class="tb-cell"><span class="eyebrow">Macros</span><b>5</b></div>
+      <div class="tb-cell"><span class="eyebrow">Tekla</span><b>2023.0 · 2025.0</b></div>
+      <div class="tb-cell"><span class="eyebrow">Install</span><b>Copy 1 file</b></div>
+    </div>
+  </header>
+
+  <section class="wrap" style="gap:12px">
+    <div class="section-head"><h2>At a glance</h2><span>Pick the one that matches your job and jump to its sheet</span></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Macro</th><th>Runs in</th><th>What it does</th><th>Measured result</th></tr></thead>
+        <tbody>
+          <tr><td class="nowrap"><a href="#insert-tendons">Insert Tendons</a></td><td><span class="pill mod">Model</span></td><td>Models PT tendons and ducts from the designer's Excel sheets</td><td>59 beams in about 5 min, against an estimated 40 h by hand</td></tr>
+          <tr><td class="nowrap"><a href="#ek-mark">EK Mark</a></td><td><span class="pill mod">Model</span></td><td>Gives identical pieces the same <code>EK_MARK</code></td><td>Matched Tekla on 1,356 of 1,357 identical pairs</td></tr>
+          <tr><td class="nowrap"><a href="#hc-check">HC Check</a></td><td><span class="pill mod">Model</span></td><td>Flags hollow-core panels the factory cannot saw</td><td>851 panels checked in one run, 0 disagreements</td></tr>
+          <tr><td class="nowrap"><a href="#opening-marks">Opening Marks</a></td><td><span class="pill drw">Drawing</span></td><td>Finds every opening in a floor plan and crosses it out</td><td>37 openings, every line end within 1 mm</td></tr>
+          <tr><td class="nowrap"><a href="#auto-dimension">Auto Dimension</a></td><td><span class="pill drw">Drawing</span></td><td>Dimensions a view to the grid, chained like a detailer would</td><td>Not timed yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="install" id="install">
+    <div class="section-head"><h2>Installing a macro</h2><span>The same three steps for all five</span></div>
+    <ol class="steps">
+      <li>Copy the <code>.cs</code> file into the first folder listed in the <code>XS_MACRO_DIRECTORY</code> advanced option. Model macros go in <code>modeling\</code> and drawing macros in <code>drawings\</code>.</li>
+      <li>Restart Tekla. It only registers macros at startup.</li>
+      <li>Open <b>Applications &amp; components → Macros</b> and run it. Run drawing macros with the drawing open.</li>
+    </ol>
+    <p class="note">Updating a macro? Restart Tekla after you replace the file. Tekla loads each macro once per session, so until you restart it keeps running the old version.</p>
+  </section>
+
+  <div class="section-head"><h2>The macros</h2><span>What each one needs from you, what it saves and where it stops</span></div>
+
+  <!-- Insert Tendons -->
+  <article class="sheet" id="insert-tendons">
+    <div class="sheet-head">
+      <span class="sheet-no">MOD-01</span>
+      <h3>Insert Tendons</h3>
+      <div class="pills"><span class="pill mod">Model</span><span class="pill ok">Verified on live project</span></div>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <p class="lede">Models post-tensioning tendons and their ducts in precast beams straight from the designer's Excel profile. It handles beams that slope or are rotated, and polybeams.</p>
+        <div class="block">
+          <span class="label">You provide</span>
+          <ul class="tight">
+            <li>One Excel sheet per beam position, giving the station, the offset across the width and the height above the soffit for each tendon point</li>
+            <li>Tendon and duct profile and material, picked from the catalog</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">How it works</span>
+          <ul class="tight">
+            <li><b>Beams</b> tab: Scan groups the beams by <code>EK_MARK</code>, or by assembly position when that is empty. Then assign a file to each position.</li>
+            <li><b>Results</b> tab: one row per beam, showing inserted, skipped or failed. Double-click a row to zoom to the beam.</li>
+            <li>Beams that already hold tendons with that name are skipped, so running it again is safe.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">Live project run</span>
+          <div class="figures">
+            <div class="fig hi"><b>~5 min</b><span>whole session, including setup</span></div>
+            <div class="fig"><b>~40 h</b><span>team estimate by hand</span></div>
+            <div class="fig"><b>424</b><span>parts created in 59 beams</span></div>
+            <div class="fig"><b>0</b><span>skipped or failed</span></div>
+          </div>
+        </div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>The beam must be modelled from start to end (PA to PG). If it runs the other way, the profile comes out mirrored.</li>
+            <li>The tendon runs straight between sheet rows. Where the soffit changes slope, add a row at that station.</li>
+            <li>It doesn't follow polybeams that bend in plan, only bends in elevation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- EK Mark -->
+  <article class="sheet" id="ek-mark">
+    <div class="sheet-head">
+      <span class="sheet-no">MOD-02</span>
+      <h3>EK Mark</h3>
+      <div class="pills"><span class="pill mod">Model</span><span class="pill warn">New window not yet run in Tekla</span></div>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <p class="lede">Compares assemblies and cast units part by part and numbers the <code>EK_MARK</code> UDA, so identical pieces share a mark (<span class="mono">TT-001</span>) and each different piece gets the next number.</p>
+        <div class="block">
+          <span class="label">You provide</span>
+          <ul class="tight">
+            <li>A prefix and start number on each assembly or cast unit, for example 001, 100 or 200 per floor</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">What counts as different</span>
+          <ul class="tight">
+            <li>Name, profile, material and finish of every part, including sub-assemblies</li>
+            <li>Solid geometry: length, cuts, fittings and chamfers</li>
+            <li>Bolt holes, welds, surface treatments, and rebar the way Tekla numbers it</li>
+            <li>A copy turned 90° or 180° still matches. A mirrored copy doesn't.</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">How it works</span>
+          <ul class="tight">
+            <li>Scan, select the group rows, then click Number. Existing marks are kept, and a piece that no longer matches its mark is reported rather than changed.</li>
+            <li>Tick Overwrite to clear the marks and renumber from scratch.</li>
+            <li>A piece whose number would run into the next floor's range gets no mark and is shown in red.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">Live model check</span>
+          <div class="figures">
+            <div class="fig hi"><b>1,356 / 1,357</b><span>identical pairs matched Tekla's numbering</span></div>
+            <div class="fig"><b>1,125</b><span>assemblies in BP-, SP-, SWP-, TT-, VT</span></div>
+            <div class="fig"><b>0</b><span>different pieces given one mark</span></div>
+            <div class="fig"><b>~2 min</b><span>for 1,125 assemblies with rebar</span></div>
+          </div>
+        </div>
+        <div class="status warn"><strong>Status:</strong> the comparison and numbering are verified, and marks have been written on BP- and SP-. The latest window features (Clear, remembered options, rebar warning) haven't been run inside Tekla yet.</div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>The window doesn't respond while it compares. That is expected, so let it finish.</li>
+            <li>Clear can't be undone.</li>
+            <li>If Tekla's rebar numbering is out of date, update it first. The macro warns you when it is.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- HC Check -->
+  <article class="sheet" id="hc-check">
+    <div class="sheet-head">
+      <span class="sheet-no">MOD-03</span>
+      <h3>HC Check</h3>
+      <div class="pills"><span class="pill mod">Model</span><span class="pill warn">Enter a real factory catalog first</span></div>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <p class="lede">Measures every hollow-core panel and reports the ones the factory can't make. That covers widths where the saw would cut through a web, and openings outside the limits for their zone (near a support, at mid-span, at the edge).</p>
+        <div class="block">
+          <span class="label">You provide</span>
+          <ul class="tight">
+            <li>The factory's width bands and opening limits for each panel profile, entered in the macro's window. It takes about an hour per catalog and is reused by every model on that catalog.</li>
+            <li>An example ranges file ships with it: <code>hc_check.sample.json</code></li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">How it works</span>
+          <ul class="tight">
+            <li>Failing panels turn red in the model and are listed in a sortable table. Double-click a row to zoom to the panel.</li>
+            <li>It measures the real width across the cut solid, so panels narrowed by a cut are caught.</li>
+            <li>Top-surface recesses such as tie-bar slots are counted and skipped, not flagged as openings.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">Live model run</span>
+          <div class="figures">
+            <div class="fig hi"><b>851</b><span>panels measured in one run</span></div>
+            <div class="fig"><b>742</b><span>cuts classified</span></div>
+            <div class="fig"><b>639</b><span>surface recesses correctly skipped</span></div>
+            <div class="fig"><b>0</b><span>disagreements with a second check</span></div>
+          </div>
+        </div>
+        <div class="status warn"><strong>Status:</strong> the measuring is verified. The trial run used example limits, so there is no failure count to quote yet. Enter your factory's real catalog before relying on the pass/fail result.</div>
+        <div class="block">
+          <span class="label">Why it matters</span>
+          <p>By hand, 851 panels is 7 to 28 hours, so in practice nobody checks every one. With the macro, every panel gets checked on every revision, and a width no saw can cut is caught in the model rather than at the factory.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Opening Marks -->
+  <article class="sheet" id="opening-marks">
+    <div class="sheet-head">
+      <span class="sheet-no">DRW-01</span>
+      <h3>Opening Marks</h3>
+      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Dimensions not yet checked</span></div>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <p class="lede">Finds every opening and recess in a floor plan view and crosses it out: two diagonals for an opening, one for a recess. It also finds holes no cut makes, like a stair hole left between planks.</p>
+        <div class="block">
+          <span class="label">You provide</span>
+          <ul class="tight">
+            <li>A floor plan view selected in the open drawing</li>
+            <li>Optional limits: Min opening (50 mm), Joint gap (150 mm), Recess (200 mm), line colour and type</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">How it works</span>
+          <ul class="tight">
+            <li>Scan lists the openings under five types: inside element, edge/corner, outer edge notch, between elements, recess.</li>
+            <li>Tick MARK for the crossing and DIMS for the size. Selecting a row outlines that opening in magenta.</li>
+            <li>Mark never duplicates a line it already drew. Remove deletes only the macro's own marks, by type.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">Live drawing check · 1:100 plan</span>
+          <div class="figures">
+            <div class="fig hi"><b>≤ 1 mm</b><span>every line end from the real edge</span></div>
+            <div class="fig"><b>37</b><span>openings marked</span></div>
+            <div class="fig"><b>1,572</b><span>parts in the view</span></div>
+            <div class="fig"><b>0</b><span>duplicate lines</span></div>
+          </div>
+        </div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>Walls standing under a stair hole can split it into two openings.</li>
+            <li>Openings close together can get overlapping dimensions. Dimension placement hasn't been checked on a drawing yet.</li>
+            <li>After selecting rows, select the view again in Tekla before the next Scan.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Auto Dimension -->
+  <article class="sheet" id="auto-dimension">
+    <div class="sheet-head">
+      <span class="sheet-no">DRW-02</span>
+      <h3>Auto Dimension</h3>
+      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">3 new options not yet run in Tekla</span></div>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <p class="lede">Dimensions the assemblies in a drawing view to the nearest grid line. Elements in a row get one chain showing each length and the gaps, and openings are included in their element's chain.</p>
+        <div class="block">
+          <span class="label">You provide</span>
+          <ul class="tight">
+            <li>A selected drawing view</li>
+            <li>The numbering series to dimension. Leave rebar and embeds unticked.</li>
+            <li>Openings on or off per series. Walls and slabs want them, beams and columns usually don't.</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">How it works</span>
+          <ul class="tight">
+            <li>Scan, tick series, then add dimensions. The window stays open, so you can work one series at a time and check the drawing in between.</li>
+            <li>Dimension lines sit on a real face, close to the part, and move aside for existing marks, text and dimensions.</li>
+            <li>After a model change, delete the dimensions and run it again.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">What it saves</span>
+          <p>A row of eight panels by hand means eight overall dimensions and seven joints, each one picked and nudged. The macro draws one chain. You still review the drawing, but placing the dimensions is no longer manual, and every view follows the same rules whoever is on the job.</p>
+        </div>
+        <div class="status warn"><strong>Status:</strong> in use on drawings. The Grids, Every part and contour-plate length options compile but haven't been run inside Tekla yet. It hasn't been timed against doing it by hand.</div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>Chamfered or stepped ends are measured to the bounding box, not the drawn edge.</li>
+            <li>Offsets are in model mm, so the gap on paper changes with the view scale.</li>
+            <li>A 5 mm joint at 1:60 is correct but too small to read.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <footer>
+    <p><b>Found a problem or have an idea for a macro?</b> Tell me which macro, which model and what you expected. A screenshot of the Results tab helps.</p>
+    <p>All figures come from runs on live project models. Where something hasn't been measured or run yet, the sheet says so.</p>
+  </footer>
+
+</div>
+</body>
+</html>

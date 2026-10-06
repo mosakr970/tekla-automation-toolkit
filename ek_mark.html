@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>EK Mark</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+<style>
+  :root {
+    --paper:        #f3f2f0;
+    --surface:      #fbfbfa;
+    --surface-sunk: #e8e7e3;
+    --ink:          #1b1a18;
+    --ink-soft:     #55524d;
+    --ink-faint:    #837e77;
+    --hairline:     #dcdad5;
+    --hairline-hard:#bfbcb5;
+
+    --flag:         #b93326;
+    --flag-soft:    #f7e3e0;
+    --pass:         #2f6a4d;
+    --pass-soft:    #dfeee6;
+    --hold:         #96661a;
+    --hold-soft:    #f6e9d4;
+    --cool:         #3f5b78;
+    --cool-soft:    #e2e9f0;
+
+    --measure: 67ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #16150f;
+      --surface:      #1e1d18;
+      --surface-sunk: #272620;
+      --ink:          #ece9e2;
+      --ink-soft:     #b3aea4;
+      --ink-faint:    #857f74;
+      --hairline:     #35332c;
+      --hairline-hard:#4b483f;
+
+      --flag:         #ef8275;
+      --flag-soft:    #3a1f1b;
+      --pass:         #6ec298;
+      --pass-soft:    #16281f;
+      --hold:         #dfae62;
+      --hold-soft:    #332715;
+      --cool:         #8fadc9;
+      --cool-soft:    #1c2530;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #16150f;
+    --surface:      #1e1d18;
+    --surface-sunk: #272620;
+    --ink:          #ece9e2;
+    --ink-soft:     #b3aea4;
+    --ink-faint:    #857f74;
+    --hairline:     #35332c;
+    --hairline-hard:#4b483f;
+
+    --flag:         #ef8275;
+    --flag-soft:    #3a1f1b;
+    --pass:         #6ec298;
+    --pass-soft:    #16281f;
+    --hold:         #dfae62;
+    --hold-soft:    #332715;
+    --cool:         #8fadc9;
+    --cool-soft:    #1c2530;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 63rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* --- masthead --- */
+
+  .masthead {
+    padding-block: 3.25rem 1.5rem;
+    border-bottom: 1px solid var(--hairline-hard);
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--flag);
+    margin: 0 0 1rem;
+  }
+  .masthead h1 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.4rem, 7.5vw, 4rem);
+    line-height: 1.0;
+    letter-spacing: -0.022em;
+    margin: 0 0 0.85rem;
+    text-wrap: balance;
+  }
+  .deck {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 44ch;
+    margin: 0;
+  }
+
+  /* --- the measured run --- */
+
+  .run-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border-bottom: 1px solid var(--hairline-hard);
+  }
+  .run-strip > div { background: var(--paper); padding: 1.25rem 0.25rem 1.4rem; }
+  .run-strip dt {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.45rem;
+  }
+  .run-strip dd {
+    margin: 0;
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .run-strip dd .unit { font-size: 0.95rem; color: var(--ink-faint); margin-left: 0.15em; }
+  .run-strip dd.flagged { color: var(--flag); }
+  .run-strip .sub {
+    display: block;
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    line-height: 1.4;
+    margin-top: 0.4rem;
+    letter-spacing: 0;
+  }
+  .provenance {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    padding-block: 0.8rem 0;
+    margin: 0;
+    max-width: none;
+  }
+
+  /* --- sections --- */
+
+  section { margin-block-start: 3.5rem; }
+
+  h2 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 4vw, 2.1rem);
+    letter-spacing: -0.018em;
+    line-height: 1.12;
+    margin: 0 0 0.35rem;
+    text-wrap: balance;
+  }
+  .sec-mark {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 0.7rem;
+    padding-top: 0.9rem;
+    border-top: 3px solid var(--ink);
+  }
+  h3 {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+    letter-spacing: 0.01em;
+    margin: 2rem 0 0.5rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.15rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.4rem; }
+  li::marker { color: var(--flag); }
+  .lede { font-size: 1.08rem; color: var(--ink-soft); }
+
+  code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.83em;
+    background: var(--surface-sunk);
+    padding: 0.1em 0.34em;
+    border-radius: 2px;
+  }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+  a { color: var(--flag); }
+  a:focus-visible { outline: 2px solid var(--flag); outline-offset: 3px; }
+
+  /* --- band figure --- */
+
+  figure { margin: 1.75rem 0; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.4rem 1.1rem 1rem;
+  }
+  .figframe svg { display: block; min-width: 600px; width: 100%; height: auto; }
+  figcaption {
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+    margin-top: 0.75rem;
+    max-width: var(--measure);
+    line-height: 1.55;
+  }
+  .dead  { fill: var(--flag-soft); }
+  .band  { fill: var(--pass); }
+  .fullw { fill: none; stroke: var(--cool); stroke-width: 1.6; stroke-dasharray: 5 3; }
+  .axis  { stroke: var(--ink-faint); stroke-width: 1; }
+  .tickl { stroke: var(--ink-faint); stroke-width: 1; }
+  .lbl   { fill: var(--ink-soft); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; }
+  .lbl-b { fill: var(--pass); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; font-weight: 700; }
+  .lbl-d { fill: var(--flag); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.06em; }
+  .lbl-c { fill: var(--cool); font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10.5px; }
+
+  /* --- tables --- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); margin-bottom: 1.25rem; }
+  table { border-collapse: collapse; width: 100%; min-width: 31rem; }
+  caption {
+    text-align: left;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.55rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.62rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.9rem;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  thead th {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    font-weight: 500;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.82rem;
+  }
+  td.code-cell {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.79rem;
+    white-space: nowrap;
+    color: var(--flag);
+  }
+
+  /* --- cut matrix --- */
+
+  .matrix {
+    display: grid;
+    grid-template-columns: minmax(7rem, auto) 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin-bottom: 1.25rem;
+    font-size: 0.88rem;
+  }
+  .matrix > * { background: var(--surface); padding: 0.85rem 0.95rem; }
+  .matrix .mh {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .matrix .rowh { font-weight: 700; }
+  .matrix .key {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--flag);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .matrix .lim {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- ordered steps --- */
+
+  .steps { list-style: none; padding: 0; margin: 0 0 1.25rem; max-width: none; counter-reset: s; }
+  .steps > li {
+    display: grid;
+    grid-template-columns: 2.4rem 1fr;
+    gap: 0 0.9rem;
+    padding-block: 0.95rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+    counter-increment: s;
+  }
+  .steps > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .steps > li::before {
+    content: counter(s, decimal-leading-zero);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    padding-top: 0.22em;
+  }
+  .steps h4 { font-family: "Atkinson Hyperlegible", sans-serif; font-size: 0.98rem; font-weight: 700; margin: 0 0 0.15rem; }
+  .steps p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+
+  /* --- limitations --- */
+
+  .limits { list-style: none; padding: 0; margin: 0 0 1.5rem; max-width: none; }
+  .limits > li { border-top: 1px solid var(--hairline); padding-block: 0.9rem; margin: 0; }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.55rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+  .chip {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2em 0.5em;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: 2px;
+  }
+  .chip.scope   { background: var(--cool-soft); color: var(--cool); }
+  .chip.geom    { background: var(--hold-soft); color: var(--hold); }
+  .chip.durable { background: var(--flag-soft); color: var(--flag); }
+  .chip.ux      { background: var(--surface-sunk); color: var(--ink-soft); }
+  .chip.good    { background: var(--pass-soft); color: var(--pass); }
+
+  /* --- callout --- */
+
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-left: 4px solid var(--flag);
+    padding: 1rem 1.2rem;
+    margin: 1.4rem 0;
+    max-width: var(--measure);
+  }
+  .note p { margin-bottom: 0.6rem; font-size: 0.94rem; }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl2 {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--flag);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  /* --- time ledger --- */
+
+  .ledger {
+    border: 1px solid var(--hairline);
+    background: var(--surface);
+    margin: 1.5rem 0;
+  }
+  .ledger-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 1.2rem;
+    padding: 1rem 1.2rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .ledger-row:first-child { border-top: none; }
+  .ledger-row .who {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    flex: 0 0 9.5rem;
+  }
+  .ledger-row .figure {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 1.65rem;
+    font-weight: 500;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    flex: 0 0 auto;
+  }
+  .ledger-row .figure.slow { color: var(--flag); }
+  .ledger-row .figure.fast { color: var(--pass); }
+  .ledger-row .what { flex: 1 1 14rem; font-size: 0.9rem; color: var(--ink-soft); min-width: 0; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.2rem;
+    border-top: 3px solid var(--ink);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 560px) {
+    .matrix { grid-template-columns: 1fr; }
+    .matrix .mh:first-child { display: none; }
+    .steps > li { grid-template-columns: 1fr; gap: 0.25rem; }
+    .ledger-row .who { flex-basis: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <p class="eyebrow">Tekla Structures &middot; precast numbering</p>
+    <h1>EK Mark</h1>
+    <p class="deck">One mark per set of identical pieces. Assemblies and cast units are compared part by part, and the <code>EK_MARK</code> UDA is numbered so identical pieces share a mark and every different piece gets the next one.</p>
+  </header>
+
+  <dl class="run-strip">
+    <div>
+      <dt>The macro</dt>
+      <dd>1,540</dd>
+      <span class="sub">lines of C#, one file, 76 KB</span>
+    </div>
+    <div>
+      <dt>Agreed with Tekla</dt>
+      <dd>1,356<span class="unit">/ 1,357</span></dd>
+      <span class="sub">pairs Tekla numbers the same</span>
+    </div>
+    <div>
+      <dt>Assemblies compared</dt>
+      <dd>1,125</dd>
+      <span class="sub">BP-, SP-, SWP-, TT-, TT and VT</span>
+    </div>
+    <div>
+      <dt>False matches</dt>
+      <dd>0</dd>
+      <span class="sub">two different pieces never got one mark</span>
+    </div>
+    <div>
+      <dt>Tolerance</dt>
+      <dd>1<span class="unit">mm</span></dd>
+      <span class="sub">0.1 mm splits noise, 5 mm falsely matches</span>
+    </div>
+    <div>
+      <dt>Comparing time</dt>
+      <dd>~2<span class="unit">min</span></dd>
+      <span class="sub">1,125 assemblies, about 30 s without rebar</span>
+    </div>
+  </dl>
+  <p class="provenance">Measured read-only on a production model, by calling the compiled macro's own reader, comparer and numbering from outside Tekla and checking pair by pair against Tekla's assembly numbering wherever that numbering was up to date. Marks have since been written with the macro on the BP- and SP- rows of the model.</p>
+
+  <section>
+    <span class="sec-mark">01 - the problem</span>
+    <h2>Identical by eye is not identical</h2>
+
+    <p class="lede">The office marks assemblies and cast units in the <code>EK_MARK</code> UDA, as the numbering prefix plus a three-digit number. Identical pieces must share a mark, and every different piece must get the next one.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>How a mark is built</caption>
+        <thead><tr><th>Part</th><th>Example</th><th>Where it comes from</th></tr></thead>
+        <tbody>
+          <tr><td>Prefix</td><td class="code-cell">TT-</td><td>The assembly or cast unit numbering prefix.</td></tr>
+          <tr><td>Start number</td><td class="code-cell">001, 100, 200</td><td>The numbering start number, set per floor. Each start number opens a range that ends where the next one begins.</td></tr>
+          <tr><td>Digits</td><td class="code-cell">TT-001</td><td>Set in the window, 3 by default. Existing marks are kept as written.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Doing it by eye means opening pieces two at a time and comparing them part by part. A sandwich panel has two concrete layers, insulation, connectors, lifting anchors, embeds and rebar in every layer. A 10&nbsp;mm shift of one anchor makes a different piece, and nothing in the model view shows it.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">02 - running it</span>
+    <h2>Scan, look, number</h2>
+
+    <ol class="steps">
+      <li>
+        <div>
+          <h4>Scan</h4>
+          <p>Lists the assemblies grouped by the prefix and start number set on the assembly or cast unit, with how many already carry a value. With a selection it scans only the selected assemblies, without one the whole model.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Look before numbering</h4>
+          <p>Selecting rows on the Groups page selects all their assemblies in the model, so a group can be checked first. Clear the model selection before scanning the whole model again.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Number</h4>
+          <p>Works through the selected rows only. Pieces are numbered in order of their centre of gravity along the axes set in Order. Existing values are kept, whatever they look like: each is checked against the first piece with that value, identical new pieces take it, and the rest get the next free number from the start number up.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>Read the results</h4>
+          <p>One row per piece, with its old value, new value and what happened. Selecting rows selects those assemblies in the model, and sorting by the new mark puts each set together.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="tablewrap">
+      <table>
+        <caption>The controls under the tabs</caption>
+        <thead><tr><th>Control</th><th>Default</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Scan</strong></td><td class="v">-</td><td>Lists the groups, from the selection or the whole model.</td></tr>
+          <tr><td><strong>Number</strong></td><td class="v">-</td><td>Compares the selected rows and writes the marks.</td></tr>
+          <tr><td><strong>Clear</strong></td><td class="v">-</td><td>Empties the UDA of every piece in the selected rows, after a confirmation.</td></tr>
+          <tr><td><strong>Overwrite</strong></td><td class="v">off</td><td>Clears the rows' values and numbers them afresh from the start number, after a confirmation, so identical pieces with two marks end up with one. Never remembered, so a new session never starts by clearing marks.</td></tr>
+          <tr><td><strong>Unique</strong></td><td class="v">off</td><td>Compares nothing and gives every piece its own number, even an identical one.</td></tr>
+          <tr><td><strong>Order</strong></td><td class="v">XYZ</td><td>The axes pieces are numbered along: XYZ, YXZ, ZXY or ZYX. XYZ runs along X, then Y, then Z.</td></tr>
+          <tr><td><strong>Digits</strong></td><td class="v">3</td><td>Digits in a new number, 1 to 9. 3 gives <code>TT-001</code>.</td></tr>
+          <tr><td><strong>Tol</strong></td><td class="v">1 mm</td><td>How far two pieces' geometry may differ and still count as the same.</td></tr>
+          <tr><td><strong>Welds</strong></td><td class="v">on</td><td>Compares welds by type, size and geometry.</td></tr>
+          <tr><td><strong>Rebar</strong></td><td class="v">on</td><td>Compares rebar, meshes and strands as Tekla numbers them. Number the model first.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Everything but Overwrite is remembered between sessions, in <code>%APPDATA%\EK Mark\settings.txt</code>. The UDA is always <code>EK_MARK</code>. A status line under the controls says what to do next.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>What a result row can say</caption>
+        <thead><tr><th>Result</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Kept</strong></td><td>The piece already had a value and still matches the first piece with it.</td></tr>
+          <tr><td><strong>Same as <code>TT-003</code></strong></td><td>An unmarked piece identical to one that already has a mark takes that mark.</td></tr>
+          <tr><td><strong>New mark</strong></td><td>No identical piece, so the next free number.</td></tr>
+          <tr><td><strong>Kept - identical to</strong></td><td>Two marks on identical pieces. Tick Overwrite to give them one. Shown in red.</td></tr>
+          <tr><td><strong>Conflict</strong></td><td>The piece no longer matches its mark. Reported and left unchanged. Shown in red.</td></tr>
+          <tr><td><strong>No mark</strong></td><td>Its number would run into the next start number's range. Shown in red.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="sec-mark">03 - the comparison</span>
+    <h2>Every part, in the main part's frame</h2>
+
+    <p>Every part of the assembly is compared, not only the main part: the main part, every secondary, and every sub-assembly at any depth. The main parts must match each other. A piece with another main part is another piece, even when its parts are the same.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>What is compared for each part</caption>
+        <thead><tr><th>Compared</th><th>Not compared</th></tr></thead>
+        <tbody>
+          <tr><td>Name, profile, material and finish</td><td>Class, which is often only a colour</td></tr>
+          <tr><td>The solid's vertices, which carry the length, cuts, fittings and chamfers</td><td>-</td></tr>
+          <tr><td>Bolt group holes: diameter, special hole type, slots and every position</td><td>The bolt standard. Bolts are not part of the assembly.</td></tr>
+          <tr><td>Welds: type, size and the weld's own geometry</td><td>Welds with no type and no size, which only tie a part into the assembly</td></tr>
+          <tr><td>Surface treatments: name, material, type and thickness</td><td>-</td></tr>
+          <tr><td>Rebar, meshes and strands as Tekla numbers them: name, grade, class, position number, shape, diameter, count, and a bar's length and weight</td><td>Where the bars lie, so a cage turned with its piece, or with its hooks in another corner, still matches</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Everything is read in the main part's local system and measured from the centre of the main part. Where the piece stands in the model drops out, and the relative position of every embed and hole stays in.</p>
+
+    <ul>
+      <li><strong>Turned copies match.</strong> A copy turned 90 or 180 degrees about any local axis still matches. That covers a beam modelled end to start and a square column turned a quarter.</li>
+      <li><strong>Mirrored copies do not.</strong> Left and right hand pieces are different pieces.</li>
+      <li><strong>Used numbers are skipped.</strong> A number already used anywhere in the model under the same prefix is never handed out again.</li>
+      <li><strong>Ranges are guarded.</strong> A piece whose number would run into the next floor's range (<code>TT-100</code> reaching <code>TT-200</code>) gets no mark and is shown in red.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="sec-mark">04 - the live-model test</span>
+    <h2>Two ways identical pieces split</h2>
+
+    <p>The first version gave more marks than Tekla's own numbering. Each split traced back to something that looked different in the data but was the same piece.</p>
+
+    <div class="note">
+      <span class="lbl2">Split one - weld frames</span>
+      <p>In BP- start 201 it gave 24 marks where Tekla has 20, and in 13 of the 15 split pairs the welds were the only difference. Welds were compared by their coordinate system, and identical welds can have that frame reversed or started at the other end.</p>
+      <p>The weld's polygons, mapped through its frame, describe where it actually is. Comparing those brought BP- start 201 to 20 marks.</p>
+    </div>
+
+    <div class="note">
+      <span class="lbl2">Split two - a column turned 180 degrees</span>
+      <p>One column type stands in two rows of the building, one row turned 180 degrees to the other. The concrete, corbels and embeds matched once turned, but the stirrup hooks had been modelled facing the same way in both rows, and the welds that only tie the embeds in sat on opposite faces.</p>
+      <p>Rebar is now compared as Tekla numbers it, by its properties, and welds with no type and no size are skipped.</p>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Choosing the tolerance</caption>
+        <thead><tr><th>Tolerance</th><th>Result on the live model</th></tr></thead>
+        <tbody>
+          <tr><td class="v">0.1 mm</td><td>Modelling noise splits identical pieces into extra marks.</td></tr>
+          <tr><td class="v">1 mm</td><td>Agrees with Tekla on 1,356 of 1,357 pairs, with no false match. The default.</td></tr>
+          <tr><td class="v">5 mm</td><td>The first false match: two different pieces given one mark.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The one pair left over is two pieces that both get no mark, because their number would run into the next range. The same run showed that clash is real: SWP- start 101 has 442 pieces and would run past <code>SWP-400</code>, and SP- start numbers 100 and 101 sit one apart. That is why those pieces now get no mark instead of a number from the next range.</p>
+
+    <p>Every mark the macro has written on the BP- and SP- rows corresponds to exactly one Tekla assembly position.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">05 - safeguards</span>
+    <h2>Nothing half-written</h2>
+
+    <ul>
+      <li><strong>Planned before written.</strong> All selected rows are planned before anything is written, so a failed comparison leaves the model untouched.</li>
+      <li><strong>Undone on failure.</strong> A run that fails while writing undoes the marks it wrote.</li>
+      <li><strong>Stale rebar numbering is caught.</strong> With Rebar on, a run warns before writing when Tekla's rebar numbering is out of date, and asks whether to write anyway.</li>
+      <li><strong>A self-test on every open.</strong> 13 checks on the comparison and the mark format run each time the window opens: identical, turned 90 and 180 degrees, mirrored, inside and outside the tolerance, a different part, another main part, and parsing and formatting marks. If one fails, the window says not to trust the marks.</li>
+      <li><strong>Controls lock while busy.</strong> Nothing can be started twice mid-run.</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="sec-mark">06 - limitations</span>
+    <h2>What is left</h2>
+
+    <p>What it compares, how it numbers and how it handles existing marks are settled. These are the known gaps.</p>
+
+    <ul class="limits">
+      <li>
+        <h4>Compared with the first piece of each mark only <span class="chip durable">silent</span></h4>
+        <p>If that first piece is itself a conflict, new pieces are matched against the odd one out.</p>
+      </li>
+      <li>
+        <h4>A weld with no geometry falls back to its frame <span class="chip geom">geometry</span></h4>
+        <p>That is the less reliable comparison that split identical pieces before.</p>
+      </li>
+      <li>
+        <h4>The tolerance is a box, not a sphere <span class="chip geom">geometry</span></h4>
+        <p>It is checked per coordinate, and every point needs a partner but the pairing is not one-to-one. In rare cases two near-duplicate shapes could pass.</p>
+      </li>
+      <li>
+        <h4>The window blocks while comparing <span class="chip ux">interface</span></h4>
+        <p>By design, because the Open API is not thread-safe. 1,125 assemblies take about two minutes, about 30 seconds without rebar.</p>
+      </li>
+      <li>
+        <h4>Clear has no undo of its own <span class="chip durable">silent</span></h4>
+        <p>If it stops partway, the values it cleared stay cleared.</p>
+      </li>
+      <li>
+        <h4>The current window has not been run inside Tekla <span class="chip scope">not yet run</span></h4>
+        <p>Clear, the remembered options and the rebar warning compile, but have not been run in Tekla yet. The comparison and numbering were verified on the live model.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="sec-mark">07 - where it stands</span>
+    <h2>Status</h2>
+
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td><strong>EK Mark</strong></td><td>1,540 lines, 76 KB</td></tr>
+          <tr><td><strong>Compiled against</strong></td><td>Tekla Structures 2023.0 and 2025.0</td></tr>
+          <tr><td><strong>Built-in self-test</strong></td><td>13 checks on the comparison and the mark format, run every time the window opens</td></tr>
+          <tr><td><strong>Verified on a live model</strong></td><td>The comparison and numbering, read-only, on 1,125 assemblies, and marks written on BP- and SP- rows</td></tr>
+          <tr><td><strong>Not yet run inside Tekla</strong></td><td>The current window: Clear, the remembered options and the rebar warning</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>No time saving is quoted. The comparison has been timed, the manual job it replaces has not.</p>
+  </section>
+
+  <section>
+    <span class="sec-mark">08 - build notes</span>
+    <h2>How it is put together</h2>
+    <ul>
+      <li><strong>One file.</strong> The whole macro travels as a single file in <code>XS_MACRO_DIRECTORY\modeling</code>. Tekla compiles it at startup.</li>
+      <li><strong>The comparison is pure.</strong> The comparer uses no Tekla types, so the self-test runs without a model and the same code was driven from outside Tekla for the live-model test.</li>
+      <li><strong>Written to a pre-C#6 subset,</strong> matching the other macros in the repository: no interpolation, no null-conditional, no null-coalescing.</li>
+      <li><strong>Styled with HC Check</strong>, with the same flat palette and tab bar, so the macros read as one toolset.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/macros/modeling/EK Mark.cs &middot; written 2026-10-06 against macro source and the live-model comparison over 1,125 assemblies<br>
+    One file &middot; 1,540 lines &middot; C# against Tekla.Structures.Model &middot; compiled against Tekla Structures 2023.0 and 2025.0
+  </footer>
+
+</div>
+
+</body></html>

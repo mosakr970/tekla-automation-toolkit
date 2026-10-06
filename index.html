@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tekla Automation Toolkit | Mohamed Sakr</title>
+<meta name="description" content="Three single-file Tekla Structures macros for precast: panel checking, drawing dimensioning and post-tensioning modelling. Built and verified on live project models.">
+<meta property="og:title" content="Tekla Automation Toolkit | Mohamed Sakr">
+<meta property="og:description" content="Three Tekla macros that solve real precast fabrication problems, each verified and with its limits documented.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f3f2f0;--surface:#fbfbfa;--ink:#1b1a18;--ink-soft:#55524d;--ink-faint:#837e77;--hairline:#dcdad5;--accent:#3f5b78;--accent-soft:#e2e9f0;--pass:#2f6a4d}
+@media (prefers-color-scheme:dark){:root{--paper:#16150f;--surface:#1e1d18;--ink:#ece9e2;--ink-soft:#b3aea4;--ink-faint:#857f74;--hairline:#35332c;--accent:#8fadc9;--accent-soft:#1c2530;--pass:#6ec298}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 "Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:62rem;margin:0 auto;padding:3.5rem 1.5rem 3rem}
+.eyebrow{font:500 .78rem "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+h1{font:500 clamp(2.2rem,5vw,3.4rem)/1.1 "Newsreader",Georgia,serif;margin:.5rem 0 1rem}
+.lede{max-width:40rem;font-size:1.15rem;color:var(--ink-soft);margin:0 0 1.5rem}
+.by{color:var(--ink-faint);font-size:.95rem;margin:0 0 1.25rem}
+.btns{display:flex;flex-wrap:wrap;gap:.75rem}
+.btn{display:inline-block;padding:.55rem 1.1rem;border:1px solid var(--ink);border-radius:6px;color:var(--ink);text-decoration:none;font-weight:700;font-size:.95rem}
+.btn.p{background:var(--ink);color:var(--paper)}
+.btn:hover,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h2{font:500 1.6rem "Newsreader",Georgia,serif;margin:3.5rem 0 1.25rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(16.5rem,1fr));gap:1.25rem}
+.card{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:1.4rem;display:flex;flex-direction:column}
+.tag{font:500 .72rem "JetBrains Mono",monospace;color:var(--ink-faint);letter-spacing:.06em}
+.card h3{font:600 1.4rem "Newsreader",Georgia,serif;margin:.3rem 0 .6rem}
+.card p{margin:0 0 1rem;color:var(--ink-soft);font-size:.98rem}
+.num{font:700 2rem/1 "JetBrains Mono",monospace;color:var(--pass);margin-top:auto}
+.lab{font-size:.85rem;color:var(--ink-faint);margin:.35rem 0 1.1rem}
+.links{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-weight:700;font-size:.95rem}
+a{color:var(--accent)}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1.5rem}
+.how h3{font-size:1rem;margin:0 0 .3rem}.how p{margin:0;color:var(--ink-soft);font-size:.95rem}
+footer{margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--hairline);color:var(--ink-faint);font-size:.9rem}
+footer p{margin:.3rem 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Tekla Structures · precast</div>
+  <h1>Tekla automation toolkit</h1>
+  <p class="lede">Three single-file macros that solve real precast fabrication problems. Each was tested on a live project model, and each documents what it does not do.</p>
+  <p class="by">Mohamed Sakr · Structural Engineer, BIM &amp; Digital Delivery · Tallinn, Estonia</p>
+  <div class="btns">
+    <a class="btn p" href="Mohamed_Sakr_CV.pdf">Download CV</a>
+    <a class="btn" href="https://www.linkedin.com/in/mosakr970">LinkedIn</a>
+  </div>
+</header>
+
+<h2>The tools</h2>
+<div class="grid">
+  <article class="card">
+    <span class="tag">QUALITY CHECK</span>
+    <h3>HC Check</h3>
+    <p>Checks every hollow-core panel against what the factory can actually saw, before anything reaches fabrication.</p>
+    <div class="num">851</div>
+    <div class="lab">panels measured, zero disagreements against an independent second implementation</div>
+    <div class="links"><a href="hc-check.html">Case study →</a><a href="https://www.linkedin.com/posts/mosakr970_teklastructures-precastconcrete-structuralengineering-ugcPost-7506329722293940224-snD3/">Demo video ↗</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">DRAWINGS</span>
+    <h3>Auto Dimension</h3>
+    <p>Dimensions a drawing view the way a detailer would: to the grid, chained, and clear of existing marks.</p>
+    <div class="num">52 / 52</div>
+    <div class="lab">dimension points bound to the model, none floating</div>
+    <div class="links"><a href="auto-dimension.html">Case study →</a><a href="https://www.linkedin.com/posts/mosakr970_tekla-teklastructures-bim-ugcPost-7501290967128514560-awLU/">Demo video ↗</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">MODELLING</span>
+    <h3>Insert Tendons</h3>
+    <p>Models post-tensioning tendons and ducts straight from the designer's Excel profile.</p>
+    <div class="num">11,282</div>
+    <div class="lab">points across 59 beams on a live project, none skipped or failed</div>
+    <div class="links"><a href="insert-tendons.html">Case study →</a></div>
+  </article>
+</div>
+
+<h2>How each tool is built</h2>
+<div class="how">
+  <div><h3>One file, no install</h3><p>Tekla compiles a .cs macro at startup. Handing one to a colleague is sending a file.</p></div>
+  <div><h3>The measuring is the hard part</h3><p>The rules are simple once the number is trustworthy. Getting it out of Tekla's geometry is where the time goes.</p></div>
+  <div><h3>Verify before trusting</h3><p>Cross-checks against a second implementation, tested assumptions, and probe macros.</p></div>
+  <div><h3>Limits stated</h3><p>Every case study separates measured results from estimates and lists what the tool does not handle.</p></div>
+</div>
+
+<footer>
+  <p><a href="mailto:mo.sakr970@gmail.com">mo.sakr970@gmail.com</a> · <a href="https://www.linkedin.com/in/mosakr970">LinkedIn</a> · <a href="https://github.com/mosakr970">GitHub</a></p>
+  <p>Figures come from measured runs unless marked as estimates in the case study.</p>
+</footer>
+</div>
+</body>
+</html>

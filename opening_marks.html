@@ -434,7 +434,7 @@
       <dt>Files</dt><dd>config/macros/drawings/</dd>
       <dt>Language</dt><dd>C# &middot; Tekla macro runtime</dd>
       <dt>Built</dt><dd>2026-09-29 &rarr; 2026-10-05</dd>
-      <dt>Current</dt><dd>Opening Marks.cs &middot; 1983 lines</dd>
+      <dt>Current</dt><dd>Opening Marks.cs</dd>
     </dl>
   </header>
 
@@ -627,7 +627,30 @@
       <div><dt>Duplicate lines</dt><dd>0<small>after marking again</small></dd></div>
     </div>
 
-    <p>No time saving is quoted, because none has been measured. Timing a floor plan crossed out by hand against the same plan by macro plus review would give a number.</p>
+    <h3>Time saved</h3>
+    <p>Timed on 2026-10-06 in Tekla Structures 2025, on four 1:100 floor plans of one project, with the window's defaults (every opening marked, no dimensions). The macro's own code was run with a stopwatch from outside Tekla, so the figures cover the macro's work and not the clicks in its window. The hand time was taken by a detailer on the 1st floor plan.</p>
+
+    <div class="est">
+      <div><dt>By hand, 1st floor slab</dt><dd>6 min<small>43 openings crossed out</small></dd></div>
+      <div><dt>Macro, same plan</dt><dd>24 s<small>Scan and Mark</small></dd></div>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Macro time per plan</caption>
+        <thead>
+          <tr><th>Plan</th><th class="v">Parts in view</th><th class="v">Openings</th><th class="v">Scan</th><th class="v">Mark</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>-1st floor slab</td><td class="v">1,879</td><td class="v">38</td><td class="v">21 s</td><td class="v">3.2 s</td></tr>
+          <tr><td>1st floor slab</td><td class="v">1,610</td><td class="v">43</td><td class="v">21 s</td><td class="v">3.0 s</td></tr>
+          <tr><td>2nd floor slab</td><td class="v">1,320</td><td class="v">45</td><td class="v">12 s</td><td class="v">3.3 s</td></tr>
+          <tr><td>3rd floor slab</td><td class="v">3,459</td><td class="v">30</td><td class="v">16 s</td><td class="v">2.5 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Most of the hand time is finding the openings rather than drawing the lines.</p>
   </section>
 
   <section>
@@ -679,7 +702,6 @@
     <div class="tablewrap">
       <table>
         <tbody>
-          <tr><td>Opening Marks</td><td>1,983 lines, 103 KB</td></tr>
           <tr><td>Compiled against</td><td>Tekla Structures 2023.0 and 2025.0</td></tr>
           <tr><td>Verified on a live drawing</td><td>The marks placed in Tekla 2025 on a 1:100 floor plan of 1,572 parts: 37 openings, every end within 1 mm, no duplicate lines <span class="chip ok">verified</span></td></tr>
           <tr><td>Not yet checked</td><td>The dimensions' placement, and recesses on a view that has real ones <span class="chip soft">open</span></td></tr>
@@ -703,7 +725,7 @@
 
   <footer>
     Tekla MCP Server &middot; config/macros/drawings &middot; revised 2026-10-06 against macro source and docs/case_studies.md<br>
-    Opening Marks.cs &middot; 1983 lines &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2025.0, compiled against 2023.0 and 2025.0 &middot; dimension placement and real recesses not yet checked
+    Opening Marks.cs &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2025.0, compiled against 2023.0 and 2025.0 &middot; dimension placement and real recesses not yet checked
   </footer>
 
 </div>

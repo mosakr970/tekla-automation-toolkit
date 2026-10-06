@@ -427,11 +427,11 @@
       <dt>Files</dt><dd>config/macros/drawings/</dd>
       <dt>Language</dt><dd>C# &middot; Tekla macro runtime</dd>
       <dt>Built</dt><dd>2026-09-01 &rarr; 2026-10-05</dd>
-      <dt>Current</dt><dd>Auto Dimension.cs &middot; 2416 lines</dd>
+      <dt>Current</dt><dd>Auto Dimension.cs</dd>
     </dl>
   </header>
 
-  <p class="standfirst">Select one view, press <em>Scan view</em>, pick which numbering series matter, press <em>Add dimensions</em>. The macro measures every assembly in that view off the structural grid &mdash; or element to element, with <em>Grids</em> off &mdash; ties whole rows into a single chain instead of stacking one dimension per element, folds each element's openings into that same chain, and steps around the marks and texts that are already there.</p>
+  <p class="standfirst">Select one view, press <em>Scan view</em>, pick which numbering series matter, press <em>Add dimensions</em>. The macro measures every assembly in that view off the structural grid - or element to element, with <em>Grids</em> off - ties whole rows into a single chain instead of stacking one dimension per element, folds each element's openings into that same chain, and steps around the marks and texts that are already there.</p>
 
   <figure>
     <div class="figframe">
@@ -477,7 +477,7 @@
         <text class="anno" x="80" y="228" text-anchor="middle">GRID</text>
       </svg>
     </div>
-    <figcaption>One dimension set, not six. The chain starts at the nearest grid axis, then carries each panel end, each opening edge and the joint between panels &mdash; so the sheet reads the gap to the axis, both panel lengths, the opening and the joint off a single line.</figcaption>
+    <figcaption>One dimension set, not six. The chain starts at the nearest grid axis, then carries each panel end, each opening edge and the joint between panels - so the sheet reads the gap to the axis, both panel lengths, the opening and the joint off a single line.</figcaption>
   </figure>
 
   <section>
@@ -490,7 +490,7 @@
         <span class="step">01</span>
         <div>
           <h4>Scan the view</h4>
-          <p>Nothing is read from the drawing until <em>Scan view</em> is pressed. Every top-level assembly drawn in the view is then collected once, grouped by its assembly numbering prefix. An assembly's extents come from its <strong>main part alone</strong> &mdash; an end bracket or corbel never stretches the measurement. With <em>Every part</em> ticked, each part shown in the view becomes an element of its own instead, filed under its assembly's series; the parts are listed during the scan and read the first time a run asks for them. A part's solid is read once and yields both its projected box and its outline vertices.</p>
+          <p>Nothing is read from the drawing until <em>Scan view</em> is pressed. Every top-level assembly drawn in the view is then collected once, grouped by its assembly numbering prefix. An assembly's extents come from its <strong>main part alone</strong> - an end bracket or corbel never stretches the measurement. With <em>Every part</em> ticked, each part shown in the view becomes an element of its own instead, filed under its assembly's series; the parts are listed during the scan and read the first time a run asks for them. A part's solid is read once and yields both its projected box and its outline vertices.</p>
         </div>
       </li>
       <li>
@@ -504,35 +504,35 @@
         <span class="step">03</span>
         <div>
           <h4>Work out which way each element runs</h4>
-          <p>Direction is decided per element, not per sheet axis. A beam-type part's own axis &mdash; its reference line, start to end &mdash; is projected into the view, so a wall standing taller than it is long in elevation still gets its length dimensioned along its length. A contour plate has no start and end, and its local X follows whichever contour edge was picked first &mdash; on one plan both MPV- strips had it on their short side, so <code>cross-section only</code> dimensioned their long sides. A contour plate's length is therefore the longer side of its outline in the view. An element whose axis points through the sheet is reported end-on and skipped unless its series opted in.</p>
+          <p>Direction is decided per element, not per sheet axis. A beam-type part's own axis - its reference line, start to end - is projected into the view, so a wall standing taller than it is long in elevation still gets its length dimensioned along its length. A contour plate has no start and end, and its local X follows whichever contour edge was picked first - on one plan both MPV- strips had it on their short side, so <code>cross-section only</code> dimensioned their long sides. A contour plate's length is therefore the longer side of its outline in the view. An element whose axis points through the sheet is reported end-on and skipped unless its series opted in.</p>
         </div>
       </li>
       <li>
         <span class="step">04</span>
         <div>
           <h4>Measure the openings</h4>
-          <p>Only for the series that asked, and only after prefix filtering, so a filtered-out series costs nothing. Each boolean cut's operative part is projected and clamped to the element's own box, because a cutting body is routinely modelled far larger than the hole it makes. A cut counts only if it lies at least partly inside the volume the view actually shows, which is what keeps a recess on another storey off this sheet. Cuts under the threshold, cuts reaching the element's end along the measured axis, and &mdash; when asked &mdash; cuts that do not pass through, are all dropped.</p>
+          <p>Only for the series that asked, and only after prefix filtering, so a filtered-out series costs nothing. Each boolean cut's operative part is projected and clamped to the element's own box, because a cutting body is routinely modelled far larger than the hole it makes. A cut counts only if it lies at least partly inside the volume the view actually shows, which is what keeps a recess on another storey off this sheet. Cuts under the threshold, cuts reaching the element's end along the measured axis, and - when asked - cuts that do not pass through, are all dropped.</p>
         </div>
       </li>
       <li>
         <span class="step">05</span>
         <div>
           <h4>Choose the line to sit on</h4>
-          <p>The placement line must lie inside <strong>every</strong> member's width and be a <strong>real face coordinate</strong> of at least one of them &mdash; never an average, which would sit on neither. Among the lines that qualify, the one carrying the most real corners wins, where a corner is an element end that actually reaches that face; ties go to the outermost line, which keeps witness lines short.</p>
+          <p>The placement line must lie inside <strong>every</strong> member's width and be a <strong>real face coordinate</strong> of at least one of them - never an average, which would sit on neither. Among the lines that qualify, the one carrying the most real corners wins, where a corner is an element end that actually reaches that face; ties go to the outermost line, which keeps witness lines short.</p>
         </div>
       </li>
       <li>
         <span class="step">06</span>
         <div>
           <h4>Chain the rows, dimension the loners</h4>
-          <p>Assemblies on the same line and within <code>2000 mm</code> of each other become <strong>one gap chain</strong> &mdash; grid, then every element end and opening edge in position order, so lengths, holes and joints all read off one line. A run is split again wherever no single face reaches every member, and whatever falls out gets its own overall dimension instead. Never both: two lines for one row is exactly the clutter this removes.</p>
+          <p>Assemblies on the same line and within <code>2000 mm</code> of each other become <strong>one gap chain</strong> - grid, then every element end and opening edge in position order, so lengths, holes and joints all read off one line. A run is split again wherever no single face reaches every member, and whatever falls out gets its own overall dimension instead. Never both: two lines for one row is exactly the clutter this removes.</p>
         </div>
       </li>
       <li>
         <span class="step">07</span>
         <div>
           <h4>Place it clear of what is already there</h4>
-          <p>Each dimension starts <code>800 mm</code> out and is pushed in <code>150 mm</code> steps until its predicted footprint clears existing marks, texts and dimensions &mdash; and the dimensions this run has already placed. The search is pinned to the side the chosen face points outward to, so a dimension cannot jump across and end up measuring from the wrong face; it decides only how far out to sit. Part geometry is deliberately <em>not</em> an obstacle: a dimension belongs next to its element. Then commit, and a summary.</p>
+          <p>Each dimension starts <code>800 mm</code> out and is pushed in <code>150 mm</code> steps until its predicted footprint clears existing marks, texts and dimensions - and the dimensions this run has already placed. The search is pinned to the side the chosen face points outward to, so a dimension cannot jump across and end up measuring from the wrong face; it decides only how far out to sit. Part geometry is deliberately <em>not</em> an obstacle: a dimension belongs next to its element. Then commit, and a summary.</p>
         </div>
       </li>
     </ol>
@@ -546,7 +546,7 @@
   <section>
     <div class="head"><span class="bubble">B</span><h2>The drawing rules it encodes</h2></div>
 
-    <p>The behaviour is not generic auto-dimensioning &mdash; it is this office's convention, written down in code.</p>
+    <p>The behaviour is not generic auto-dimensioning - it is this office's convention, written down in code.</p>
 
     <ul>
       <li><strong>Elements reference the axis, not each other.</strong> With <em>Grids</em> on, every chain starts at the nearest grid line of the matching orientation. Grid-to-grid spacing dimensions are deliberately not produced, because the drawing already carries those. With <em>Grids</em> off, a chain measures only the elements, their gaps and their openings.</li>
@@ -555,7 +555,7 @@
       <li><strong>A grid line that merely grazes an edge is that edge.</strong> Within <code>50 mm</code> the grid coordinate is dropped in favour of the real part edge, so no chain carries a junk near-zero segment whose endpoint attaches to nothing.</li>
       <li><strong>Dimensions stay orthogonal.</strong> Floating-point residue in the perpendicular vector is zeroed out, otherwise Tekla renders an aligned (sloped) dimension where a horizontal one was meant.</li>
       <li><strong>Openings join the element's own chain.</strong> Window, door and service holes extend the existing line rather than needing a second one, so a wall reads grid, end, opening, opening, end.</li>
-      <li><strong>A hole is not a shape.</strong> A cut reaching the element's end along the axis being measured is a rebate or an end cut-back, not an opening, and its edge is the outline's own end point already. That is judged on the measured axis only &mdash; judging it on both throws out every real opening, since a door or window is cut clean through and touches the outline on the perpendicular axis by definition.</li>
+      <li><strong>A hole is not a shape.</strong> A cut reaching the element's end along the axis being measured is a rebate or an end cut-back, not an opening, and its edge is the outline's own end point already. That is judged on the measured axis only - judging it on both throws out every real opening, since a door or window is cut clean through and touches the outline on the perpendicular axis by definition.</li>
       <li><strong>Only what the view shows.</strong> A cut is dimensioned only if it lies at least partly inside the view's own volume, so a recess on another storey stays off the sheet.</li>
       <li><strong>The line sits on real geometry.</strong> A chain is placed on an actual face of one of its members, never on a centre line and never on the average of two faces. A witness line starts on the drawn outline rather than in mid-air.</li>
     </ul>
@@ -578,7 +578,7 @@
           <tr><td><code>TextClearance</code></td><td class="v">150</td><td>Padding around a dimension's predicted footprint for its text and arrows</td></tr>
           <tr><td><code>SnapEdgeTolerance</code></td><td class="v">50</td><td>How close a grid line must come to the main part to count as touching it</td></tr>
           <tr><td><code>CoordMergeTolerance</code></td><td class="v">50</td><td>Grid coordinate this close to a part edge is dropped in favour of the edge</td></tr>
-          <tr><td><code>DuplicateTolerance</code></td><td class="v">1</td><td>Coordinates this close are the same point &mdash; the only collapse that happens</td></tr>
+          <tr><td><code>DuplicateTolerance</code></td><td class="v">1</td><td>Coordinates this close are the same point - the only collapse that happens</td></tr>
           <tr><td><code>DefaultMinOpening</code></td><td class="v">50</td><td>Cuts smaller than this on either projected axis are chamfers or bolt holes, not openings. Overridden per run from the window</td></tr>
           <tr><td><code>EdgeCutTolerance</code></td><td class="v">1</td><td>How close a cut may come to the element's end and still count as a hole rather than a cut-back</td></tr>
           <tr><td><code>CornerTolerance</code></td><td class="v">2</td><td>How close an outline vertex must come to a candidate point for that point to be a real corner</td></tr>
@@ -599,7 +599,7 @@
     <ul class="limits">
       <li>
         <h4>The box still measures, even though the face now places <span class="chip hard">structural</span></h4>
-        <p>A dimension is <em>placed</em> on a real face of a real member, but the coordinate it <em>measures</em> is the main part's axis-aligned projected bounding box. For a chamfered, notched or stepped end that is the outermost point, which lies on no drawn edge, so the segment reads a number that appears nowhere on the sheet. Measured on a live view: two panels reported an end edge of <code>70 mm</code> on a <code>180 mm</code> section &mdash; roughly 55 mm of chamfer per arris, with no corner where the end edge and the face meet.</p>
+        <p>A dimension is <em>placed</em> on a real face of a real member, but the coordinate it <em>measures</em> is the main part's axis-aligned projected bounding box. For a chamfered, notched or stepped end that is the outermost point, which lies on no drawn edge, so the segment reads a number that appears nowhere on the sheet. Measured on a live view: two panels reported an end edge of <code>70 mm</code> on a <code>180 mm</code> section - roughly 55 mm of chamfer per arris, with no corner where the end edge and the face meet.</p>
       </li>
       <li>
         <h4>Offsets are model units, not paper units <span class="chip soft">quality</span></h4>
@@ -607,7 +607,7 @@
       </li>
       <li>
         <h4>Segments too small to print are still drawn <span class="chip soft">quality</span></h4>
-        <p>Only coordinates within <code>1 mm</code> collapse, deliberately, so real joints survive. But a genuine 5 mm erection joint is 0.08 mm on a 1:60 sheet &mdash; correct and unreadable. Whether to drop, collapse or overlap those segments is undecided.</p>
+        <p>Only coordinates within <code>1 mm</code> collapse, deliberately, so real joints survive. But a genuine 5 mm erection joint is 0.08 mm on a 1:60 sheet - correct and unreadable. Whether to drop, collapse or overlap those segments is undecided.</p>
       </li>
       <li>
         <h4>Neighbour parts shown for context are dimensioned too <span class="chip soft">quality</span></h4>
@@ -643,7 +643,7 @@
       </li>
       <li>
         <h4>Auto-update is unmeasured <span class="chip known">open</span></h4>
-        <p>Dimensions were believed not to bind to the model, because their points sit on a centre line rather than on a corner of the drawn outline. That was tested before anything was built, by reading the associativity rules back point by point. The negative control came back positive: a chain deliberately placed on a centre line bound <strong>all 20 of its points</strong>, each to the part whose end it measured, and across the drawing 52 of 52 points bound with none floating. Binding does not need a corner, and the grid point binds to the grid. What remains untested is whether a bound point <em>follows</em> the model to the right number when an element moves &mdash; which is what the original complaint was actually about.</p>
+        <p>Dimensions were believed not to bind to the model, because their points sit on a centre line rather than on a corner of the drawn outline. That was tested before anything was built, by reading the associativity rules back point by point. The negative control came back positive: a chain deliberately placed on a centre line bound <strong>all 20 of its points</strong>, each to the part whose end it measured, and across the drawing 52 of 52 points bound with none floating. Binding does not need a corner, and the grid point binds to the grid. What remains untested is whether a bound point <em>follows</em> the model to the right number when an element moves - which is what the original complaint was actually about.</p>
       </li>
       <li>
         <h4>Re-running adds, it does not replace <span class="chip soft">workflow</span></h4>
@@ -659,11 +659,11 @@
       </li>
       <li>
         <h4>Not covered by the test suite <span class="chip known">process</span></h4>
-        <p>It is C# running inside Tekla's macro engine, so none of the repository's unit tests touch it &mdash; every change is verified by running it on a real drawing. Unlike the print, export and selection macros it is also not auto-installed by the server: it has to be placed in <code>XS_MACRO_DIRECTORY</code> by hand. Worse, a macro is loaded <strong>once per Tekla session</strong>: editing a deployed <code>.cs</code> makes Tekla recompile it, but the assembly already in memory keeps running, so the first version run in a session is the version you keep. Measured to the second &mdash; the cached DLL written at 19:12:29 held the new code, and the report written at 19:12:30 came from the old one. Restart Tekla whenever a change &ldquo;has not applied&rdquo;.</p>
+        <p>It is C# running inside Tekla's macro engine, so none of the repository's unit tests touch it - every change is verified by running it on a real drawing. Unlike the print, export and selection macros it is also not auto-installed by the server: it has to be placed in <code>XS_MACRO_DIRECTORY</code> by hand. Worse, a macro is loaded <strong>once per Tekla session</strong>: editing a deployed <code>.cs</code> makes Tekla recompile it, but the assembly already in memory keeps running, so the first version run in a session is the version you keep. Measured to the second - the cached DLL written at 19:12:29 held the new code, and the report written at 19:12:30 came from the old one. Restart Tekla whenever a change &ldquo;has not applied&rdquo;.</p>
       </li>
       <li>
         <h4>Most tuning is still hard-coded <span class="chip soft">workflow</span></h4>
-        <p>The opening threshold and the recess, grid and every-part ticks are in the window. The 300 mm alignment window and 2000 mm chaining gap are not &mdash; they are tuned for rows of precast panels, and another typology needs editing and reinstalling the macro.</p>
+        <p>The opening threshold and the recess, grid and every-part ticks are in the window. The 300 mm alignment window and 2000 mm chaining gap are not - they are tuned for rows of precast panels, and another typology needs editing and reinstalling the macro.</p>
       </li>
     </ul>
   </section>
@@ -671,29 +671,36 @@
   <section>
     <div class="head"><span class="bubble">E</span><h2>Time saved</h2></div>
 
-    <p>Nothing in the repository measures this, so the figures below are a model, not a measurement &mdash; stated so they can be checked rather than believed.</p>
+    <p>Timed on 2026-10-06 in Tekla Structures 2025, on four 1:100 column and wall plans of one project, with the window's default settings (every series, openings on). The macro's own code was run with a stopwatch from outside Tekla, so the figures cover the macro's work and not the clicks in its window. The hand time was taken by a detailer on the 1st floor plan.</p>
 
     <div class="est">
       <div>
-        <dt>Manual, per view</dt>
-        <dd>10&ndash;20 min<small>~30 elements, 20&ndash;40 dimension sets at 20&ndash;30 s each including point picking and nudging</small></dd>
+        <dt>By hand, 1st floor plan</dt>
+        <dd>15 min<small>70 assemblies, dimensioned the usual way</small></dd>
       </div>
       <div>
-        <dt>Macro, per view</dt>
-        <dd>2&ndash;5 min<small>Seconds of run time; the rest is review and fixing what landed badly</small></dd>
-      </div>
-      <div>
-        <dt>Net per view</dt>
-        <dd>8&ndash;15 min<small>Roughly 60&ndash;75% of the dimensioning step, not of the whole drawing</small></dd>
-      </div>
-      <div>
-        <dt>Across 50 views</dt>
-        <dd>1&ndash;2 days<small>The saving compounds with drawing count, which is where it actually shows</small></dd>
+        <dt>Macro, same plan</dt>
+        <dd>20 s<small>Scan and dimensioning. Reviewing what landed comes on top and has not been timed</small></dd>
       </div>
     </div>
 
+    <div class="tablewrap">
+      <table>
+        <caption>Macro time per plan</caption>
+        <thead>
+          <tr><th>Plan</th><th class="v">Assemblies</th><th>Chains and dimensions</th><th class="v">Macro</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>-1st floor</td><td class="v">132</td><td>56 chains, 94 dimensions</td><td class="v">28 s</td></tr>
+          <tr><td>1st floor</td><td class="v">70</td><td>20 chains, 63 dimensions</td><td class="v">20 s</td></tr>
+          <tr><td>2nd floor</td><td class="v">62</td><td>13 chains, 59 dimensions</td><td class="v">17 s</td></tr>
+          <tr><td>3rd floor</td><td class="v">61</td><td>12 chains, 60 dimensions</td><td class="v">15 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <h3>What the saving really is</h3>
-    <p>The macro removes the <em>placing</em>, not the <em>judging</em>. Picking points, dragging lines apart and re-picking after a model change is the part that disappears. Deciding whether a drawing reads correctly does not, and the review time above is real work, not a rounding error.</p>
+    <p>The macro removes the <em>placing</em>, not the <em>judging</em>. Picking points, dragging lines apart and re-picking after a model change is the part that disappears. Deciding whether a drawing reads correctly does not, and that review is real work that the 20 seconds above leave out.</p>
 
     <p>The chaining is where most of the minutes go. A row of eight panels dimensioned by hand is eight overall dimensions plus seven joints, each picked and nudged; the macro emits it as one chain. Openings compound it further: a wall with two holes is three more picks per element by hand, and no extra work at all here, because the edges join a chain that is being drawn anyway.</p>
 
@@ -702,9 +709,6 @@
       <li><strong>Consistency.</strong> Every view dimensioned by the macro follows the same rule, so the same detail is dimensioned the same way in January and in June, by whoever is on the job.</li>
       <li><strong>Re-issue cost.</strong> After a model change, re-dimensioning a view by hand costs close to the full original time. Deleting and re-running costs one run plus a review.</li>
     </ul>
-
-    <h3>How to measure it properly</h3>
-    <p>The Results tab already reports assemblies dimensioned, chains inserted, single-element dimensions and openings measured. Timing one draughtsman across five representative views by hand, against the same five by macro plus correction, would replace the whole estimate above with a number. That has not been done.</p>
   </section>
 
   <section>
@@ -716,18 +720,16 @@
       <table>
         <caption>Files &middot; config/macros/</caption>
         <thead>
-          <tr><th>File</th><th class="v">Lines</th><th>Status</th><th>What distinguishes it</th></tr>
+          <tr><th>File</th><th>Status</th><th>What distinguishes it</th></tr>
         </thead>
         <tbody>
           <tr>
             <td><code>drawings/Auto Dimension.cs</code></td>
-            <td class="v">2416</td>
             <td><span class="chip ok">current</span></td>
             <td>The tool. Series filtering, per-element direction, gap chains, opening dimensioning with a view-depth test, face-based placement lines, optional grid reference and every-part dimensioning, and a window that stays open. This is the one to run.</td>
           </tr>
           <tr>
             <td><code>_archive/Auto Dimension V01.cs</code></td>
-            <td class="v">1489</td>
             <td><span class="chip known">archived</span></td>
             <td>The first build, kept for reference. It is outside <code>config/macros/drawings/</code>, so it is not deployed to Tekla.</td>
           </tr>
@@ -738,8 +740,8 @@
     <h3>The MCP-tool siblings</h3>
     <p>Two server tools in <code>drawings_provider.py</code> place the same kind of dimension from a chat client, driven by an explicit GUID list rather than a whole view. They are the earlier logic: neither dimensions openings, neither tests the view depth, and both still place on a grid or centre line rather than a face.</p>
     <ul>
-      <li><code>add_element_dimensions</code> &mdash; a three-point chain per assembly: grid, then the element's own two ends.</li>
-      <li><code>add_dimension_chain</code> &mdash; one chain across two or more assemblies plus the grid, ordered by actual position. All of it succeeds or none of it does.</li>
+      <li><code>add_element_dimensions</code> - a three-point chain per assembly: grid, then the element's own two ends.</li>
+      <li><code>add_dimension_chain</code> - one chain across two or more assemblies plus the grid, ordered by actual position. All of it succeeds or none of it does.</li>
     </ul>
     <p>Those are what an assistant can call conversationally on named elements. The macro is what a draughtsman runs on a whole view.</p>
   </section>
@@ -747,19 +749,19 @@
   <section>
     <div class="head"><span class="bubble">G</span><h2>Running it</h2></div>
     <ol>
-      <li>Copy the macro into a <code>drawings</code> subfolder of <code>XS_MACRO_DIRECTORY</code>, then <strong>restart Tekla</strong> &mdash; macro content is registered only at startup, and a macro already loaded in the session is never replaced.</li>
+      <li>Copy the macro into a <code>drawings</code> subfolder of <code>XS_MACRO_DIRECTORY</code>, then <strong>restart Tekla</strong> - macro content is registered only at startup, and a macro already loaded in the session is never replaced.</li>
       <li>Open the drawing and select <strong>exactly one view</strong>. With <em>Grids</em> ticked the view must show the grid.</li>
       <li>Run the macro from Applications &amp; components, or through the server's <code>run_macro</code> tool.</li>
       <li>Press <em>Scan view</em>. The series list fills with the prefixes found and their counts.</li>
       <li>Tick the series, set each one's direction, end-on and openings, set the run-wide <em>Grids</em>, <em>Every part</em>, <em>No recesses</em> and <em>Min</em>, then press <em>Add dimensions</em>.</li>
       <li>Read the Results tab. A high <em>skipped, seen end-on</em> count usually means a series needs its end-on toggle; a high <em>no main part geometry</em> count means parts whose solid could not be read; <em>openings measured</em> of zero on a wall series usually means the threshold or the view depth excluded them.</li>
-      <li>The window stays open. Adjust the ticks and press <em>Add dimensions</em> again for the next series &mdash; the run avoids what the previous one placed.</li>
+      <li>The window stays open. Adjust the ticks and press <em>Add dimensions</em> again for the next series - the run avoids what the previous one placed.</li>
     </ol>
   </section>
 
   <footer>
     Tekla MCP Server &middot; config/macros/drawings &middot; revised 2026-10-05 against macro source and commit history<br>
-    Auto Dimension.cs &middot; 2416 lines &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0, compiled against 2023.0 and 2025.0 &middot; Grids, Every part and the contour-plate length rule not yet run inside Tekla
+    Auto Dimension.cs &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0, compiled against 2023.0 and 2025.0 &middot; Grids, Every part and the contour-plate length rule not yet run inside Tekla
   </footer>
 
 </div>

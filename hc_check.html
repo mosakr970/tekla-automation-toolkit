@@ -482,8 +482,8 @@
     </div>
     <div>
       <dt>Runtime</dt>
-      <dd class="flagged">not timed</dd>
-      <span class="sub">the macro has never been stopwatched</span>
+      <dd>38-52<span class="unit">s</span></dd>
+      <span class="sub">all 897 panels, against about 4.4 h by hand</span>
     </div>
   </dl>
   <p class="provenance">Figures from one measured run over a live project model, cross-checked panel by panel against a second independent implementation of the same rules. Not a benchmark model, not an average. No count of failing panels is quoted: that run used the shipped worked example rather than a real factory catalog, so a failure count from it would mean nothing.</p>
@@ -624,7 +624,7 @@
         <tbody>
           <tr><td><strong>The macro</strong></td><td>Drop <code>HC Check.cs</code> into <code>XS_MACRO_DIRECTORY\modeling</code> and restart Tekla. It then sits in Applications &amp; components as <code>HC Check</code> - no installer, no command line, no runtime to match.</td></tr>
           <tr><td><strong>The window</strong></td><td>Non-modal and topmost, so Tekla stays usable while it is open - which matters, because double-clicking a result row selects and zooms that panel in the model.</td></tr>
-          <tr><td><strong>The self-test</strong></td><td>Built into the same file, needs no model, and reports a pass or fail count. It stands where 422 lines of pytest used to, because a macro has no CI, no linter and no type checker behind it.</td></tr>
+          <tr><td><strong>The self-test</strong></td><td>Built into the same file, needs no model, and reports a pass or fail count. It replaces the pytest suite the earlier implementation had, because a macro has no CI, no linter and no type checker behind it.</td></tr>
         </tbody>
       </table>
     </div>
@@ -721,7 +721,7 @@
     <span class="sec-mark">06 - time</span>
     <h2>What it saves</h2>
 
-    <p>One side of this is measured. The other is an estimate, and is marked as one. The macro's runtime is neither - it has never been timed, so no seconds-per-model figure appears here.</p>
+    <p>Both sides are measured. Times measured on 2026-10-06 in Tekla Structures 2025 on a live project model, by running the macro's own code with a stopwatch from outside Tekla, at least twice - so they cover the macro's work, not the clicks in its window. The time by hand was taken by a detailer on the same model.</p>
 
     <div class="ledger">
       <div class="ledger-row">
@@ -730,14 +730,14 @@
         <span class="what">One run, every panel measured and every one of its 742 cuts classified - then checked panel by panel against a second independent implementation of the same rules, with zero disagreements. This is the claim that is actually evidenced.</span>
       </div>
       <div class="ledger-row">
-        <span class="who">Estimated</span>
-        <span class="figure slow">7-28 hours</span>
-        <span class="what">The same 851 panels by hand, at 30-120 seconds each to open, measure and compare against the catalog table. The range is wide because it depends entirely on how carefully you look.</span>
+        <span class="who">By hand</span>
+        <span class="figure slow">~4.4 hours</span>
+        <span class="what">204 panels were checked by hand in about an hour - about 18 seconds each to open, measure and compare against the catalog table. At that rate the 897 panels of the model take about 4.4 hours.</span>
       </div>
       <div class="ledger-row">
-        <span class="who">Not timed</span>
-        <span class="figure"> - </span>
-        <span class="what">How long a run takes. An earlier build measured 24 ms per panel, but that was a different implementation and the macro has never been stopwatched. Time one run before quoting a number.</span>
+        <span class="who">With the macro</span>
+        <span class="figure fast">38-52 s</span>
+        <span class="what">All 897 panels of the same model, over four runs - about 40 to 55 ms a panel. Almost all of it is the measuring. Finding the panels takes about 3 seconds, and the verdicts and colouring well under one.</span>
       </div>
       <div class="ledger-row">
         <span class="who">Per revision</span>
@@ -762,7 +762,7 @@
     <span class="sec-mark">07 - build notes</span>
     <h2>How it is put together</h2>
     <ul>
-      <li><strong>One file, by requirement.</strong> The tool is handed to people with no repository, no Python and no permission to run an executable, so all 4,086 lines travel as a single macro. Tekla compiles it at startup.</li>
+      <li><strong>One file, by requirement.</strong> The tool is handed to people with no repository, no Python and no permission to run an executable, so the whole tool travels as a single macro. Tekla compiles it at startup.</li>
       <li><strong>Written to a pre-C#6 subset.</strong> No string interpolation, no null-conditional, no null-coalescing - matching what Tekla's macro compiler reliably accepts. Every number is formatted with <code>InvariantCulture</code>, because Tekla runs in locales where the decimal separator is a comma, and a stray comma would corrupt both the messages and the ranges file.</li>
       <li><strong>Ranges are data, not code.</strong> <code>hc_check.json</code> is re-read on every run, so edits made outside the window take effect without restarting anything. Nothing about a manufacturer is hardcoded.</li>
       <li><strong>Read-only in fact.</strong> Nothing is written to the model. The red on a failing panel is temporary display state, not a stored attribute, so a run leaves the model exactly as it found it.</li>
@@ -771,7 +771,7 @@
 
   <footer>
     Tekla MCP Server &middot; config/macros/modeling/HC Check.cs &middot; revised 2026-10-06 against macro source and the measured run<br>
-    One file &middot; 4,086 lines &middot; built-in self-test &middot; C# against Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0
+    One file &middot; built-in self-test &middot; C# against Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0
   </footer>
 
 </div>

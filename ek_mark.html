@@ -461,11 +461,6 @@
 
   <dl class="run-strip">
     <div>
-      <dt>The macro</dt>
-      <dd>1,540</dd>
-      <span class="sub">lines of C#, one file, 76 KB</span>
-    </div>
-    <div>
       <dt>Agreed with Tekla</dt>
       <dd>1,356<span class="unit">/ 1,357</span></dd>
       <span class="sub">pairs Tekla numbers the same</span>
@@ -487,8 +482,8 @@
     </div>
     <div>
       <dt>Comparing time</dt>
-      <dd>~2<span class="unit">min</span></dd>
-      <span class="sub">1,125 assemblies, about 30 s without rebar</span>
+      <dd>3.6-5<span class="unit">min</span></dd>
+      <span class="sub">3,421 assemblies, 66-93 s without rebar</span>
     </div>
   </dl>
   <p class="provenance">Measured read-only on a production model, by calling the compiled macro's own reader, comparer and numbering from outside Tekla and checking pair by pair against Tekla's assembly numbering wherever that numbering was up to date. Marks have since been written with the macro on the BP- and SP- rows of the model.</p>
@@ -682,7 +677,7 @@
       </li>
       <li>
         <h4>The window blocks while comparing <span class="chip ux">interface</span></h4>
-        <p>By design, because the Open API is not thread-safe. 1,125 assemblies take about two minutes, about 30 seconds without rebar.</p>
+        <p>By design, because the Open API is not thread-safe. A whole model of 3,421 assemblies takes 3.6 to 5 minutes with rebar compared, 66 to 93 seconds without.</p>
       </li>
       <li>
         <h4>Clear has no undo of its own <span class="chip durable">silent</span></h4>
@@ -702,7 +697,6 @@
     <div class="tablewrap">
       <table>
         <tbody>
-          <tr><td><strong>EK Mark</strong></td><td>1,540 lines, 76 KB</td></tr>
           <tr><td><strong>Compiled against</strong></td><td>Tekla Structures 2023.0 and 2025.0</td></tr>
           <tr><td><strong>Built-in self-test</strong></td><td>13 checks on the comparison and the mark format, run every time the window opens</td></tr>
           <tr><td><strong>Verified on a live model</strong></td><td>The comparison and numbering, read-only, on 1,125 assemblies, and marks written on BP- and SP- rows</td></tr>
@@ -711,7 +705,21 @@
       </table>
     </div>
 
-    <p>No time saving is quoted. The comparison has been timed, the manual job it replaces has not.</p>
+    <h3>How long it takes</h3>
+    <p>Times measured on 2026-10-06 in Tekla Structures 2025 on a live project model, by running the macro's own code with a stopwatch from outside Tekla, at least twice - so they cover the macro's work, not the clicks in its window. The time by hand was taken by a detailer on the same model. The model was a second project, numbered whole - 3,421 assemblies in 75 groups.</p>
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td><strong>Scan</strong></td><td>14 to 35 seconds</td></tr>
+          <tr><td><strong>Compare and number, Overwrite on, welds and rebar compared</strong></td><td>3.6 to 5 minutes</td></tr>
+          <tr><td><strong>The same without rebar</strong></td><td>66 to 93 seconds</td></tr>
+          <tr><td><strong>Compare and number with existing marks kept</strong></td><td>66 to 151 seconds</td></tr>
+          <tr><td><strong>Writing 2,943 marks</strong></td><td>7 seconds</td></tr>
+          <tr><td><strong>By hand</strong></td><td>3 minutes for 36 pieces, about 5 seconds a piece</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The hand figure is not the same job. It numbers pieces that are all different, checked only by weight to be sure they are unique. The macro compares every part, cut, hole, weld and bar of every piece, which no one does by hand - so at 5 seconds a piece, 3,421 pieces are about 4.8 hours of a much weaker check.</p>
   </section>
 
   <section>
@@ -727,7 +735,7 @@
 
   <footer>
     Tekla MCP Server &middot; config/macros/modeling/EK Mark.cs &middot; written 2026-10-06 against macro source and the live-model comparison over 1,125 assemblies<br>
-    One file &middot; 1,540 lines &middot; C# against Tekla.Structures.Model &middot; compiled against Tekla Structures 2023.0 and 2025.0
+    One file &middot; C# against Tekla.Structures.Model &middot; compiled against Tekla Structures 2023.0 and 2025.0
   </footer>
 
 </div>

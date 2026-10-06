@@ -461,15 +461,10 @@
   <header class="masthead">
     <p class="eyebrow">Tekla Structures &middot; precast modelling</p>
     <h1>Insert Tendons</h1>
-    <p class="deck">Post-tensioning tendons and their ducts, modelled from the designer's Excel sheet into every beam of a position &mdash; following each beam's slope, rotation and soffit.</p>
+    <p class="deck">Post-tensioning tendons and their ducts, modelled from the designer's Excel sheet into every beam of a position - following each beam's slope, rotation and soffit.</p>
   </header>
 
   <dl class="run-strip">
-    <div>
-      <dt>The macro</dt>
-      <dd>1,445</dd>
-      <span class="sub">lines of C#, one file, 74 KB</span>
-    </div>
     <div>
       <dt>Rotation followed</dt>
       <dd>&minus;2.89<span class="unit">&deg;</span></dd>
@@ -492,14 +487,14 @@
     </div>
     <div>
       <dt>By hand</dt>
-      <dd class="flagged">~40<span class="unit">h</span></dd>
-      <span class="sub">the team's estimate for the same set, not timed</span>
+      <dd class="flagged">3-4<span class="unit">h</span></dd>
+      <span class="sub">per beam length, a custom component each</span>
     </div>
   </dl>
-  <p class="provenance">Measured on a live project model in Tekla Structures 2023.0: the 2.79 mm and &minus;2.89&deg; with a read-only probe macro, the 5 minutes as one session over the full set of 59 beams, setup included. The 40 hours is the team's estimate for modelling the same set by hand, not a stopwatch.</p>
+  <p class="provenance">Measured on a live project model in Tekla Structures 2023.0: the 2.79 mm and &minus;2.89&deg; with a read-only probe macro, the 5 minutes as one session over the full set of 59 beams, setup included. The Insert alone and the time by hand were measured later in Tekla Structures 2025, on the same model.</p>
 
   <section>
-    <span class="sec-mark">01 &mdash; the input</span>
+    <span class="sec-mark">01 - the input</span>
     <h2>A tendon arrives as a column of numbers</h2>
 
     <p class="lede">The designer sends one Excel sheet per beam position. Cell A1 names the position. Each tendon is a group of three columns, <code>Xn Yn Zn</code>, with one row per station until X runs out.</p>
@@ -534,24 +529,24 @@
             <text x="265.3" y="184" text-anchor="middle">60</text>
             <text x="498.7" y="184" text-anchor="middle">60</text>
           </g>
-          <text class="lbl-c" x="720" y="226" text-anchor="end">Z above the soffit, mm &mdash; vertical scale about 18&times;</text>
+          <text class="lbl-c" x="720" y="226" text-anchor="end">Z above the soffit, mm - vertical scale about 18&times;</text>
         </svg>
       </div>
       <figcaption>Tendon 2 of <code>JPT-104.xlsx</code>: 37 stations, the sheet's own numbers. The same sheet carries two more tendons at Y = &minus;350 and +350 with the same profile. <code>JPT-107</code> has four tendons of 23 points and starts each one at X = &minus;1000, a metre outside the beam.</figcaption>
     </figure>
 
-    <p>By hand, that is a poly beam per tendon and per duct with every point typed in, in the beam's own coordinates. On a level box that is tedious. On these beams &mdash; sloping, rotated about their own axis, some of them polybeams whose soffit changes slope part-way along &mdash; it is easy to get slightly wrong, and a tendon 25&nbsp;mm off is not visible until someone sections it.</p>
+    <p>By hand, that is a poly beam per tendon and per duct with every point typed in, in the beam's own coordinates. On a level box that is tedious. On these beams - sloping, rotated about their own axis, some of them polybeams whose soffit changes slope part-way along - it is easy to get slightly wrong, and a tendon 25&nbsp;mm off is not visible until someone sections it.</p>
   </section>
 
   <section>
-    <span class="sec-mark">02 &mdash; running it</span>
-    <h2>Scan, assign, insert &mdash; and the window stays open</h2>
+    <span class="sec-mark">02 - running it</span>
+    <h2>Scan, assign, insert - and the window stays open</h2>
 
     <ol class="steps">
       <li>
         <div>
           <h4>Scan</h4>
-          <p>Lists the concrete beams, polybeams and slabs that are the main part of their cast unit, whose assembly prefix starts with the prefix field. The selection when there is one, the whole model otherwise. One row per position &mdash; the <code>EK_MARK</code> UDA, or the assembly position when that is empty &mdash; with a beam count.</p>
+          <p>Lists the concrete beams, polybeams and slabs that are the main part of their cast unit, whose assembly prefix starts with the prefix field. The selection when there is one, the whole model otherwise. One row per position - the <code>EK_MARK</code> UDA, or the assembly position when that is empty - with a beam count.</p>
         </div>
       </li>
       <li>
@@ -563,7 +558,7 @@
       <li>
         <div>
           <h4>Set the tendon and the duct</h4>
-          <p>Profile and material from the Tekla catalog, the last five used on top, anything typable &mdash; parametric profiles such as <code>BL65*16</code> included. Name, class, numbering, and the duct's offset from the tendon. The duct is optional.</p>
+          <p>Profile and material from the Tekla catalog, the last five used on top, anything typable - parametric profiles such as <code>BL65*16</code> included. Name, class, numbering, and the duct's offset from the tendon. The duct is optional.</p>
         </div>
       </li>
       <li>
@@ -584,7 +579,7 @@
   </section>
 
   <section>
-    <span class="sec-mark">03 &mdash; the hard part</span>
+    <span class="sec-mark">03 - the hard part</span>
     <h2>What X, Y and Z mean on this beam</h2>
 
     <p>Placing a point is arithmetic once the frame is right. Every bug in the build was a wrong frame, and each came from trusting something Tekla hands over.</p>
@@ -604,7 +599,7 @@
   </section>
 
   <section>
-    <span class="sec-mark">04 &mdash; measuring</span>
+    <span class="sec-mark">04 - measuring</span>
     <h2>From the right surface, at the right height</h2>
 
     <ul>
@@ -621,7 +616,7 @@
   </section>
 
   <section>
-    <span class="sec-mark">05 &mdash; platform</span>
+    <span class="sec-mark">05 - platform</span>
     <h2>What Tekla does that a macro has to answer</h2>
 
     <div class="tablewrap">
@@ -638,7 +633,7 @@
   </section>
 
   <section>
-    <span class="sec-mark">06 &mdash; limitations</span>
+    <span class="sec-mark">06 - limitations</span>
     <h2>What it does not do</h2>
 
     <ul class="limits">
@@ -656,7 +651,7 @@
       </li>
       <li>
         <h4>The duplicate check is by name <span class="chip scope">by design</span></h4>
-        <p>A beam holding parts named like the current tendon or duct is skipped. A second set under a different name is allowed on purpose &mdash; that is how more tendons are added to a beam.</p>
+        <p>A beam holding parts named like the current tendon or duct is skipped. A second set under a different name is allowed on purpose - that is how more tendons are added to a beam.</p>
       </li>
       <li>
         <h4>Beams are found by assembly prefix <span class="chip durable">silent</span></h4>
@@ -670,21 +665,26 @@
   </section>
 
   <section>
-    <span class="sec-mark">07 &mdash; time</span>
+    <span class="sec-mark">07 - time</span>
     <h2>What it saves</h2>
 
-    <p>The macro's side is one session over the whole project set, setup included. The manual side is an estimate, and is marked as one.</p>
+    <p>The macro's side is one session over the whole project set, setup included, and the Insert alone timed later. Times measured on 2026-10-06 in Tekla Structures 2025 on a live project model, by running the macro's own code with a stopwatch from outside Tekla, at least twice - so they cover the macro's work, not the clicks in its window. The time by hand was taken by a detailer on the same model.</p>
 
     <div class="ledger">
       <div class="ledger-row">
         <span class="who">With the macro</span>
         <span class="figure fast">~5 min</span>
-        <span class="what">59 beams in 17 positions, from opening the macro to the results: Scan, assigning the files, setting the profiles, Insert. 424 parts &mdash; 212 tendons and 212 ducts &mdash; and 11,282 points, none skipped, none failed. Almost all of it is a person filling in the window.</span>
+        <span class="what">59 beams in 17 positions, from opening the macro to the results: Scan, assigning the files, setting the profiles, Insert. 424 parts - 212 tendons and 212 ducts - and 11,282 points, none skipped, none failed. Almost all of it is a person filling in the window.</span>
       </div>
       <div class="ledger-row">
-        <span class="who">Estimated</span>
-        <span class="figure slow">~40 hours</span>
-        <span class="what">The team's estimate for modelling the same set by hand. The positions differ mostly in slope and orientation, so each beam's 190-odd points are placed in a frame of its own.</span>
+        <span class="who">The Insert alone</span>
+        <span class="figure fast">13-17 s</span>
+        <span class="what">Timed later on the same model, which has grown to 118 beams: 424 tendons, 424 ducts and 22,564 points over two runs, none skipped, none failed. Scan takes about 2 seconds more.</span>
+      </div>
+      <div class="ledger-row">
+        <span class="who">By hand</span>
+        <span class="figure slow">3-4 hours</span>
+        <span class="what">Per beam length. By hand a custom component has to be built for each beam length, and typing the points in directly takes longer still. The positions differ mostly in slope and orientation, so each beam's 190-odd points are placed in a frame of its own.</span>
       </div>
       <div class="ledger-row">
         <span class="who">Per revision</span>
@@ -694,17 +694,17 @@
     </div>
 
     <h3>The honest framing</h3>
-    <p>Five minutes against forty hours is the comparison, but only one side of it is a stopwatch. The forty hours is the team's estimate, so no multiplier is quoted. What the numbers show beyond doubt is where the cost goes: the job becomes preparing correct sheets, which has to happen either way.</p>
+    <p>Seconds of Insert against 3 to 4 hours for every beam length is the comparison. What the numbers show beyond doubt is where the cost goes: the job becomes preparing correct sheets, which has to happen either way.</p>
     <p>The larger saving is the one that repeats. Every design revision used to mean retyping a position; now it is a re-run. And the frame, the fall and the soffit are handled by geometry rather than by the person typing, which is where the millimetres used to go.</p>
   </section>
 
   <section>
-    <span class="sec-mark">08 &mdash; build notes</span>
+    <span class="sec-mark">08 - build notes</span>
     <h2>How it is put together</h2>
     <ul>
-      <li><strong>One file.</strong> All 1,445 lines travel as a single macro in <code>XS_MACRO_DIRECTORY\modeling</code>. Tekla compiles it at startup.</li>
+      <li><strong>One file.</strong> The whole tool travels as a single macro in <code>XS_MACRO_DIRECTORY\modeling</code>. Tekla compiles it at startup.</li>
       <li><strong>Written to a pre-C#6 subset,</strong> matching the other macros in the repository: no interpolation, no null-conditional, no null-coalescing.</li>
-      <li><strong>Styled with HC Check</strong> &mdash; the same flat palette, hairline cards and tab bar, so the macros read as one toolset.</li>
+      <li><strong>Styled with HC Check</strong> - the same flat palette, hairline cards and tab bar, so the macros read as one toolset.</li>
       <li><strong>Debugged by probe.</strong> Each geometry bug was settled by a throwaway read-only macro, run through the MCP server's <code>run_macro</code>, writing the beam's frame, box and the tendons' points to a text file. It never ships.</li>
       <li><strong>Compiled before it is run.</strong> Every change was built against the framework C# compiler and the Tekla 2023 DLLs, and the Excel reader tested against the sample sheets, before a round trip through the model.</li>
     </ul>
@@ -712,7 +712,7 @@
 
   <footer>
     Tekla MCP Server &middot; config/macros/modeling/Insert Tendons.cs &middot; written 2026-09-24 against macro source, the probe runs and a 5-minute session over 59 beams<br>
-    One file &middot; 1,445 lines &middot; C# against Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0
+    One file &middot; C# against Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0
   </footer>
 
 </div>

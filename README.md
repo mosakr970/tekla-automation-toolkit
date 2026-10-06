@@ -8,11 +8,11 @@ Five single-file Tekla Structures macros that take the repetitive measuring, mar
 
 | Macro | Runs in | What it does | Verified result | Case study |
 |---|---|---|---|---|
-| HC Check | Model | Flags hollow-core panels the factory cannot saw | 851 panels measured, 0 disagreements against an independent second implementation | [hc_check](https://mosakr970.github.io/tekla-automation-toolkit/hc_check.html) |
-| Insert Tendons | Model | Models post-tensioning tendons and ducts from the designer's Excel profile | 424 parts and 11,282 points across 59 beams, 0 skipped or failed | [insert_tendons.html](https://mosakr970.github.io/tekla-automation-toolkit/insert_tendons.html) |
-| EK Mark | Model | Gives identical pieces the same `EK_MARK`, comparing assemblies part by part | 1,356 of 1,357 identical pairs matched Tekla's numbering | [ek_mark.html](https://mosakr970.github.io/tekla-automation-toolkit/ek_mark.html) |
-| Auto Dimension | Drawing | Dimensions a drawing view to the grid, chained like a detailer would | 52 of 52 dimension points bound to the model | [auto_dimension.html](https://mosakr970.github.io/tekla-automation-toolkit/auto_dimension.html) |
-| Opening Marks | Drawing | Finds every opening in a floor plan and crosses it out | 37 openings on a 1,572-part plan, every line end within 1 mm | [opening_marks.html](https://mosakr970.github.io/tekla-automation-toolkit/opening_marks.html) |
+| HC Check | Model | Flags hollow-core panels the factory cannot saw | 851 panels measured, 0 disagreements against an independent second implementation | [hc check](https://mosakr970.github.io/tekla-automation-toolkit/hc_check.html) |
+| Insert Tendons | Model | Models post-tensioning tendons and ducts from the designer's Excel profile | 424 parts and 11,282 points across 59 beams, 0 skipped or failed | [insert tendons](https://mosakr970.github.io/tekla-automation-toolkit/insert_tendons.html) |
+| EK Mark | Model | Gives identical pieces the same `EK_MARK`, comparing assemblies part by part | 1,356 of 1,357 identical pairs matched Tekla's numbering | [ek mark](https://mosakr970.github.io/tekla-automation-toolkit/ek_mark.html) |
+| Auto Dimension | Drawing | Dimensions a drawing view to the grid, chained like a detailer would | 52 of 52 dimension points bound to the model | [auto dimension](https://mosakr970.github.io/tekla-automation-toolkit/auto_dimension.html) |
+| Opening Marks | Drawing | Finds every opening in a floor plan and crosses it out | 37 openings on a 1,572-part plan, every line end within 1 mm | [opening marks](https://mosakr970.github.io/tekla-automation-toolkit/opening_marks.html) |
 
 <!-- For all five side by side, with what each needs from you and how to install it, see the [Precast Macro Catalog](https://mosakr970.github.io/tekla-automation-toolkit/macro_catalog.html). -->
 

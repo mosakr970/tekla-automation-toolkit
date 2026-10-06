@@ -8,7 +8,7 @@ Five single-file Tekla Structures macros that take the repetitive measuring, mar
 
 | Macro | Runs in | What it does | Verified result | Case study |
 |---|---|---|---|---|
-| HC Check | Model | Flags hollow-core panels the factory cannot saw | 851 panels measured, 0 disagreements against an independent second implementation | [hc_check.html](hc_check) |
+| HC Check | Model | Flags hollow-core panels the factory cannot saw | 851 panels measured, 0 disagreements against an independent second implementation | [hc_check](https://mosakr970.github.io/tekla-automation-toolkit/hc_check.html) |
 | Insert Tendons | Model | Models post-tensioning tendons and ducts from the designer's Excel profile | 424 parts and 11,282 points across 59 beams, 0 skipped or failed | [insert_tendons.html](insert_tendons.html) |
 | EK Mark | Model | Gives identical pieces the same `EK_MARK`, comparing assemblies part by part | 1,356 of 1,357 identical pairs matched Tekla's numbering | [ek_mark.html](ek_mark.html) |
 | Auto Dimension | Drawing | Dimensions a drawing view to the grid, chained like a detailer would | 52 of 52 dimension points bound to the model | [auto_dimension.html](auto_dimension.html) |

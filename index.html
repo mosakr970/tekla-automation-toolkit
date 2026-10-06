@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tekla Automation Toolkit | Mohamed Sakr</title>
-<meta name="description" content="Three single-file Tekla Structures macros for precast: panel checking, drawing dimensioning and post-tensioning modelling. Built and verified on live project models.">
+<meta name="description" content="Five single-file Tekla Structures macros for precast: panel checking, tendon modelling, mark numbering, drawing dimensions and opening marks. Each tested on real project models, with limits documented.">
 <meta property="og:title" content="Tekla Automation Toolkit | Mohamed Sakr">
-<meta property="og:description" content="Three Tekla macros that solve real precast fabrication problems, each verified and with its limits documented.">
+<meta property="og:description" content="Five Tekla macros that take the repetitive measuring, marking and modelling out of precast work.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
@@ -24,17 +24,20 @@ h1{font:500 clamp(2.2rem,5vw,3.4rem)/1.1 "Newsreader",Georgia,serif;margin:.5rem
 .btn{display:inline-block;padding:.55rem 1.1rem;border:1px solid var(--ink);border-radius:6px;color:var(--ink);text-decoration:none;font-weight:700;font-size:.95rem}
 .btn.p{background:var(--ink);color:var(--paper)}
 .btn:hover,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-h2{font:500 1.6rem "Newsreader",Georgia,serif;margin:3.5rem 0 1.25rem}
+h2{font:500 1.6rem "Newsreader",Georgia,serif;margin:3.5rem 0 .4rem}
+.sub{color:var(--ink-faint);font-size:.95rem;margin:0 0 1.25rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(16.5rem,1fr));gap:1.25rem}
 .card{background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:1.4rem;display:flex;flex-direction:column}
 .tag{font:500 .72rem "JetBrains Mono",monospace;color:var(--ink-faint);letter-spacing:.06em}
 .card h3{font:600 1.4rem "Newsreader",Georgia,serif;margin:.3rem 0 .6rem}
 .card p{margin:0 0 1rem;color:var(--ink-soft);font-size:.98rem}
-.num{font:700 2rem/1 "JetBrains Mono",monospace;color:var(--pass);margin-top:auto}
-.lab{font-size:.85rem;color:var(--ink-faint);margin:.35rem 0 1.1rem}
+.num{font:700 1.7rem/1.1 "JetBrains Mono",monospace;color:var(--pass);margin-top:auto}
+.lab{font-size:.85rem;color:var(--ink-faint);margin:.35rem 0 .7rem}
+.status{font-size:.8rem;color:var(--ink-soft);background:var(--accent-soft);border-radius:4px;padding:.3rem .55rem;margin:0 0 1.1rem}
 .links{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-weight:700;font-size:.95rem}
 a{color:var(--accent)}
-.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1.5rem}
+.cat{margin-top:1.5rem;padding:1.1rem 1.4rem;background:var(--surface);border:1px solid var(--hairline);border-radius:10px;color:var(--ink-soft);font-size:.98rem}
+.how{margin-top:1.25rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1.5rem}
 .how h3{font-size:1rem;margin:0 0 .3rem}.how p{margin:0;color:var(--ink-soft);font-size:.95rem}
 footer{margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--hairline);color:var(--ink-faint);font-size:.9rem}
 footer p{margin:.3rem 0}
@@ -45,15 +48,17 @@ footer p{margin:.3rem 0}
 <header>
   <div class="eyebrow">Tekla Structures · precast</div>
   <h1>Tekla automation toolkit</h1>
-  <p class="lede">Three single-file macros that solve real precast fabrication problems. Each was tested on a live project model, and each documents what it does not do.</p>
+  <p class="lede">Five single-file macros that take the repetitive measuring, marking and modelling out of precast work. Each was tested on real project models, and each documents what it does not do.</p>
   <p class="by">Mohamed Sakr · Structural Engineer, BIM &amp; Digital Delivery · Tallinn, Estonia</p>
   <div class="btns">
     <a class="btn p" href="Mohamed_Sakr_CV.pdf">Download CV</a>
+    <a class="btn" href="macro_catalog.html">Macro catalog</a>
     <a class="btn" href="https://www.linkedin.com/in/mosakr970">LinkedIn</a>
   </div>
 </header>
 
-<h2>The tools</h2>
+<h2>Model macros</h2>
+<p class="sub">Run in the model, on the parts themselves</p>
 <div class="grid">
   <article class="card">
     <span class="tag">QUALITY CHECK</span>
@@ -61,25 +66,53 @@ footer p{margin:.3rem 0}
     <p>Checks every hollow-core panel against what the factory can actually saw, before anything reaches fabrication.</p>
     <div class="num">851</div>
     <div class="lab">panels measured, zero disagreements against an independent second implementation</div>
-    <div class="links"><a href="hc-check.html">Case study →</a><a href="https://www.linkedin.com/posts/mosakr970_teklastructures-precastconcrete-structuralengineering-ugcPost-7506329722293940224-snD3/">Demo video ↗</a></div>
+    <div class="status">Verified on a live project model</div>
+    <div class="links"><a href="hc_check.html">Case study →</a><a href="https://www.linkedin.com/posts/mosakr970_teklastructures-precastconcrete-structuralengineering-ugcPost-7506329722293940224-snD3/">Demo video ↗</a></div>
   </article>
+  <article class="card">
+    <span class="tag">MODELLING</span>
+    <h3>Insert Tendons</h3>
+    <p>Models post-tensioning tendons and ducts straight from the designer&#x27;s Excel profile.</p>
+    <div class="num">11,282</div>
+    <div class="lab">points across 59 beams on a live project, none skipped or failed</div>
+    <div class="status">Verified on a live project</div>
+    <div class="links"><a href="insert_tendons.html">Case study →</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">NUMBERING</span>
+    <h3>EK Mark</h3>
+    <p>Gives identical precast pieces the same mark, comparing assemblies part by part.</p>
+    <div class="num">1,356 / 1,357</div>
+    <div class="lab">identical pairs matched Tekla&#x27;s own numbering; no different pieces given one mark</div>
+    <div class="status">Numbering verified on a live model; newest window features not yet run in Tekla</div>
+    <div class="links"><a href="ek_mark.html">Case study →</a></div>
+  </article>
+</div>
+
+<h2>Drawing macros</h2>
+<p class="sub">Run in the drawing editor, on a selected view</p>
+<div class="grid">
   <article class="card">
     <span class="tag">DRAWINGS</span>
     <h3>Auto Dimension</h3>
     <p>Dimensions a drawing view the way a detailer would: to the grid, chained, and clear of existing marks.</p>
     <div class="num">52 / 52</div>
     <div class="lab">dimension points bound to the model, none floating</div>
-    <div class="links"><a href="auto-dimension.html">Case study →</a><a href="https://www.linkedin.com/posts/mosakr970_tekla-teklastructures-bim-ugcPost-7501290967128514560-awLU/">Demo video ↗</a></div>
+    <div class="status">Time saving not yet measured</div>
+    <div class="links"><a href="auto_dimension.html">Case study →</a><a href="https://www.linkedin.com/posts/mosakr970_tekla-teklastructures-bim-ugcPost-7501290967128514560-awLU/">Demo video ↗</a></div>
   </article>
   <article class="card">
-    <span class="tag">MODELLING</span>
-    <h3>Insert Tendons</h3>
-    <p>Models post-tensioning tendons and ducts straight from the designer's Excel profile.</p>
-    <div class="num">11,282</div>
-    <div class="lab">points across 59 beams on a live project, none skipped or failed</div>
-    <div class="links"><a href="insert-tendons.html">Case study →</a></div>
+    <span class="tag">DRAWINGS</span>
+    <h3>Opening Marks</h3>
+    <p>Finds every opening in a floor plan, including holes no cut makes, and crosses it out.</p>
+    <div class="num">37</div>
+    <div class="lab">openings marked on a 1,572-part floor plan, every line end within 1 mm</div>
+    <div class="status">Verified on a live drawing; dimension placement not yet checked</div>
+    <div class="links"><a href="opening_marks.html">Case study →</a></div>
   </article>
 </div>
+
+<div class="cat">Want all five side by side, with what each needs from you and how to install it? See the <a href="macro_catalog.html">Precast Macro Catalog</a>.</div>
 
 <h2>How each tool is built</h2>
 <div class="how">

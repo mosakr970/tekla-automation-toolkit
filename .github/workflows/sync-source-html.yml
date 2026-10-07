@@ -1,0 +1,36 @@
+name: Sync source HTML
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Check out source repository
+        run: git clone --depth 1 --branch main https://github.com/mosakr970/tekla_mcp_server-ms.git "$RUNNER_TEMP/source"
+
+      - name: Copy source HTML pages
+        run: cp "$RUNNER_TEMP"/source/docs/html/*.html .
+
+      - name: Commit changed pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- '*.html'
+          if git diff --cached --quiet; then
+            echo "No HTML changes to sync."
+            exit 0
+          fi
+          git commit -m "Sync HTML pages from tekla_mcp_server main"
+          git push origin HEAD:main

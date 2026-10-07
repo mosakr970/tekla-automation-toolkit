@@ -14,6 +14,7 @@ Five single-file Tekla Structures macros that take the repetitive measuring, mar
 | Auto Dimension | Drawing | Dimensions a drawing view to the grid, chained like a detailer would | 52 of 52 dimension points bound to the model | [auto dimension](https://mosakr970.github.io/tekla-automation-toolkit/auto_dimension.html) |
 | Opening Marks | Drawing | Finds every opening in a floor plan and crosses it out | 37 openings on a 1,572-part plan, every line end within 1 mm | [opening marks](https://mosakr970.github.io/tekla-automation-toolkit/opening_marks.html) |
 
+For all five side by side, with what each needs from you and how to install it, see the [Macro Catalog](https://mosakr970.github.io/tekla-automation-toolkit/macro_catalog.html).
 
 ## Status and limits
 

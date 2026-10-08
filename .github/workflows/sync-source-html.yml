@@ -10,18 +10,23 @@ permissions:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out this repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: main
 
       - name: Check out source repository
-        run: git clone --depth 1 --branch main https://github.com/mosakr970/tekla_mcp_server-ms.git "$RUNNER_TEMP/source"
+        uses: actions/checkout@v5
+        with:
+          repository: mosakr970/tekla_mcp_server-ms
+          ref: main
+          token: ${{ secrets.TEKLA_MCP_SERVER_TOKEN }}
+          path: source
 
       - name: Copy source HTML pages
-        run: cp "$RUNNER_TEMP"/source/docs/html/*.html .
+        run: cp source/docs/html/*.html .
 
       - name: Commit changed pages
         run: |

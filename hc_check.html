@@ -622,7 +622,7 @@
         <caption>Delivery routes</caption>
         <thead><tr><th>Route</th><th>Who it is for</th></tr></thead>
         <tbody>
-          <tr><td><strong>The macro</strong></td><td>Drop <code>HC Check.cs</code> into <code>XS_MACRO_DIRECTORY\modeling</code> and restart Tekla. It then sits in Applications &amp; components as <code>HC Check</code> - no installer, no command line, no runtime to match.</td></tr>
+          <tr><td><strong>The macro</strong></td><td>Double-click <code>HCCheck_1.0.tsep</code> and restart Tekla. It installs the macro and the starting ranges into every Tekla version from 2023 on, and the macro then sits in Applications &amp; components as <code>HC Check</code> - no command line, no runtime to match.</td></tr>
           <tr><td><strong>The window</strong></td><td>Non-modal and topmost, so Tekla stays usable while it is open - which matters, because double-clicking a result row selects and zooms that panel in the model.</td></tr>
           <tr><td><strong>The self-test</strong></td><td>Built into the same file, needs no model, and reports a pass or fail count. It replaces the pytest suite the earlier implementation had, because a macro has no CI, no linter and no type checker behind it.</td></tr>
         </tbody>
@@ -645,7 +645,7 @@
       <li>
         <div>
           <h4>Save</h4>
-          <p>Writes <code>hc_check.json</code> beside the macro, falling back to a per-user folder when the macro folder cannot be written to. Unknown keys are rejected rather than ignored, so a typo fails loudly instead of quietly dropping a limit. A fresh install is seeded from <code>hc_check.sample.json</code>, which carries real HCE profile values rather than placeholders.</p>
+          <p>Writes <code>hc_check.json</code> beside the macro, falling back to a per-user folder when the macro folder cannot be written to. Unknown keys are rejected rather than ignored, so a typo fails loudly instead of quietly dropping a limit. The installer ships the office's starting ranges as <code>hc_check.json</code>, and reinstalling replaces it. Without the file the window starts from built-in ranges carrying real HCE profile values rather than placeholders.</p>
         </div>
       </li>
       <li>

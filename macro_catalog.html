@@ -152,12 +152,12 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     <div class="tb-main">
       <span class="eyebrow">Tekla Structures · Macros · Guide</span>
       <h1>Macro Guide</h1>
-      <p>Five Tekla macros that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each macro is a single <code>.cs</code> file. There is nothing to install apart from copying it.</p>
+      <p>Five Tekla macros and one drawing plugin that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each one has its own <code>.tsep</code> installer. A double-click installs it into every Tekla version from 2023 on.</p>
     </div>
     <div class="tb-cells">
-      <div class="tb-cell"><span class="eyebrow">Macros</span><b>5</b></div>
+      <div class="tb-cell"><span class="eyebrow">Macros · Plugins</span><b>5 · 1</b></div>
       <div class="tb-cell"><span class="eyebrow">Tekla</span><b>2023.0 · 2025.0</b></div>
-      <div class="tb-cell"><span class="eyebrow">Install</span><b>Copy 1 file</b></div>
+      <div class="tb-cell"><span class="eyebrow">Install</span><b>Double-click 1 .tsep</b></div>
     </div>
   </header>
 
@@ -171,6 +171,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <li><a href="#hc-check">HC Check</a></li>
       <li><a href="#opening-marks">Opening Marks</a></li>
       <li><a href="#auto-dimension">Auto Dimension</a></li>
+      <li><a href="#ek-coordinate-mark">EK Coordinate Mark</a></li>
       <li><a href="#trouble">Troubleshooting</a></li>
     </ol>
   </nav>
@@ -186,32 +187,32 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td class="nowrap"><a href="#hc-check">HC Check</a></td><td><span class="pill mod">Model</span></td><td>Flags hollow-core panels the factory can't make</td><td>897 panels in under 1 min, against about 4.4 h by hand</td></tr>
           <tr><td class="nowrap"><a href="#opening-marks">Opening Marks</a></td><td><span class="pill drw">Drawing</span></td><td>Finds every opening in a floor plan and crosses it out</td><td>1 plan: 24 s, against 6 min by hand</td></tr>
           <tr><td class="nowrap"><a href="#auto-dimension">Auto Dimension</a></td><td><span class="pill drw">Drawing</span></td><td>Dimensions a plan view to the grid, chaining elements in a row</td><td>1 plan: 20 s, against 15 min by hand</td></tr>
+          <tr><td class="nowrap"><a href="#ek-coordinate-mark">EK Coordinate Mark</a></td><td><span class="pill drw">Drawing</span></td><td>Writes a point's coordinates, measured from the base point the view is located by</td><td>Not measured yet</td></tr>
         </tbody>
       </table>
     </div>
   </section>
 
   <section class="panel" id="install">
-    <div class="section-head"><h2>Getting started</h2><span>The same for all five macros</span></div>
+    <div class="section-head"><h2>Getting started</h2><span>The same for all five macros and the plugin</span></div>
 
     <div class="block">
-      <h3>1. Get the files</h3>
-      <p>The macros are kept here:</p>
+      <h3>1. Get the installers</h3>
+      <p>There is one installer per macro and one for the plugin, kept here:</p>
       <div class="path"><span class="todo">[MACROS FOLDER PATH]</span>
-├── modeling\   Insert Tendons.cs · EK Mark.cs · HC Check.cs · hc_check.sample.json
-└── drawings\   Opening Marks.cs · Auto Dimension.cs</div>
+└── release\   InsertTendons_1.0.tsep · EKMark_1.0.tsep · HCCheck_1.0.tsep · OpeningMarks_1.0.tsep · AutoDimension_1.0.tsep · EKCoordinateMark_1.0.tsep</div>
     </div>
 
     <div class="block">
-      <h3>2. Copy them into your Tekla macro folder</h3>
-      <p>Copy each file into the matching subfolder of your Tekla macro folder: model macros into <code>modeling\</code>, drawing macros into <code>drawings\</code>. The macro folder is the first folder listed in the <code>XS_MACRO_DIRECTORY</code> advanced option (<b class="ui">File → Settings → Advanced options</b>). On a standard install it is:</p>
+      <h3>2. Install them</h3>
+      <p>Double-click each <code>.tsep</code>, or open it in Tekla's <b class="ui">Extension Manager</b>. It installs the macro into every Tekla version from 2023 on, for example both 2023.0 and 2025.0, in the common macro folder:</p>
       <div class="path">C:\ProgramData\Trimble\Tekla Structures\&lt;version&gt;\environments\common\macros\</div>
-      <p>Copy them for each Tekla version you use, for example both 2023.0 and 2025.0.</p>
+      <p>Model macros land in <code>modeling\</code>, drawing macros in <code>drawings\</code>. The HC Check installer also puts the starting ranges, <code>hc_check.json</code>, in the macro folder itself. Reinstalling HC Check replaces that file, so keep a copy of ranges you have saved. The plugin installs into <code>extensions\EKCoordinateMark</code> beside the macro folder. If your firm points the <code>XS_MACRO_DIRECTORY</code> advanced option (<b class="ui">File → Settings → Advanced options</b>) at a different folder, the installed macros are not listed.</p>
     </div>
 
     <div class="block">
       <h3>3. Restart Tekla and run</h3>
-      <p>Tekla only picks up macros when it starts. After restarting, open <b class="ui">Applications &amp; components</b> and find the macro under <b class="ui">Macros</b>. Model macros run with the model open. Drawing macros run with the drawing open.</p>
+      <p>Tekla only picks up macros when it starts. After restarting, open <b class="ui">Applications &amp; components</b> and find the macro under <b class="ui">Macros</b>, or search for <b>EKCoordinateMark</b>. Model macros run with the model open. Drawing macros run with the drawing open.</p>
     </div>
 
     <div class="block">
@@ -225,7 +226,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       </ul>
     </div>
 
-    <p class="note"><b>Updating a macro?</b> Replace the file and restart Tekla. Tekla keeps the old version loaded until it restarts, so a new file has no effect before that.</p>
+    <p class="note"><b>Updating a macro or the plugin?</b> Install the new <code>.tsep</code> and restart Tekla. Tekla keeps the old version loaded until it restarts, so a new file has no effect before that.</p>
   </section>
 
   <div class="section-head"><h2>The macros</h2><span>What each needs, how to use it, what the settings mean, and where it stops</span></div>
@@ -564,17 +565,74 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     </div>
   </article>
 
+  <!-- EK Coordinate Mark -->
+  <article class="sheet" id="ek-coordinate-mark">
+    <div class="sheet-head">
+      <span class="sheet-no">DRW-03</span>
+      <h3>EK Coordinate Mark</h3>
+      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Not yet checked on a live drawing</span></div>
+    </div>
+    <div class="sheet-intro">
+      <p class="lede">Writes a picked point's coordinates beside it, as a text with a leader line. The coordinates are measured from the base point the view is located by, in the order, unit and decimals you set. It is a plugin, not a macro, so each mark stays live and can be changed later.</p>
+      <p><b>Use it</b> for setting-out points, slab corners and anchor bolts on drawings that site reads coordinates from.</p>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <div class="block">
+          <span class="label">Step by step</span>
+          <ol class="tight">
+            <li>Open the drawing and check the view's <b class="ui">Location by</b> is the base point the coordinates should be measured from.</li>
+            <li>Start <b>EKCoordinateMark</b> from <b class="ui">Applications &amp; components</b>. Set the coordinates, order, unit and decimals. <b class="ui">Save</b> them under a name to use again.</li>
+            <li>Pick the coordinate point, then pick where the text goes. Both picks must be in the same view.</li>
+            <li>To change marks already placed, select them, change the settings and press <b class="ui">Modify</b>. <b class="ui">Get</b> reads the settings back from a mark.</li>
+          </ol>
+        </div>
+        <div class="block">
+          <span class="label">Measured from</span>
+          <ul class="tight">
+            <li><b>Model origin</b>: the model's global origin</li>
+            <li><b>Project base point</b>: the project base point</li>
+            <li><b>A named base point</b>: that base point. If the model has none of that name, it stops with an error.</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">Settings</span>
+          <table class="settings">
+            <tr><td>Create X / Y / Z</td><td class="def">all on</td><td>Which coordinates the mark shows</td></tr>
+            <tr><td>Prefix / Postfix</td><td class="def">blank</td><td>Text before and after each coordinate, such as <code>X=</code></td></tr>
+            <tr><td>Text</td><td class="def">standard</td><td>Text attribute file (<code>.drtxt</code>)</td></tr>
+            <tr><td>Order</td><td class="def">XYZ</td><td>The order of the lines, one coordinate each</td></tr>
+            <tr><td>Unit</td><td class="def">m</td><td>m, cm or mm</td></tr>
+            <tr><td>Decimals</td><td class="def">3</td><td>0 to 3</td></tr>
+          </table>
+        </div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>A point picked outside any view creates nothing, without a message.</li>
+            <li>One point per mark, so many points means picking each one.</li>
+            <li>It hasn't been timed or checked against known coordinates on a live drawing yet.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
   <section class="wrap" style="gap:12px" id="trouble">
     <div class="section-head"><h2>Troubleshooting</h2><span>Common problems and what causes them</span></div>
     <div class="table-scroll">
       <table>
         <thead><tr><th>Problem</th><th>Cause and fix</th></tr></thead>
         <tbody>
-          <tr><td>The macro isn't listed in Applications &amp; components</td><td>Tekla wasn't restarted after copying, or the file is in the wrong folder. Model macros go in <code>modeling\</code>, drawing macros in <code>drawings\</code>.</td></tr>
+          <tr><td>The macro isn't listed in Applications &amp; components</td><td>Tekla wasn't restarted after installing, or <code>XS_MACRO_DIRECTORY</code> points at a firm folder instead of the common macro folder the installer writes to.</td></tr>
           <tr><td>A new version behaves like the old one</td><td>Tekla keeps the old version loaded until it restarts. Restart Tekla.</td></tr>
           <tr><td>Only a few items were scanned or checked</td><td>Something is selected in the model. The model macros work on the selection when there is one. Clear it to cover the whole model.</td></tr>
           <tr><td>Nothing found</td><td>The prefix doesn't match, or the pieces aren't numbered</td></tr>
           <tr><td>"Select one view" or "No view selected"</td><td>Drawing macros need exactly one view selected in the open drawing</td></tr>
+          <tr><td>Coordinates are measured from the wrong point</td><td>EK Coordinate Mark measures from the view's <b class="ui">Location by</b>. Change it in the view properties, then reopen the drawing or <b class="ui">Modify</b> the marks.</td></tr>
+          <tr><td>EK Coordinate Mark placed nothing</td><td>The point was picked outside a view. Pick both points inside the same view.</td></tr>
           <tr><td>The window freezes during a run</td><td>Expected for longer runs, such as EK Mark on a whole model. The work happens on Tekla's thread, so let it finish.</td></tr>
           <tr><td>HC Check colours disappeared</td><td>A view redraw clears temporary colours. Run the check again.</td></tr>
         </tbody>

@@ -659,11 +659,11 @@
       </li>
       <li>
         <h4>Not covered by the test suite <span class="chip known">process</span></h4>
-        <p>It is C# running inside Tekla's macro engine, so none of the repository's unit tests touch it - every change is verified by running it on a real drawing. Unlike the print, export and selection macros it is also not auto-installed by the server: it has to be placed in <code>XS_MACRO_DIRECTORY</code> by hand. Worse, a macro is loaded <strong>once per Tekla session</strong>: editing a deployed <code>.cs</code> makes Tekla recompile it, but the assembly already in memory keeps running, so the first version run in a session is the version you keep. Measured to the second - the cached DLL written at 19:12:29 held the new code, and the report written at 19:12:30 came from the old one. Restart Tekla whenever a change &ldquo;has not applied&rdquo;.</p>
+        <p>It is C# running inside Tekla's macro engine, so none of the repository's unit tests touch it - every change is verified by running it on a real drawing. Unlike the print, export and selection macros it is also not auto-installed by the server: it is installed from its own <code>.tsep</code>. Worse, a macro is loaded <strong>once per Tekla session</strong>: editing a deployed <code>.cs</code> makes Tekla recompile it, but the assembly already in memory keeps running, so the first version run in a session is the version you keep. Measured to the second - the cached DLL written at 19:12:29 held the new code, and the report written at 19:12:30 came from the old one. Restart Tekla whenever a change &ldquo;has not applied&rdquo;.</p>
       </li>
       <li>
         <h4>Most tuning is still hard-coded <span class="chip soft">workflow</span></h4>
-        <p>The opening threshold and the recess, grid and every-part ticks are in the window. The 300 mm alignment window and 2000 mm chaining gap are not - they are tuned for rows of precast panels, and another typology needs editing and reinstalling the macro.</p>
+        <p>The opening threshold and the recess, grid and every-part ticks are in the window. The 300 mm alignment window and 2000 mm chaining gap are not - they are tuned for rows of precast panels, and another typology needs editing the macro and rebuilding its installer.</p>
       </li>
     </ul>
   </section>
@@ -749,7 +749,7 @@
   <section>
     <div class="head"><span class="bubble">G</span><h2>Running it</h2></div>
     <ol>
-      <li>Copy the macro into a <code>drawings</code> subfolder of <code>XS_MACRO_DIRECTORY</code>, then <strong>restart Tekla</strong> - macro content is registered only at startup, and a macro already loaded in the session is never replaced.</li>
+      <li>Install the macro: double-click its <code>.tsep</code> installer from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong> - macro content is registered only at startup, and a macro already loaded in the session is never replaced.</li>
       <li>Open the drawing and select <strong>exactly one view</strong>. With <em>Grids</em> ticked the view must show the grid.</li>
       <li>Run the macro from Applications &amp; components, or through the server's <code>run_macro</code> tool.</li>
       <li>Press <em>Scan view</em>. The series list fills with the prefixes found and their counts.</li>

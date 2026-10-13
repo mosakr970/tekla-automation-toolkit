@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>EK Coordinate Mark</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:        #f7f9fb;
+    --surface:      #ffffff;
+    --surface-sunk: #eef2f6;
+    --ink:          #16202b;
+    --ink-soft:     #4a5765;
+    --ink-faint:    #798696;
+    --hairline:     #dbe2ea;
+    --hairline-hard:#c2cddb;
+    --accent:       #0068bd;
+    --accent-soft:  #e3eefa;
+    --warn:         #a05a05;
+    --warn-soft:    #fbeedb;
+    --stop:         #a3241b;
+    --stop-soft:    #fbe6e4;
+    --ok:           #15694a;
+    --ok-soft:      #dff0e8;
+
+    --measure: 68ch;
+    --step-0: 1rem;
+    --step-1: 1.15rem;
+    --step-2: 1.45rem;
+    --step-3: 1.9rem;
+    --step-4: clamp(2.1rem, 6vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #0e141a;
+      --surface:      #151d25;
+      --surface-sunk: #1b242e;
+      --ink:          #e2e9f0;
+      --ink-soft:     #a7b4c2;
+      --ink-faint:    #7d8b9a;
+      --hairline:     #2a3641;
+      --hairline-hard:#3b4a58;
+      --accent:       #56a9ec;
+      --accent-soft:  #142838;
+      --warn:         #e0a758;
+      --warn-soft:    #2e2415;
+      --stop:         #ef8b80;
+      --stop-soft:    #331a18;
+      --ok:           #63c69c;
+      --ok-soft:      #12281f;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #0e141a;
+    --surface:      #151d25;
+    --surface-sunk: #1b242e;
+    --ink:          #e2e9f0;
+    --ink-soft:     #a7b4c2;
+    --ink-faint:    #7d8b9a;
+    --hairline:     #2a3641;
+    --hairline-hard:#3b4a58;
+    --accent:       #56a9ec;
+    --accent-soft:  #142838;
+    --warn:         #e0a758;
+    --warn-soft:    #2e2415;
+    --stop:         #ef8b80;
+    --stop-soft:    #331a18;
+    --ok:           #63c69c;
+    --ok-soft:      #12281f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: var(--step-0);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* ---- masthead ---- */
+
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-block: 3rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .masthead h1 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead h1 span { display: block; color: var(--accent); }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.85rem;
+  }
+  .stamp {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.74rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0 1.1rem;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .stamp dt { color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; }
+  .stamp dd { margin: 0; }
+
+  .standfirst {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 1.75rem 0 2.5rem;
+  }
+
+  /* ---- section scaffolding: grid bubbles, as on a drawing ---- */
+
+  section { margin-block-start: 3.75rem; }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+  .bubble {
+    flex: 0 0 auto;
+    width: 2.05rem;
+    height: 2.05rem;
+    border: 1.5px solid var(--hairline-hard);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--surface);
+  }
+  .head h2 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-3);
+    letter-spacing: -0.018em;
+    margin: 0;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .head::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--hairline);
+  }
+
+  h3 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+    margin: 2rem 0 0.55rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.45rem; }
+  li::marker { color: var(--ink-faint); }
+
+  code, .num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.86em;
+    font-variant-numeric: tabular-nums;
+  }
+  code {
+    background: var(--surface-sunk);
+    padding: 0.08em 0.36em;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---- the drawing figure ---- */
+
+  figure { margin: 0 0 1.5rem; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.25rem 1rem 0.75rem;
+  }
+  .figframe svg { display: block; min-width: 620px; width: 100%; height: auto; }
+  figcaption {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    margin-top: 0.7rem;
+    max-width: var(--measure);
+    line-height: 1.6;
+  }
+
+  .part      { fill: var(--surface-sunk); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .void      { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1.1; stroke-dasharray: 4 3; }
+  .gridline  { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 10 4 2 4; }
+  .gridbub   { fill: var(--surface); stroke: var(--ink-faint); stroke-width: 1.2; }
+  .witness   { stroke: var(--accent); stroke-width: 0.9; opacity: 0.55; }
+  .dimline   { stroke: var(--accent); stroke-width: 1.5; }
+  .tick      { stroke: var(--accent); stroke-width: 1.5; }
+  .dimtext   { fill: var(--accent); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500; }
+  .anno      { fill: var(--ink-faint); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.07em; }
+  .gridtext  { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; font-weight: 600; }
+
+  /* ---- the run: a real sequence, so it is numbered ---- */
+
+  .run { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .run > li {
+    display: grid;
+    grid-template-columns: 3.1rem 1fr;
+    gap: 0 1rem;
+    padding-block: 1.05rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+  }
+  .run > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .run .step {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    padding-top: 0.2em;
+  }
+  .run h4 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+  }
+  .run p { margin: 0; color: var(--ink-soft); max-width: var(--measure); }
+
+  /* ---- tables ---- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  caption {
+    text-align: left;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.6rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  thead th {
+    font-family: "Archivo", sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.84rem;
+  }
+
+  /* ---- limitations ---- */
+
+  .limits { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .limits > li {
+    border-top: 1px solid var(--hairline);
+    padding-block: 1rem;
+    margin: 0;
+  }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Archivo", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); }
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 0.18em 0.5em;
+    border-radius: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chip.hard  { background: var(--stop-soft); color: var(--stop); }
+  .chip.soft  { background: var(--warn-soft); color: var(--warn); }
+  .chip.known { background: var(--accent-soft); color: var(--accent); }
+  .chip.ok    { background: var(--ok-soft);   color: var(--ok); }
+
+  /* ---- callout ---- */
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    max-width: var(--measure);
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ---- estimate panel ---- */
+
+  .est {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin: 1.5rem 0;
+  }
+  .est > div { background: var(--surface); padding: 1.1rem 1.1rem 1.2rem; }
+  .est dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+  }
+  .est dd {
+    margin: 0;
+    font-family: "Archivo", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .est dd small {
+    display: block;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--ink);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+  /* ---- coordinate mark figure ---- */
+  .mark      { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+  .pick      { fill: var(--accent); }
+  .base      { stroke: var(--ink-soft); stroke-width: 1.4; fill: none; }
+  .marktext  { fill: var(--accent); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 13px; font-weight: 500; }
+
+  @media (max-width: 540px) {
+    .head { gap: 0.65rem; }
+    .bubble { width: 1.75rem; height: 1.75rem; font-size: 0.72rem; }
+    .run > li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <p class="kicker">Tekla Structures &middot; drawing plugin</p>
+      <h1>EK Coordinate Mark <span>by the view's base point</span></h1>
+    </div>
+    <dl class="stamp">
+      <dt>Files</dt><dd>config/plugins/EKCoordinateMark/</dd>
+      <dt>Language</dt><dd>C# &middot; Tekla drawing plugin</dd>
+      <dt>Built</dt><dd>2026-10-09</dd>
+      <dt>Installer</dt><dd>EKCoordinateMark_1.0.tsep</dd>
+    </dl>
+  </header>
+
+  <p class="standfirst">Pick a point, pick where the text goes. The plugin writes the point's coordinates beside it with a leader line, measured from the base point the view is located by, in the order, unit and decimals set in its dialog.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 760 250" role="img" aria-label="A slab in plan with a project base point at the lower left. A point at the slab's corner is picked, and a leader line runs from it to a text of three lines, X, Y and Z, measured from the base point.">
+        <rect class="part" x="150" y="60" width="330" height="150"/>
+        <text class="anno" x="158" y="52">SLAB</text>
+
+        <!-- base point the view is located by -->
+        <circle class="base" cx="60" cy="226" r="9"/>
+        <line class="base" x1="46" y1="226" x2="74" y2="226"/>
+        <line class="base" x1="60" y1="212" x2="60" y2="240"/>
+        <text class="anno" x="78" y="244">PROJECT BASE POINT</text>
+
+        <!-- picked point and leader line to the text -->
+        <circle class="pick" cx="480" cy="60" r="4"/>
+        <polyline class="mark" points="480,60 560,40 700,40"/>
+        <text class="marktext" x="566" y="64">X=12.400</text>
+        <text class="marktext" x="566" y="82">Y=6.000</text>
+        <text class="marktext" x="566" y="100">Z=0.000</text>
+        <text class="anno" x="490" y="128">PICK 1: POINT</text>
+        <text class="anno" x="566" y="30">PICK 2: TEXT</text>
+      </svg>
+    </div>
+    <figcaption>An illustration, not a measured mark. The coordinates are measured from the base point the view is located by, here a project base point, in metres with 3 decimals and in XYZ order, the defaults for a new mark.</figcaption>
+  </figure>
+
+  <section>
+    <div class="head"><span class="bubble">A</span><h2>What it does</h2></div>
+
+    <p>It is a drawing plugin, not a macro. Each mark it places stays a plugin object in the drawing, with its two picks as handles, so its settings can be changed later and Tekla runs it again when the drawing is opened.</p>
+
+    <ol class="run">
+      <li>
+        <span class="step">01</span>
+        <div>
+          <h4>Set the format</h4>
+          <p>In the dialog: which of X, Y and Z to show, each with a prefix and a postfix, the order of the lines, the unit, the decimals and the text attribute file. Settings can be saved under a name and loaded again.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">02</span>
+        <div>
+          <h4>Pick the point, then the text location</h4>
+          <p>Both picks are taken together, so they always lie in the same view. The plugin places a text at the second pick with a leader line to the first, one line per coordinate.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">03</span>
+        <div>
+          <h4>Change marks already placed</h4>
+          <p><em>Modify</em> writes the dialog's settings to the selected marks and rewrites their text. <em>Get</em> reads the settings of the selected mark back into the dialog.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">B</span><h2>Which coordinate system</h2></div>
+
+    <p>A drawing view already says where its coordinates are measured from, in its <em>Location by</em> property. The plugin reads that property and uses it, so the mark always agrees with the view it sits in. There is no separate setting to keep in step.</p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>The view's Location by &middot; what the mark is measured from</caption>
+        <thead>
+          <tr><th>Location by</th><th>Coordinates measured from</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Model origin</td><td>The model's global origin</td></tr>
+          <tr><td>Project base point</td><td>The project base point</td></tr>
+          <tr><td>A named base point</td><td>That base point. If the model has no base point of that name, the plugin stops with an error, rather than falling back to the model origin without saying so.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The work plane</h3>
+    <p>The picked point comes in the view's display coordinates. It is turned into global model coordinates with the view's coordinate system, then into the base point's coordinates with <code>BasePoint.ConvertToBasePoint</code>. That call reads its input in the current work plane, not in global coordinates, so the plugin sets the global work plane for the call and restores the previous one in a <code>finally</code>.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">C</span><h2>The settings</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Dialog settings</caption>
+        <thead>
+          <tr><th>Field</th><th>Default</th><th>What it controls</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Create</code> X / Y / Z</td><td class="v">all on</td><td>Which coordinates the mark shows</td></tr>
+          <tr><td><code>Prefix</code> / <code>Postfix</code></td><td class="v">blank</td><td>Text before and after each coordinate, such as <code>X=</code> or <code> m</code></td></tr>
+          <tr><td><code>Text</code></td><td class="v">standard</td><td>Text attribute file, listed from the <code>.drtxt</code> files in the model, project, firm and system folders. A name can also be typed</td></tr>
+          <tr><td><code>Order</code></td><td class="v">XYZ</td><td>The order of the lines, any of the six</td></tr>
+          <tr><td><code>Unit</code></td><td class="v">m</td><td>m, cm or mm</td></tr>
+          <tr><td><code>Decimals</code></td><td class="v">3</td><td>0 to 3</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="lbl">The buttons</span>
+      <p><em>OK</em> and <em>Apply</em> set the values for new marks &middot; <em>Modify</em> writes them to the selected marks &middot; <em>Get</em> reads them from the selected mark &middot; <em>Load</em> and <em>Save</em> work on named settings in the model's <code>attributes</code> folder.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">D</span><h2>The dialog's traps</h2></div>
+
+    <p>Each of these makes the plugin do the wrong thing without an error.</p>
+
+    <ul>
+      <li><strong>An Integer 0 arrives as blank.</strong> Tekla hands an integer field of 0 to the plugin as blank, which reads as "not set" and falls back to the default of 3 decimals. <code>Decimals</code> is passed as text instead.</li>
+      <li><strong>A cleared checkbox is blank too, not 0.</strong> Only a 1 means ticked.</li>
+      <li><strong>Inputs are found by reflection.</strong> Tekla binds the dialog's inputs by reading the form's private instance fields, the way the designer would generate them. An input held only in a local variable is never bound.</li>
+      <li><strong>A binding writes only when its input is validated.</strong> A checkbox or a list can skip that before a button is pressed, so the button used the old value. Every change is now written at once.</li>
+      <li><strong>A first run has nothing saved.</strong> With no <code>standard</code> values yet, every field is blank, which would create marks with no coordinates. The defaults are written through Tekla's own storage when the dialog opens, because setting the inputs directly is undone when the storage refreshes them.</li>
+    </ul>
+
+    <p>And one in the formatting: a small negative value rounded to zero printed as <code>-0.000</code>. Adding <code>0.0</code> after rounding turns the negative zero into a plain zero.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">E</span><h2>One build for every version</h2></div>
+
+    <p>A plugin is a compiled DLL, not source that Tekla compiles at startup, so it has to be built. It is compiled once against the Tekla 2023 assemblies, the oldest version supported, and later versions load it through their own. <code>Build-Tsep.ps1</code> compiles it and packages it into <code>config/release/EKCoordinateMark_1.0.tsep</code>, which installs it into <code>extensions\EKCoordinateMark</code> of every Tekla version from 2023 on.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">F</span><h2>Limitations</h2></div>
+
+    <ul class="limits">
+      <li>
+        <h4>A pick outside a view creates nothing <span class="chip soft">workflow</span></h4>
+        <p>A point picked on the sheet outside any view has no model position. The plugin creates nothing, without a message.</p>
+      </li>
+      <li>
+        <h4>One point per mark <span class="chip soft">workflow</span></h4>
+        <p>Marking many points means picking each one.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">G</span><h2>Where it stands</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td>Compiled against</td><td>Tekla Structures 2023.0, one DLL for every later version</td></tr>
+          <tr><td>Packaged</td><td><code>EKCoordinateMark_1.0.tsep</code>, into <code>extensions\EKCoordinateMark</code> of every version from 2023 on</td></tr>
+          <tr><td>Not yet recorded</td><td>A timed run, and a check of the marks against known base-point coordinates on a live drawing <span class="chip soft">open</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">H</span><h2>Running it</h2></div>
+    <ol>
+      <li>Install the plugin: double-click <code>EKCoordinateMark_1.0.tsep</code> from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong>.</li>
+      <li>Open a drawing, and check the view's <em>Location by</em> is the base point the coordinates should be measured from.</li>
+      <li>Start <em>EKCoordinateMark</em> from Applications &amp; components. Set the coordinates, order, unit and decimals, and <em>Save</em> them under a name to use again.</li>
+      <li>Pick the coordinate point, then pick where the text goes, in the same view.</li>
+      <li>To change marks already placed, select them, change the settings and press <em>Modify</em>.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/plugins/EKCoordinateMark &middot; written 2026-10-12 against plugin source<br>
+    EKCoordinateMark.cs, MainForm.cs &middot; C# against Tekla.Structures.Drawing, Tekla.Structures.Model and Tekla.Structures.Plugins &middot; compiled against 2023.0 &middot; no timed run or live check recorded yet
+  </footer>
+
+</div>
+
+</body></html>

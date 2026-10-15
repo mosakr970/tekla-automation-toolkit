@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Drawing Creator</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:        #f7f9fb;
+    --surface:      #ffffff;
+    --surface-sunk: #eef2f6;
+    --ink:          #16202b;
+    --ink-soft:     #4a5765;
+    --ink-faint:    #798696;
+    --hairline:     #dbe2ea;
+    --hairline-hard:#c2cddb;
+    --accent:       #0068bd;
+    --accent-soft:  #e3eefa;
+    --warn:         #a05a05;
+    --warn-soft:    #fbeedb;
+    --stop:         #a3241b;
+    --stop-soft:    #fbe6e4;
+    --ok:           #15694a;
+    --ok-soft:      #dff0e8;
+
+    --measure: 68ch;
+    --step-0: 1rem;
+    --step-1: 1.15rem;
+    --step-2: 1.45rem;
+    --step-3: 1.9rem;
+    --step-4: clamp(2.1rem, 6vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #0e141a;
+      --surface:      #151d25;
+      --surface-sunk: #1b242e;
+      --ink:          #e2e9f0;
+      --ink-soft:     #a7b4c2;
+      --ink-faint:    #7d8b9a;
+      --hairline:     #2a3641;
+      --hairline-hard:#3b4a58;
+      --accent:       #56a9ec;
+      --accent-soft:  #142838;
+      --warn:         #e0a758;
+      --warn-soft:    #2e2415;
+      --stop:         #ef8b80;
+      --stop-soft:    #331a18;
+      --ok:           #63c69c;
+      --ok-soft:      #12281f;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #0e141a;
+    --surface:      #151d25;
+    --surface-sunk: #1b242e;
+    --ink:          #e2e9f0;
+    --ink-soft:     #a7b4c2;
+    --ink-faint:    #7d8b9a;
+    --hairline:     #2a3641;
+    --hairline-hard:#3b4a58;
+    --accent:       #56a9ec;
+    --accent-soft:  #142838;
+    --warn:         #e0a758;
+    --warn-soft:    #2e2415;
+    --stop:         #ef8b80;
+    --stop-soft:    #331a18;
+    --ok:           #63c69c;
+    --ok-soft:      #12281f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: var(--step-0);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* ---- masthead ---- */
+
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-block: 3rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .masthead h1 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead h1 span { display: block; color: var(--accent); }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.85rem;
+  }
+  .stamp {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.74rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0 1.1rem;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .stamp dt { color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; }
+  .stamp dd { margin: 0; }
+
+  .standfirst {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 1.75rem 0 2.5rem;
+  }
+
+  /* ---- section scaffolding: grid bubbles, as on a drawing ---- */
+
+  section { margin-block-start: 3.75rem; }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+  .bubble {
+    flex: 0 0 auto;
+    width: 2.05rem;
+    height: 2.05rem;
+    border: 1.5px solid var(--hairline-hard);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--surface);
+  }
+  .head h2 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-3);
+    letter-spacing: -0.018em;
+    margin: 0;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .head::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--hairline);
+  }
+
+  h3 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+    margin: 2rem 0 0.55rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.45rem; }
+  li::marker { color: var(--ink-faint); }
+
+  code, .num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.86em;
+    font-variant-numeric: tabular-nums;
+  }
+  code {
+    background: var(--surface-sunk);
+    padding: 0.08em 0.36em;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---- the drawing figure ---- */
+
+  figure { margin: 0 0 1.5rem; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.25rem 1rem 0.75rem;
+  }
+  .figframe svg { display: block; min-width: 620px; width: 100%; height: auto; }
+  figcaption {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    margin-top: 0.7rem;
+    max-width: var(--measure);
+    line-height: 1.6;
+  }
+
+  .part      { fill: var(--surface-sunk); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .void      { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1.1; stroke-dasharray: 4 3; }
+  .gridline  { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 10 4 2 4; }
+  .gridbub   { fill: var(--surface); stroke: var(--ink-faint); stroke-width: 1.2; }
+  .witness   { stroke: var(--accent); stroke-width: 0.9; opacity: 0.55; }
+  .dimline   { stroke: var(--accent); stroke-width: 1.5; }
+  .tick      { stroke: var(--accent); stroke-width: 1.5; }
+  .dimtext   { fill: var(--accent); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500; }
+  .anno      { fill: var(--ink-faint); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.07em; }
+  .gridtext  { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; font-weight: 600; }
+
+  /* ---- the run: a real sequence, so it is numbered ---- */
+
+  .run { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .run > li {
+    display: grid;
+    grid-template-columns: 3.1rem 1fr;
+    gap: 0 1rem;
+    padding-block: 1.05rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+  }
+  .run > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .run .step {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    padding-top: 0.2em;
+  }
+  .run h4 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+  }
+  .run p { margin: 0; color: var(--ink-soft); max-width: var(--measure); }
+
+  /* ---- tables ---- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  caption {
+    text-align: left;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.6rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  thead th {
+    font-family: "Archivo", sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.84rem;
+  }
+
+  /* ---- limitations ---- */
+
+  .limits { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .limits > li {
+    border-top: 1px solid var(--hairline);
+    padding-block: 1rem;
+    margin: 0;
+  }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Archivo", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); }
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 0.18em 0.5em;
+    border-radius: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chip.hard  { background: var(--stop-soft); color: var(--stop); }
+  .chip.soft  { background: var(--warn-soft); color: var(--warn); }
+  .chip.known { background: var(--accent-soft); color: var(--accent); }
+  .chip.ok    { background: var(--ok-soft);   color: var(--ok); }
+
+  /* ---- callout ---- */
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    max-width: var(--measure);
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ---- estimate panel ---- */
+
+  .est {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin: 1.5rem 0;
+  }
+  .est > div { background: var(--surface); padding: 1.1rem 1.1rem 1.2rem; }
+  .est dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+  }
+  .est dd {
+    margin: 0;
+    font-family: "Archivo", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .est dd small {
+    display: block;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--ink);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+
+  /* ---- drawing creator figure ---- */
+  .row       { fill: var(--surface); stroke: var(--hairline-hard); stroke-width: 1; }
+  .rowon     { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+  .rowtext   { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; }
+  .sheetbox  { fill: var(--surface); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .frame     { fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 5 3; }
+  .arrow     { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .centre    { stroke: var(--ink-faint); stroke-width: 0.9; stroke-dasharray: 3 3; }
+
+  @media (max-width: 540px) {
+    .head { gap: 0.65rem; }
+    .bubble { width: 1.75rem; height: 1.75rem; font-size: 0.72rem; }
+    .run > li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <p class="kicker">Tekla Structures &middot; modeling macro</p>
+      <h1>Drawing Creator <span>one GA drawing per model view</span></h1>
+    </div>
+    <dl class="stamp">
+      <dt>File</dt><dd>config/macros/modeling/Drawing Creator.cs</dd>
+      <dt>Language</dt><dd>C# &middot; Tekla macro</dd>
+      <dt>Built</dt><dd>2026-10-14</dd>
+      <dt>Installer</dt><dd>DrawingCreator_1.0.tsep</dd>
+    </dl>
+  </header>
+
+  <p class="standfirst">Every model view is one row. Set the drawing name, the three titles and the saved drawing and view properties per row, tick the rows, and one button makes a GA drawing of each, with the view cut from the model view and centred on the sheet.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 760 260" role="img" aria-label="A list of model view rows on the left, two of them ticked. An arrow leads to a drawing sheet on the right, with the view of a ticked row centred on it.">
+        <text class="anno" x="20" y="28">MODEL VIEWS</text>
+        <rect class="rowon" x="20" y="40" width="300" height="30"/>
+        <text class="rowtext" x="32" y="60">&#x2611; 1. korruse plaan</text><text class="rowtext" x="215" y="60">EK-5-101</text>
+        <rect class="row" x="20" y="76" width="300" height="30"/>
+        <text class="rowtext" x="32" y="96">&#x2610; 2. korruse plaan</text><text class="rowtext" x="215" y="96">EK-5-</text>
+        <rect class="rowon" x="20" y="112" width="300" height="30"/>
+        <text class="rowtext" x="32" y="132">&#x2611; L&#xf5;ige teljel 1</text><text class="rowtext" x="215" y="132">EK-6-</text>
+        <rect class="row" x="20" y="148" width="300" height="30"/>
+        <text class="rowtext" x="32" y="168">&#x2610; Telg A</text><text class="rowtext" x="215" y="168">Telg A</text>
+
+        <path class="arrow" d="M335 110 L395 110 M385 103 L395 110 L385 117"/>
+        <text class="anno" x="336" y="96">CREATE</text>
+
+        <rect class="sheetbox" x="410" y="30" width="320" height="210"/>
+        <text class="anno" x="418" y="24">GA DRAWING &middot; SHEET</text>
+        <line class="centre" x1="570" y1="30" x2="570" y2="240"/>
+        <line class="centre" x1="410" y1="135" x2="730" y2="135"/>
+        <rect class="frame" x="485" y="80" width="170" height="110"/>
+        <rect class="part" x="500" y="95" width="140" height="80"/>
+        <text class="anno" x="493" y="206">VIEW, CENTRED</text>
+      </svg>
+    </div>
+    <figcaption>An illustration, not a measured drawing. Each ticked row becomes one GA drawing holding one view, cut from the model view's plane, extent and depth, with its frame centred on the sheet.</figcaption>
+  </figure>
+
+  <section>
+    <div class="head"><span class="bubble">A</span><h2>What it does</h2></div>
+
+    <p>It is a modeling macro, run from the model with no drawing open, because the drawings are made from the model. Macros in the drawings folder are listed only inside the drawing editor.</p>
+
+    <ol class="run">
+      <li>
+        <span class="step">01</span>
+        <div>
+          <h4>List the model views</h4>
+          <p>Every named model view, saved and open alike, is one row, sorted by name. A filter narrows the list, and the tick box in the header ticks every shown row, so hidden rows keep their ticks.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">02</span>
+        <div>
+          <h4>Fill in the rows</h4>
+          <p>The drawing name, Title 1, 2 and 3, the drawing properties and the view properties. <code>{view}</code> in the name or a title is replaced by the model view's name. Rows are kept per model, so the next run starts where the last ended.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">03</span>
+        <div>
+          <h4>Create drawings</h4>
+          <p>Every ticked and shown row is checked, then made into a GA drawing with one view. The Status column shows each new drawing's mark, or why the row failed. A drawing that could not be completed is deleted again, so a failed row leaves nothing behind.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">B</span><h2>The row's starting values</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>A new row &middot; following the EK document list</caption>
+        <thead>
+          <tr><th>Field</th><th>Starts as</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Drawing name</td><td class="v">EK-5- / EK-6-</td><td><code>EK-5-</code> for a view with 'plaan' in its name, <code>EK-6-</code> for one with 'teljel'. Any other view keeps its own name</td></tr>
+          <tr><td>Title 1</td><td class="v">view name</td><td>The model view's name</td></tr>
+          <tr><td>Title 2 / Title 3</td><td class="v">blank</td><td></td></tr>
+          <tr><td>Drawing properties</td><td class="v">blank</td><td>A saved GA drawing file, <code>.gd</code></td></tr>
+          <tr><td>View properties</td><td class="v">blank</td><td>A saved drawing view file, <code>.vi</code>. It sets the view's scale, filters and contents</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Where the properties are read from</h3>
+    <p>The lists are read from the files on disk each time the window opens and on <em>Refresh</em>: the model's <code>attributes</code> folder, the model folder, and each folder in <code>XS_PROJECT</code>, <code>XS_FIRM</code> and <code>XS_SYSTEM</code> with its <code>attributes</code> subfolder - the places Tekla's own dialogs read. A name found in several folders is listed once, and a firm folder that cannot be reached is skipped.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">C</span><h2>From model view to drawing view</h2></div>
+
+    <p>Each drawing holds one view, built from the model view itself. Two of the model view's properties look like what is needed and are not.</p>
+
+    <ul>
+      <li><strong><code>DisplayCoordinateSystem</code> is only the on-screen rotation.</strong> It is the angle the 3D view is looked at from. The plane the view lies in is <code>ViewCoordinateSystem</code>, used for both of the drawing view's coordinate systems.</li>
+      <li><strong><code>WorkArea</code> is in global coordinates.</strong> It is an axis-aligned box in the model, so its eight corners are moved into the view plane and boxed again. The box is then cut to the view depth up and down, since an axis view's work area often still spans the whole model.</li>
+    </ul>
+
+    <p>A plan therefore shows its storey and an axis view its slice, at the scale and with the filters of the chosen view properties.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">D</span><h2>The traps</h2></div>
+
+    <p>Each of these makes a drawing that is slightly wrong, without an error.</p>
+
+    <ul>
+      <li><strong>A missing properties file falls back to <code>standard</code>.</strong> Every row is checked against the lists first, and one naming a missing file fails with "not found".</li>
+      <li><strong>The mark is empty after saving.</strong> The drawing gets its mark when it is saved, and is read again to show it.</li>
+      <li><strong><code>PlaceViews</code> leaves the view in the corner.</strong> Run inside Tekla it does not move the view at all. The view is moved to the middle of the sheet by its origin, after the view and the sheet are both read again.</li>
+    </ul>
+
+    <div class="note">
+      <span class="lbl">The window</span>
+      <p>It stays above Tekla while pinned, and the pin beside the close button lets Tekla come in front. It runs a real message loop on its own STA thread, so the list scrolls smoothly, and the window is dragged by its top row.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">E</span><h2>Measured</h2></div>
+
+    <dl class="est">
+      <div><dt>Per drawing</dt><dd>6.5-17 s<small>timed from outside Tekla, Tekla 2025</small></dd></div>
+      <div><dt>Parts in the view</dt><dd>1,390-1,839<small>a 1:100 plan and a 1:50 axis view</small></dd></div>
+      <div><dt>Test model</dt><dd>36 views<small>22 drawing and 62 view property files</small></dd></div>
+      <div><dt>By hand</dt><dd>-<small>not measured yet</small></dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">F</span><h2>Limitations</h2></div>
+
+    <ul class="limits">
+      <li>
+        <h4>One view per drawing <span class="chip soft">workflow</span></h4>
+        <p>A plan with a section beside it still needs the section added by hand.</p>
+      </li>
+      <li>
+        <h4>A 3D model view comes out as a plan <span class="chip known">known</span></h4>
+        <p>It is drawn as a plan of its view plane, not as a 3D view.</p>
+      </li>
+      <li>
+        <h4>The name rule knows two words <span class="chip known">known</span></h4>
+        <p>Only 'plaan' and 'teljel' set a starting name. Other views keep their own.</p>
+      </li>
+      <li>
+        <h4>Duplicate names are allowed <span class="chip soft">workflow</span></h4>
+        <p>Nothing stops two rows, or a second run, from making drawings of the same name.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">G</span><h2>Where it stands</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td>Verified on</td><td>Tekla Structures 2025.0, Kuressaare E-korpus model: plans at 1:100 and axis views at 1:50 <span class="chip ok">done</span></td></tr>
+          <tr><td>Placement</td><td>Every view centred on the sheet, in runs from outside Tekla and inside it <span class="chip ok">done</span></td></tr>
+          <tr><td>Packaged</td><td><code>DrawingCreator_1.0.tsep</code>, into <code>macros\modeling</code> of every version from 2023 on</td></tr>
+          <tr><td>Open</td><td>One early run inside Tekla left two views in the corner, which no later run repeated. A time by hand <span class="chip soft">open</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">H</span><h2>Running it</h2></div>
+    <ol>
+      <li>Install the macro: double-click <code>DrawingCreator_1.0.tsep</code> from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong>.</li>
+      <li>Close any open drawing. Start <em>Drawing Creator</em> from the model's Applications &amp; components, under Macros.</li>
+      <li>Filter the list if needed, tick the rows, and fill in the name, titles and properties.</li>
+      <li>Press <em>Create drawings</em>. The Status column shows each drawing's mark, or why it failed.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/macros/modeling/Drawing Creator.cs &middot; written 2026-10-14 against the macro source<br>
+    C# against Tekla.Structures.Model and Tekla.Structures.Drawing &middot; verified on Tekla Structures 2025.0 &middot; no time by hand recorded yet
+  </footer>
+
+</div>
+
+</body></html>

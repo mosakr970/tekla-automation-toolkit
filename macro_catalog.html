@@ -155,7 +155,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <p>Tekla macros and one drawing plugin that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each one has its own <code>.tsep</code> installer. A double-click installs it into every Tekla version from 2023 on.</p>
     </div>
     <div class="tb-cells">
-      <div class="tb-cell"><span class="eyebrow">Macros · Plugins</span><b>5 · 1</b></div>
+      <div class="tb-cell"><span class="eyebrow">Macros · Plugins</span><b>6 · 1</b></div>
       <div class="tb-cell"><span class="eyebrow">Tekla</span><b>2023.0 · 2025.0</b></div>
       <div class="tb-cell"><span class="eyebrow">Install</span><b>Double-click 1 .tsep</b></div>
     </div>
@@ -169,6 +169,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <li><a href="#insert-tendons">Insert Tendons</a></li>
       <li><a href="#ek-mark">EK Mark</a></li>
       <li><a href="#hc-check">HC Check</a></li>
+      <li><a href="#drawing-creator">Drawing Creator</a></li>
       <li><a href="#opening-marks">Opening Marks</a></li>
       <li><a href="#auto-dimension">Auto Dimension</a></li>
       <li><a href="#ek-coordinate-mark">EK Coordinate Mark</a></li>
@@ -185,6 +186,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td class="nowrap"><a href="#insert-tendons">Insert Tendons</a></td><td><span class="pill mod">Model</span></td><td>Models post-tensioning tendons and ducts from the designer's Excel sheets</td><td>118 beams in 13-17 s, against 3-4 h per beam length by hand</td></tr>
           <tr><td class="nowrap"><a href="#ek-mark">EK Mark</a></td><td><span class="pill mod">Model</span></td><td>Gives identical pieces the same <code>EK_MARK</code> and every different piece the next number</td><td>3,421 pieces compared in 3.6-5 min</td></tr>
           <tr><td class="nowrap"><a href="#hc-check">HC Check</a></td><td><span class="pill mod">Model</span></td><td>Flags hollow-core panels the factory can't make</td><td>897 panels in under 1 min, against about 4.4 h by hand</td></tr>
+          <tr><td class="nowrap"><a href="#drawing-creator">Drawing Creator</a></td><td><span class="pill mod">Model</span></td><td>Makes one GA drawing per model view, many with one button, with name, titles and saved properties per row</td><td>6.5-17 s per drawing. Not measured by hand yet</td></tr>
           <tr><td class="nowrap"><a href="#opening-marks">Opening Marks</a></td><td><span class="pill drw">Drawing</span></td><td>Finds every opening in a floor plan and crosses it out</td><td>1 plan: 24 s, against 6 min by hand</td></tr>
           <tr><td class="nowrap"><a href="#auto-dimension">Auto Dimension</a></td><td><span class="pill drw">Drawing</span></td><td>Dimensions a plan view to the grid, chaining elements in a row</td><td>1 plan: 20 s, against 15 min by hand</td></tr>
           <tr><td class="nowrap"><a href="#ek-coordinate-mark">EK Coordinate Mark</a></td><td><span class="pill drw">Drawing</span></td><td>Writes a point's coordinates, measured from the base point the view is located by</td><td>Not measured yet</td></tr>
@@ -200,7 +202,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <h3>1. Get the installers</h3>
       <p>There is one installer per macro and one for the plugin, kept here:</p>
       <div class="path"><span class="todo">[MACROS FOLDER PATH]</span>
-└── release\   InsertTendons_1.0.tsep · EKMark_1.0.tsep · HCCheck_1.0.tsep · OpeningMarks_1.0.tsep · AutoDimension_1.0.tsep · EKCoordinateMark_1.0.tsep</div>
+└── release\   InsertTendons_1.0.tsep · EKMark_1.0.tsep · HCCheck_1.0.tsep · OpeningMarks_1.0.tsep · AutoDimension_1.0.tsep · DrawingCreator_1.0.tsep · EKCoordinateMark_1.0.tsep</div>
     </div>
 
     <div class="block">
@@ -219,7 +221,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <h3>How the windows behave</h3>
       <ul class="tight">
         <li>Every macro opens a small window that stays on top but doesn't block Tekla, so you can keep clicking in the model or drawing while it's open.</li>
-        <li>Nothing happens until you press <b class="ui">Scan</b>. Scanning only reads, it never changes anything.</li>
+        <li>Nothing happens until you press <b class="ui">Scan</b>. Scanning only reads, it never changes anything. Drawing Creator has no Scan: it lists the model views as it opens, and changes nothing until you press <b class="ui">Create drawings</b>.</li>
         <li>The window stays open after a run, so you can change a setting and run again.</li>
         <li>Most settings are remembered for next time.</li>
         <li>Hover over any field for a short explanation.</li>
@@ -435,6 +437,72 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     </div>
   </article>
 
+  <!-- Drawing Creator -->
+  <article class="sheet" id="drawing-creator">
+    <div class="sheet-head">
+      <span class="sheet-no">MOD-04</span>
+      <h3>Drawing Creator</h3>
+      <div class="pills"><span class="pill mod">Model</span><span class="pill warn">No time by hand recorded yet</span></div>
+    </div>
+    <div class="sheet-intro">
+      <p class="lede">Lists every model view as a row and makes a GA drawing of each ticked row with one button. Each row sets the drawing name, the three titles, the saved drawing properties and the saved view properties. Each drawing gets one view, cut from the model view's plane, extent and depth and centred on the sheet.</p>
+      <p><b>Use it</b> to make the floor plans and wall elevations of a GA set in one go, instead of one drawing at a time through the same dialogs.</p>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <div class="block">
+          <span class="label">You need</span>
+          <ul class="tight">
+            <li>A saved model view per drawing: the plan of each storey, the view along each axis</li>
+            <li>Saved GA drawing properties (<code>.gd</code>) and drawing view properties (<code>.vi</code>) in the model, project or firm folder</li>
+            <li>No drawing open. The drawings are made from the model</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">Step by step</span>
+          <ol class="tight">
+            <li>Close any open drawing and start <b>Drawing Creator</b> from the model's <b class="ui">Applications &amp; components</b>.</li>
+            <li>Type in <b class="ui">Filter</b> to narrow the list. The tick box in the list's header ticks or unticks every shown row, and hidden rows keep their ticks.</li>
+            <li>Per row, fill in the name and titles and pick the <b class="ui">Drawing properties</b> and <b class="ui">View properties</b>. <code>{view}</code> in a name or title is replaced by the model view's name.</li>
+            <li>Press <b class="ui">Create drawings</b>. The <b>Status</b> column shows each drawing's mark in green, or why the row failed in red.</li>
+            <li>After saving new property files, press <b class="ui">Refresh</b> to read the lists again.</li>
+          </ol>
+          <p style="font-size:13.5px;color:var(--muted)">The pin beside the close button keeps the window above Tekla. Unpin it to let Tekla come in front. Drag the window by its top row.</p>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">A new row starts as</span>
+          <table class="settings">
+            <tr><td>Drawing name</td><td class="def">EK-5- / EK-6-</td><td><code>EK-5-</code> for a view with 'plaan' in its name, <code>EK-6-</code> for 'teljel'. Other views keep their own name</td></tr>
+            <tr><td>Title 1</td><td class="def">view name</td><td>The model view's name</td></tr>
+            <tr><td>Title 2 / 3</td><td class="def">blank</td><td></td></tr>
+            <tr><td>Drawing properties</td><td class="def">blank</td><td>A saved GA drawing file, <code>.gd</code></td></tr>
+            <tr><td>View properties</td><td class="def">blank</td><td>A saved drawing view file, <code>.vi</code>. Sets the scale, filters and contents</td></tr>
+          </table>
+          <p style="font-size:13.5px;color:var(--muted)">Rows, ticks and the pin are remembered per model, in <code>DrawingCreator.settings</code> in the model folder.</p>
+        </div>
+        <div class="block">
+          <span class="label">Measured</span>
+          <div class="figures">
+            <div class="fig hi"><b>6.5-17 s</b><span>per drawing, Tekla 2025</span></div>
+            <div class="fig"><b>36</b><span>model views in the test model</span></div>
+            <div class="fig"><b>-</b><span>by hand, not measured yet</span></div>
+          </div>
+        </div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>A row naming a property file that isn't there fails with "not found", instead of Tekla quietly using <code>standard</code>.</li>
+            <li>One view per drawing. Add sections beside a plan by hand.</li>
+            <li>A 3D model view comes out as a plan of its view plane.</li>
+            <li>Nothing stops two rows, or a second run, from making drawings of the same name.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
   <!-- Opening Marks -->
   <article class="sheet" id="opening-marks">
     <div class="sheet-head">
@@ -631,6 +699,8 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td>Only a few items were scanned or checked</td><td>Something is selected in the model. The model macros work on the selection when there is one. Clear it to cover the whole model.</td></tr>
           <tr><td>Nothing found</td><td>The prefix doesn't match, or the pieces aren't numbered</td></tr>
           <tr><td>"Select one view" or "No view selected"</td><td>Drawing macros need exactly one view selected in the open drawing</td></tr>
+          <tr><td>Drawing Creator: "Close the open drawing first"</td><td>The drawings are made from the model. Close the drawing and press <b class="ui">Create drawings</b> again.</td></tr>
+          <tr><td>Drawing Creator: properties "not found"</td><td>The row names a <code>.gd</code> or <code>.vi</code> file that isn't in the model, project or firm folders. Save the file, press <b class="ui">Refresh</b> and pick it again.</td></tr>
           <tr><td>Coordinates are measured from the wrong point</td><td>EK Coordinate Mark measures from the view's <b class="ui">Location by</b>. Change it in the view properties, then reopen the drawing or <b class="ui">Modify</b> the marks.</td></tr>
           <tr><td>EK Coordinate Mark placed nothing</td><td>The point was picked outside a view. Pick both points inside the same view.</td></tr>
           <tr><td>The window freezes during a run</td><td>Expected for longer runs, such as EK Mark on a whole model. The work happens on Tekla's thread, so let it finish.</td></tr>

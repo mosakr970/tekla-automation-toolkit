@@ -155,7 +155,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <p>Tekla macros and one drawing plugin that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each one has its own <code>.tsep</code> installer. A double-click installs it into every Tekla version from 2023 on.</p>
     </div>
     <div class="tb-cells">
-      <div class="tb-cell"><span class="eyebrow">Macros · Plugins</span><b>6 · 1</b></div>
+      <div class="tb-cell"><span class="eyebrow">Macros · Plugins</span><b>7 · 1</b></div>
       <div class="tb-cell"><span class="eyebrow">Tekla</span><b>2023.0 · 2025.0</b></div>
       <div class="tb-cell"><span class="eyebrow">Install</span><b>Double-click 1 .tsep</b></div>
     </div>
@@ -170,6 +170,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <li><a href="#ek-mark">EK Mark</a></li>
       <li><a href="#hc-check">HC Check</a></li>
       <li><a href="#drawing-creator">Drawing Creator</a></li>
+      <li><a href="#ek-reports">EK Reports</a></li>
       <li><a href="#opening-marks">Opening Marks</a></li>
       <li><a href="#auto-dimension">Auto Dimension</a></li>
       <li><a href="#ek-coordinate-mark">EK Coordinate Mark</a></li>
@@ -187,6 +188,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td class="nowrap"><a href="#ek-mark">EK Mark</a></td><td><span class="pill mod">Model</span></td><td>Gives identical pieces the same <code>EK_MARK</code> and every different piece the next number</td><td>3,421 pieces compared in 3.6-5 min</td></tr>
           <tr><td class="nowrap"><a href="#hc-check">HC Check</a></td><td><span class="pill mod">Model</span></td><td>Flags hollow-core panels the factory can't make</td><td>897 panels in under 1 min, against about 4.4 h by hand</td></tr>
           <tr><td class="nowrap"><a href="#drawing-creator">Drawing Creator</a></td><td><span class="pill mod">Model</span></td><td>Makes one GA drawing per model view, many with one button, with name, titles and saved properties per row</td><td>6.5-17 s per drawing. Not measured by hand yet</td></tr>
+          <tr><td class="nowrap"><a href="#ek-reports">EK Reports</a></td><td><span class="pill mod">Model</span></td><td>Writes every EK-8xx summary to its Excel template, identical pieces on one row</td><td>Scan in 7-9 s, each report in 0.1-15 s. Not measured by hand yet</td></tr>
           <tr><td class="nowrap"><a href="#opening-marks">Opening Marks</a></td><td><span class="pill drw">Drawing</span></td><td>Finds every opening in a floor plan and crosses it out</td><td>1 plan: 24 s, against 6 min by hand</td></tr>
           <tr><td class="nowrap"><a href="#auto-dimension">Auto Dimension</a></td><td><span class="pill drw">Drawing</span></td><td>Dimensions a plan view to the grid, chaining elements in a row</td><td>1 plan: 20 s, against 15 min by hand</td></tr>
           <tr><td class="nowrap"><a href="#ek-coordinate-mark">EK Coordinate Mark</a></td><td><span class="pill drw">Drawing</span></td><td>Writes a point's coordinates, measured from the base point the view is located by</td><td>Not measured yet</td></tr>
@@ -202,19 +204,19 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <h3>1. Get the installers</h3>
       <p>There is one installer per macro and one for the plugin, kept here:</p>
       <div class="path"><span class="todo">[MACROS FOLDER PATH]</span>
-└── release\   InsertTendons_1.0.tsep · EKMark_1.0.tsep · HCCheck_1.0.tsep · OpeningMarks_1.0.tsep · AutoDimension_1.0.tsep · DrawingCreator_1.0.tsep · EKCoordinateMark_1.0.tsep</div>
+└── release\   InsertTendons_1.1.tsep · EKMark_1.1.tsep · HCCheck_1.1.tsep · OpeningMarks_1.1.tsep · AutoDimension_1.1.tsep · DrawingCreator_1.0.tsep · EKReports_1.0.tsep · EKCoordinateMark_1.1.tsep · AutoMaintenance_1.1.tsep · Install-All.bat</div>
     </div>
 
     <div class="block">
       <h3>2. Install them</h3>
-      <p>Double-click each <code>.tsep</code>, or open it in Tekla's <b class="ui">Extension Manager</b>. It installs the macro into every Tekla version from 2023 on, for example both 2023.0 and 2025.0, in the common macro folder:</p>
+      <p>Double-click <code>Install-All.bat</code> to queue every installer in the folder for each Tekla version from 2023 on. Tekla installs them the next time it starts. Or double-click each <code>.tsep</code>, or open it in Tekla's <b class="ui">Extension Manager</b>. It installs the macro into every Tekla version from 2023 on, for example both 2023.0 and 2025.0, in the common macro folder:</p>
       <div class="path">C:\ProgramData\Trimble\Tekla Structures\&lt;version&gt;\environments\common\macros\</div>
-      <p>Model macros land in <code>modeling\</code>, drawing macros in <code>drawings\</code>. The HC Check installer also puts the starting ranges, <code>hc_check.json</code>, in the macro folder itself. Reinstalling HC Check replaces that file, so keep a copy of ranges you have saved. The plugin installs into <code>extensions\EKCoordinateMark</code> beside the macro folder. If your firm points the <code>XS_MACRO_DIRECTORY</code> advanced option (<b class="ui">File → Settings → Advanced options</b>) at a different folder, the installed macros are not listed.</p>
+      <p>Model macros land in <code>modeling\</code>, drawing macros in <code>drawings\</code>. The HC Check installer also puts the starting ranges, <code>hc_check.json</code>, in the macro folder itself. EK Reports does the same with its prefix table, <code>ek_reports.json</code>. Reinstalling replaces these files, so keep a copy of ranges or prefixes you have saved. The plugin installs into <code>extensions\EKCoordinateMark</code> beside the macro folder. If your firm points the <code>XS_MACRO_DIRECTORY</code> advanced option (<b class="ui">File → Settings → Advanced options</b>) at a different folder, the installed macros are not listed.</p>
     </div>
 
     <div class="block">
       <h3>3. Restart Tekla and run</h3>
-      <p>Tekla only picks up macros when it starts. After restarting, open <b class="ui">Applications &amp; components</b> and find the macro under <b class="ui">Macros</b>, or search for <b>EKCoordinateMark</b>. Model macros run with the model open. Drawing macros run with the drawing open.</p>
+      <p>Tekla only picks up macros when it starts. After restarting, open <b class="ui">Applications &amp; components</b> and find the tools in the <b class="ui">Esplan tools</b> group, each with its own icon. The group shows after one more restart following the first install. The macros are also under <b class="ui">Macros</b>, and the plugin is found by searching for <b>EKCoordinateMark</b>. Model macros run with the model open. Drawing macros run with the drawing open.</p>
     </div>
 
     <div class="block">
@@ -225,6 +227,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <li>The window stays open after a run, so you can change a setting and run again.</li>
         <li>Most settings are remembered for next time.</li>
         <li>Hover over any field for a short explanation.</li>
+        <li>In the lists, press Enter to select the selected rows' elements in the model. Shift or Ctrl picks several rows.</li>
       </ul>
     </div>
 
@@ -261,7 +264,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <li>Press <b class="ui">Scan</b>. Beams are listed one row per position, with the number of beams.</li>
             <li>Press <b class="ui">From folder</b> and pick the folder with the Excel sheets. Each sheet is matched to its position by file name. You can also use <b class="ui">Browse</b> on a single row, or press Delete on a row to clear its file. Untick <b class="ui">Use</b> to leave a position out.</li>
             <li><b>Tendon &amp; duct</b> tab: set profile, material, name and class for the tendon and for the duct. Leave the duct profile empty for no duct.</li>
-            <li>Press <b class="ui">Insert tendons</b>. The <b>Results</b> tab shows one row per beam: inserted, skipped (already has tendons), no file, or failed with the reason. Double-click a row to zoom to the beam.</li>
+            <li>Press <b class="ui">Insert tendons</b>. The <b>Results</b> tab shows one row per beam: inserted, skipped (already has tendons), no file, or failed with the reason. Press Enter to select the selected rows' beams in the model, or double-click a row to zoom to its beam.</li>
           </ol>
         </div>
         <div class="block">
@@ -323,9 +326,9 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <span class="label">Step by step</span>
           <ol class="tight">
             <li>Select assemblies in the model to work on only those, or select nothing for the whole model.</li>
-            <li>Press <b class="ui">Scan</b>. The <b>Groups</b> tab lists one row per prefix and start number, with how many pieces already carry a mark. Selecting rows selects their pieces in the model, so you can look before numbering.</li>
+            <li>Press <b class="ui">Scan</b>. The <b>Groups</b> tab lists one row per prefix and start number, with how many pieces already carry a mark. Press Enter to select the selected rows' pieces in the model, so you can look before numbering.</li>
             <li>Select the rows to number and press <b class="ui">Number</b>.</li>
-            <li>The <b>Results</b> tab shows each piece's old and new mark and what happened: kept, same as another mark, new mark, conflict, or no mark. Sort by the new mark to see each set together. Selecting rows selects those pieces in the model.</li>
+            <li>The <b>Results</b> tab shows each piece's old and new mark and what happened: kept, same as another mark, new mark, conflict, or no mark. Sort by the new mark to see each set together. Press Enter to select the selected rows' pieces in the model.</li>
           </ol>
         </div>
         <div class="block">
@@ -399,7 +402,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <ol class="tight">
             <li>Press <b class="ui">Scan model</b>. Every profile in use is listed with a count, and new profiles are added with empty ranges.</li>
             <li>Pick a profile and fill in <b>Standard full width</b>, the <b>Width bands</b> for narrowed panels, and the four <b>cut limits</b> rows. Leave a cell blank where the catalog sets no limit. Press <b class="ui">Save</b>.</li>
-            <li>Press <b class="ui">Run check</b>. Failing panels turn red in the model and are listed on the <b>Results</b> tab with the reason. Double-click a row to zoom to the panel.</li>
+            <li>Press <b class="ui">Run check</b>. Failing panels turn red in the model and are listed on the <b>Results</b> tab with the reason. Press Enter to select and zoom to the selected rows' panels, or double-click a row for one panel.</li>
             <li>Read the first line of the <b>Log</b> tab, "Ribs checked on N, not on M", to confirm the rib check actually ran.</li>
             <li><b class="ui">Clear colours</b> removes the red. <b class="ui">Write report</b> saves the full results to a file.</li>
           </ol>
@@ -503,6 +506,67 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     </div>
   </article>
 
+  <!-- EK Reports -->
+  <article class="sheet" id="ek-reports">
+    <div class="sheet-head">
+      <span class="sheet-no">MOD-05</span>
+      <h3>EK Reports</h3>
+      <div class="pills"><span class="pill mod">Model</span><span class="pill warn">No time by hand recorded yet</span></div>
+    </div>
+    <div class="sheet-intro">
+      <p class="lede">Writes the EK-8xx summaries - foundations, columns and beams, wall panels, slabs, stairs, timber, steel assemblies and parts, rebar and bolts - each to its own Excel template, in one run. The columns come from the model's Organizer presets, the look from the office's Excel templates. Identical pieces share a row with their count, and a Kokku row adds up the totals.</p>
+      <p><b>Use it</b> instead of exporting each report from Organizer and tidying it in Excel by hand.</p>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <div class="block">
+          <span class="label">You need</span>
+          <ul class="tight">
+            <li>The <code>EK-8xx_*.propertytemplate</code> presets and the <code>EK-8-8xx</code> Excel templates in the model's <code>ProjectOrganizerData</code> folder</li>
+            <li>The model numbered. Unnumbered pieces show <code>(?)</code> in their position</li>
+            <li><code>EK_MARK</code> on the steel assemblies for EK-851. Run EK Mark first</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">Step by step</span>
+          <ol class="tight">
+            <li>Select assemblies to report only those, or nothing for the whole model, and press <b class="ui">Scan</b>.</li>
+            <li>Each report is listed with its prefixes and their count of elements and positions. Untick a report or a prefix to leave it out. Right-click a prefix and choose <b class="ui">Move to</b> to put it in another report, and <b class="ui">Save</b> to keep that for every model.</li>
+            <li>Press Enter on lines to select their elements in the model, to see what will be listed.</li>
+            <li>Fill in <b class="ui">Designer</b>, <b class="ui">Revision</b> and <b class="ui">Date</b> and press <b class="ui">Export</b>. <b class="ui">Open folder</b> shows the workbooks in the model's <code>Reports</code> folder.</li>
+          </ol>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">Reports beside the assembly ones</span>
+          <table class="settings">
+            <tr><td>EK-852 / 853 / 854</td><td class="def">from EK-851</td><td>Every part of the assemblies of EK-851's ticked prefixes, each part once</td></tr>
+            <tr><td>EK-821</td><td class="def">rebar</td><td>The rebar of the cast-in-place elements, each prefix with a tick of its own</td></tr>
+            <tr><td>EK-862</td><td class="def">bolts</td><td>Every bolt of the model, holes and studs left out</td></tr>
+          </table>
+          <p style="font-size:13.5px;color:var(--muted)">Where each prefix goes is kept for the office in <code>ek_reports.json</code> beside the macro. The ticks, Designer and Revision are remembered per model, in <code>EKReports.settings</code>.</p>
+        </div>
+        <div class="block">
+          <span class="label">Measured</span>
+          <div class="figures">
+            <div class="fig hi"><b>7-9 s</b><span>scan of 3,421 assemblies, Tekla 2025</span></div>
+            <div class="fig"><b>0.1-15 s</b><span>per report</span></div>
+            <div class="fig"><b>-</b><span>by hand, not measured yet</span></div>
+          </div>
+        </div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>Reinstalling replaces <code>ek_reports.json</code>. Keep a copy of a prefix table you have saved.</li>
+            <li>A column added to a preset in Organizer needs its head in the Excel template too.</li>
+            <li>Insulation is told apart by material type, so another MISCELLANEOUS part in a panel counts as insulation.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
   <!-- Opening Marks -->
   <article class="sheet" id="opening-marks">
     <div class="sheet-head">
@@ -521,7 +585,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <ol class="tight">
             <li>Open the drawing and select <b>one view</b>, the plan.</li>
             <li>Press <b class="ui">Scan</b>. The <b>Openings</b> tab lists what was found under five types. Click a type to expand it.</li>
-            <li>Tick <b>MARK</b> for the crossing and <b>DIMS</b> for size dimensions, per opening or for a whole type. Selecting a row outlines that opening in magenta in the drawing.</li>
+            <li>Tick <b>MARK</b> for the crossing and <b>DIMS</b> for size dimensions, per opening or for a whole type. Press Enter to outline the selected rows' openings in magenta in the drawing.</li>
             <li>Press <b class="ui">Mark</b>. The <b>Results</b> tab logs what was drawn and what was already there.</li>
             <li>To take marks off again, tick the types and press <b class="ui">Remove</b>. Only the macro's own lines and dimensions are removed.</li>
           </ol>
@@ -562,7 +626,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <li><b class="ui">Mark</b> never draws the same line twice, so running it again is safe.</li>
             <li>Walls standing under a stair hole can split it into two openings.</li>
             <li>Openings close together can get overlapping size dimensions.</li>
-            <li>After selecting rows, select the view again before the next Scan.</li>
+            <li>After outlining openings, select the view again before the next Scan.</li>
           </ul>
         </div>
       </div>
@@ -704,6 +768,9 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td>Coordinates are measured from the wrong point</td><td>EK Coordinate Mark measures from the view's <b class="ui">Location by</b>. Change it in the view properties, then reopen the drawing or <b class="ui">Modify</b> the marks.</td></tr>
           <tr><td>EK Coordinate Mark placed nothing</td><td>The point was picked outside a view. Pick both points inside the same view.</td></tr>
           <tr><td>The window freezes during a run</td><td>Expected for longer runs, such as EK Mark on a whole model. The work happens on Tekla's thread, so let it finish.</td></tr>
+          <tr><td>EK Reports: a report is missing from the list</td><td>Its <code>.propertytemplate</code> or its Excel template isn't in the model's <code>ProjectOrganizerData</code> folder, or is only in <code>00_arhiiv</code>. They are paired by the EK number in the name.</td></tr>
+          <tr><td>EK Reports: a column is empty or in the wrong place</td><td>The preset in Organizer has a column the Excel template has no head for. Add the head to the template.</td></tr>
+          <tr><td>EK Reports: a position shows <code>(?)</code></td><td>The model isn't numbered. Number it and Scan again.</td></tr>
           <tr><td>HC Check colours disappeared</td><td>A view redraw clears temporary colours. Run the check again.</td></tr>
         </tbody>
       </table>

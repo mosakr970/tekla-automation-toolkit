@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>EK Reports</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:        #f7f9fb;
+    --surface:      #ffffff;
+    --surface-sunk: #eef2f6;
+    --ink:          #16202b;
+    --ink-soft:     #4a5765;
+    --ink-faint:    #798696;
+    --hairline:     #dbe2ea;
+    --hairline-hard:#c2cddb;
+    --accent:       #0068bd;
+    --accent-soft:  #e3eefa;
+    --warn:         #a05a05;
+    --warn-soft:    #fbeedb;
+    --stop:         #a3241b;
+    --stop-soft:    #fbe6e4;
+    --ok:           #15694a;
+    --ok-soft:      #dff0e8;
+
+    --measure: 68ch;
+    --step-0: 1rem;
+    --step-1: 1.15rem;
+    --step-2: 1.45rem;
+    --step-3: 1.9rem;
+    --step-4: clamp(2.1rem, 6vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #0e141a;
+      --surface:      #151d25;
+      --surface-sunk: #1b242e;
+      --ink:          #e2e9f0;
+      --ink-soft:     #a7b4c2;
+      --ink-faint:    #7d8b9a;
+      --hairline:     #2a3641;
+      --hairline-hard:#3b4a58;
+      --accent:       #56a9ec;
+      --accent-soft:  #142838;
+      --warn:         #e0a758;
+      --warn-soft:    #2e2415;
+      --stop:         #ef8b80;
+      --stop-soft:    #331a18;
+      --ok:           #63c69c;
+      --ok-soft:      #12281f;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #0e141a;
+    --surface:      #151d25;
+    --surface-sunk: #1b242e;
+    --ink:          #e2e9f0;
+    --ink-soft:     #a7b4c2;
+    --ink-faint:    #7d8b9a;
+    --hairline:     #2a3641;
+    --hairline-hard:#3b4a58;
+    --accent:       #56a9ec;
+    --accent-soft:  #142838;
+    --warn:         #e0a758;
+    --warn-soft:    #2e2415;
+    --stop:         #ef8b80;
+    --stop-soft:    #331a18;
+    --ok:           #63c69c;
+    --ok-soft:      #12281f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: var(--step-0);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* ---- masthead ---- */
+
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-block: 3rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .masthead h1 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead h1 span { display: block; color: var(--accent); }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.85rem;
+  }
+  .stamp {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.74rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0 1.1rem;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .stamp dt { color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; }
+  .stamp dd { margin: 0; }
+
+  .standfirst {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 1.75rem 0 2.5rem;
+  }
+
+  /* ---- section scaffolding: grid bubbles, as on a drawing ---- */
+
+  section { margin-block-start: 3.75rem; }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+  .bubble {
+    flex: 0 0 auto;
+    width: 2.05rem;
+    height: 2.05rem;
+    border: 1.5px solid var(--hairline-hard);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--surface);
+  }
+  .head h2 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-3);
+    letter-spacing: -0.018em;
+    margin: 0;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .head::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--hairline);
+  }
+
+  h3 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+    margin: 2rem 0 0.55rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.45rem; }
+  li::marker { color: var(--ink-faint); }
+
+  code, .num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.86em;
+    font-variant-numeric: tabular-nums;
+  }
+  code {
+    background: var(--surface-sunk);
+    padding: 0.08em 0.36em;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---- the drawing figure ---- */
+
+  figure { margin: 0 0 1.5rem; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.25rem 1rem 0.75rem;
+  }
+  .figframe svg { display: block; min-width: 620px; width: 100%; height: auto; }
+  figcaption {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    margin-top: 0.7rem;
+    max-width: var(--measure);
+    line-height: 1.6;
+  }
+
+  .part      { fill: var(--surface-sunk); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .void      { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1.1; stroke-dasharray: 4 3; }
+  .gridline  { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 10 4 2 4; }
+  .gridbub   { fill: var(--surface); stroke: var(--ink-faint); stroke-width: 1.2; }
+  .witness   { stroke: var(--accent); stroke-width: 0.9; opacity: 0.55; }
+  .dimline   { stroke: var(--accent); stroke-width: 1.5; }
+  .tick      { stroke: var(--accent); stroke-width: 1.5; }
+  .dimtext   { fill: var(--accent); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500; }
+  .anno      { fill: var(--ink-faint); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.07em; }
+  .gridtext  { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; font-weight: 600; }
+
+  /* ---- the run: a real sequence, so it is numbered ---- */
+
+  .run { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .run > li {
+    display: grid;
+    grid-template-columns: 3.1rem 1fr;
+    gap: 0 1rem;
+    padding-block: 1.05rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+  }
+  .run > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .run .step {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    padding-top: 0.2em;
+  }
+  .run h4 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+  }
+  .run p { margin: 0; color: var(--ink-soft); max-width: var(--measure); }
+
+  /* ---- tables ---- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  caption {
+    text-align: left;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.6rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  thead th {
+    font-family: "Archivo", sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.84rem;
+  }
+
+  /* ---- limitations ---- */
+
+  .limits { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .limits > li {
+    border-top: 1px solid var(--hairline);
+    padding-block: 1rem;
+    margin: 0;
+  }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Archivo", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); }
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 0.18em 0.5em;
+    border-radius: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chip.hard  { background: var(--stop-soft); color: var(--stop); }
+  .chip.soft  { background: var(--warn-soft); color: var(--warn); }
+  .chip.known { background: var(--accent-soft); color: var(--accent); }
+  .chip.ok    { background: var(--ok-soft);   color: var(--ok); }
+
+  /* ---- callout ---- */
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    max-width: var(--measure);
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ---- estimate panel ---- */
+
+  .est {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin: 1.5rem 0;
+  }
+  .est > div { background: var(--surface); padding: 1.1rem 1.1rem 1.2rem; }
+  .est dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+  }
+  .est dd {
+    margin: 0;
+    font-family: "Archivo", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .est dd small {
+    display: block;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--ink);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+
+  /* ---- drawing creator figure ---- */
+  .row       { fill: var(--surface); stroke: var(--hairline-hard); stroke-width: 1; }
+  .rowon     { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1; }
+  .rowtext   { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; }
+  .sheetbox  { fill: var(--surface); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .frame     { fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 5 3; }
+  .arrow     { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .centre    { stroke: var(--ink-faint); stroke-width: 0.9; stroke-dasharray: 3 3; }
+
+  @media (max-width: 540px) {
+    .head { gap: 0.65rem; }
+    .bubble { width: 1.75rem; height: 1.75rem; font-size: 0.72rem; }
+    .run > li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <p class="kicker">Tekla Structures &middot; modeling macro</p>
+      <h1>EK Reports <span>the EK-8xx summaries, straight into Excel</span></h1>
+    </div>
+    <dl class="stamp">
+      <dt>File</dt><dd>config/macros/modeling/EK Reports.cs</dd>
+      <dt>Language</dt><dd>C# &middot; Tekla macro</dd>
+      <dt>Built</dt><dd>2026-10-15</dd>
+      <dt>Installer</dt><dd>EKReports_1.0.tsep</dd>
+    </dl>
+  </header>
+
+  <p class="standfirst">Every EK-8xx summary - foundations, columns and beams, wall panels, slabs, stairs, timber, steel assemblies and their parts, rebar and bolts - written to its own Excel template in one run, from the model's own Organizer presets. The model's assemblies are grouped by prefix, each prefix goes into its report, and every report that is ticked comes out as a finished workbook.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 760 260" role="img" aria-label="On the left, a list of reports with the prefixes under them, two reports ticked. An arrow leads to an Excel sheet on the right with a header, a table of combined rows and a total row.">
+        <text class="anno" x="20" y="28">REPORTS AND PREFIXES</text>
+        <rect class="rowon" x="20" y="40" width="300" height="28"/>
+        <text class="rowtext" x="32" y="59">&#x2611; EK-801 Vundamentide kokkuvote</text>
+        <rect class="row" x="20" y="72" width="300" height="24"/>
+        <text class="rowtext" x="52" y="89">&#x2611; LV-   RV-   VU-</text>
+        <rect class="rowon" x="20" y="102" width="300" height="28"/>
+        <text class="rowtext" x="32" y="121">&#x2611; EK-851 Teraskoostude kokkuvote</text>
+        <rect class="row" x="20" y="134" width="300" height="24"/>
+        <text class="rowtext" x="52" y="151">&#x2611; TT-   TP   TS-   TR-</text>
+        <rect class="row" x="20" y="164" width="300" height="28"/>
+        <text class="rowtext" x="32" y="183">&#x2610; EK-852 Terasprofiilide  from EK-851</text>
+
+        <path class="arrow" d="M335 110 L395 110 M385 103 L395 110 L385 117"/>
+        <text class="anno" x="336" y="96">EXPORT</text>
+
+        <rect class="sheetbox" x="410" y="30" width="320" height="210"/>
+        <text class="anno" x="418" y="24">2612_TP_EK-8-801_v02_..._2026-10-22.xlsx</text>
+        <rect class="part" x="420" y="42" width="300" height="34"/>
+        <text class="rowtext" x="428" y="63">HEADER &#xb7; PROJECT &#xb7; DESIGNER &#xb7; DATE</text>
+        <rect class="frame" x="420" y="84" width="300" height="110"/>
+        <text class="rowtext" x="428" y="102">T&#xe4;his  Arv  Materjal  ...  Kaal</text>
+        <text class="rowtext" x="428" y="122">BP-001  3    C30/37    ...  1,24</text>
+        <text class="rowtext" x="428" y="140">BP-002  1    C30/37    ...  3,19</text>
+        <text class="rowtext" x="428" y="158">...</text>
+        <rect class="rowon" x="420" y="200" width="300" height="26"/>
+        <text class="rowtext" x="428" y="218">Kokku   73                  217,22</text>
+      </svg>
+    </div>
+    <figcaption>An illustration, not a measured sheet. Each ticked report is written to its own Excel template: identical pieces on one row with their count, the header filled in from the project, and a total row at the end.</figcaption>
+  </figure>
+
+  <section>
+    <div class="head"><span class="bubble">A</span><h2>What it does</h2></div>
+
+    <p>It is a modeling macro, run from the model. It reads the reports the office already keeps for Organizer - the <code>EK-8xx_*.propertytemplate</code> presets and the <code>23XX_*_EK-8-8xx_*.xltx</code> Excel templates in the model's <code>ProjectOrganizerData</code> folder - and pairs them by number. Archived presets in <code>00_arhiiv</code> are left out.</p>
+
+    <ol class="run">
+      <li>
+        <span class="step">01</span>
+        <div>
+          <h4>Scan</h4>
+          <p>Nothing is read until Scan is pressed. With assemblies selected in the model only those are scanned, otherwise the whole model. Every top-level assembly and cast unit is grouped by its exact numbering prefix, so <code>TD</code> and <code>TD-</code> are two rows.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">02</span>
+        <div>
+          <h4>Check the list</h4>
+          <p>Every report is listed with the prefixes that go into it, and the count of elements and positions. A prefix goes where its own entry in the office's prefix table says, otherwise where the longest entry it starts with says, so <code>LV_A-</code> goes with <code>LV</code>. Right-click a prefix and choose <em>Move to</em> to put it in another report. Untick a report or a prefix to leave it out.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">03</span>
+        <div>
+          <h4>Export</h4>
+          <p>Every ticked report is written to its Excel template in the model's <code>Reports</code> folder, named after the template with the project number, the revision and the date. Enter on any line selects its elements in the model first, to see what will be listed - Shift or Ctrl picks several lines.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">B</span><h2>The reports</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>What each report lists &middot; the prefixes are the office's starting table</caption>
+        <thead>
+          <tr><th>Report</th><th>Lists</th><th>Prefixes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>EK-800 Vaiade</td><td class="v">assemblies</td><td>PV, TMV</td></tr>
+          <tr><td>EK-801 Vundamentide</td><td class="v">assemblies</td><td>RV, VU, LV</td></tr>
+          <tr><td>EK-802 Postide-talade</td><td class="v">assemblies</td><td>BP, BT, MBP, MBT</td></tr>
+          <tr><td>EK-803 SWP seinaelementide</td><td class="v">assemblies</td><td>SWP</td></tr>
+          <tr><td>EK-804 SP seinaelementide</td><td class="v">assemblies</td><td>SP, RBK</td></tr>
+          <tr><td>EK-805 Monoliitseinte</td><td class="v">assemblies</td><td>MSN</td></tr>
+          <tr><td>EK-806 Vahelae paneelide</td><td class="v">assemblies</td><td>LP</td></tr>
+          <tr><td>EK-807 Vahelae t&auml;isplaatide</td><td class="v">assemblies</td><td>BPL</td></tr>
+          <tr><td>EK-808 Monoliitplaatide</td><td class="v">assemblies</td><td>MPL, MPV</td></tr>
+          <tr><td>EK-809 R&otilde;duelementide</td><td class="v">assemblies</td><td>RE</td></tr>
+          <tr><td>EK-810 Trepielementide</td><td class="v">assemblies</td><td>TE, MTR</td></tr>
+          <tr><td>EK-811 to EK-814 timber</td><td class="v">assemblies</td><td>PP, PT, LPP, LPT &middot; PF, LPF &middot; PD, LPS, PE &middot; VT</td></tr>
+          <tr><td>EK-821 Sarruse</td><td class="v">rebar</td><td>The rebar of the cast-in-place elements: PV, RV, VU, LV, TM, MSN, MBP, MBT, MPL, MTR, MPV, each with a tick of its own</td></tr>
+          <tr><td>EK-851 Teraskoostude</td><td class="v">assemblies</td><td>TT, TP, TS, TR, TD, TF, TPL, TEP, TTR, DB, KPR, WQ</td></tr>
+          <tr><td>EK-852 / 853 / 854</td><td class="v">single parts</td><td>Every part of the assemblies of EK-851's ticked prefixes</td></tr>
+          <tr><td>EK-861 Profiilpleki</td><td class="v">assemblies</td><td>TKP</td></tr>
+          <tr><td>EK-862 Poldikomplektid</td><td class="v">bolts</td><td>Every bolt of the model, holes and studs left out</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Where prefixes go is the office's, the ticks are the project's</h3>
+    <p>The prefix table is kept beside the macro in <code>ek_reports.json</code> and is the same in every model. <em>Save</em> writes a moved prefix to it. The ticks and the Designer and Revision fields belong to the project and are kept in the model, in <code>EKReports.settings</code>.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">C</span><h2>From the preset to the row</h2></div>
+
+    <p>The preset gives the columns, in order: the properties tried in turn until one has a value (<code>EK_MARK</code>, then <code>ASSEMBLY_POS</code>), the formulas Organizer calculates, and the units. The Excel template gives only the look: the header, its fields, and the <code>%&amp;O%&amp;</code> cell the table starts at, whose style every table cell takes.</p>
+
+    <ul>
+      <li><strong>Identical pieces share a row.</strong> Every text the same, every length and level within 1 mm, every area, volume and weight within 0.1 % - or 0.01 kg for small parts. The count goes in <em>Arv</em>.</li>
+      <li><strong>Area, volume and weight are one piece's.</strong> The total row, <em>Kokku</em>, adds them up over every piece. A <em>kokku</em> column, such as <em>Kaal kokku</em>, shows the whole row. Lengths are never totalled.</li>
+      <li><strong>The decimals are the office's.</strong> None in mm, 3 for levels in m, 2 for any other m, m&sup2;, m&sup3;, t or kg - whatever the preset says.</li>
+      <li><strong>The header is filled in.</strong> The <code>PROJECT.*</code> fields from the project, the date and revision from the window, and <code>PROJEKTEERIJA</code> from the Designer field. The revision also replaces the <code>v01</code> of the document number, <code>EK-8-801_v01</code>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">D</span><h2>The traps</h2></div>
+
+    <p>Each of these made a report that was slightly wrong, without an error. All are handled now.</p>
+
+    <ul>
+      <li><strong>A cast unit's <code>VOLUME_NET</code> counts its steel embeds.</strong> EK-803's insulation volume is <code>VOLUME_NET</code> less the concrete, so the anchors came out as insulation. The macro adds up the cast unit's own parts instead.</li>
+      <li><strong><code>CUSTOM.INSULATION_THICKNESS</code> is 0 on every sandwich panel.</strong> The thickness is read from the insulation part itself.</li>
+      <li><strong><code>MODEL_TOTAL</code> counts a bolt's twins across the whole model.</strong> Added up over a row it counted them many times over, so a row counts the bolt group's own bolts.</li>
+      <li><strong>Tekla can list a sub-assembly twice.</strong> Its parts were counted twice in the parts reports. Each part is now listed once.</li>
+      <li><strong>Pieces with no mark merged with different weights.</strong> EK-851's total came out 33 kg short. The weights are now compared, and the totals add up every piece.</li>
+    </ul>
+
+    <div class="note">
+      <span class="lbl">Templates</span>
+      <p>A template of the usual shape - the count second - takes the columns in order. Any other, such as EK-821 with its two-row head or EK-862 without a count, is matched by column head. If a column is added to a preset in Organizer, add its head to the Excel template too.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">E</span><h2>Measured</h2></div>
+
+    <dl class="est">
+      <div><dt>Scan</dt><dd>7-9 s<small>3,421 assemblies in 40 prefixes, Tekla 2025</small></dd></div>
+      <div><dt>Assembly reports</dt><dd>0.1-2 s<small>each, from 8 to 897 pieces</small></dd></div>
+      <div><dt>Parts and rebar</dt><dd>5-15 s<small>4,405 steel parts &middot; 2,266 rebar groups</small></dd></div>
+      <div><dt>By hand</dt><dd>-<small>not measured yet</small></dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">F</span><h2>Limitations</h2></div>
+
+    <ul class="limits">
+      <li>
+        <h4>Unnumbered pieces show <code>(?)</code> <span class="chip soft">workflow</span></h4>
+        <p>A position like <code>SWP-000(?)</code> means the numbering is out of date. Number the model first.</p>
+      </li>
+      <li>
+        <h4>EK-851 needs <code>EK_MARK</code> <span class="chip soft">workflow</span></h4>
+        <p>Its first column has no fallback, so run EK Mark on the steel first.</p>
+      </li>
+      <li>
+        <h4>The rebar prefixes are fixed <span class="chip known">known</span></h4>
+        <p>The cast-in-place prefixes of EK-821 are in the macro, not in the prefix table.</p>
+      </li>
+      <li>
+        <h4>Insulation is told apart by material type <span class="chip known">known</span></h4>
+        <p>A panel with another MISCELLANEOUS part, such as a bearing pad, would count it as insulation.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">G</span><h2>Where it stands</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td>Verified on</td><td>Tekla Structures 2025.0, Kuressaare E-korpus model: every report written and opened in Excel <span class="chip ok">done</span></td></tr>
+          <tr><td>Totals</td><td>EK-851 to 854 all 169,677.98 kg, the same as Tekla's own weights <span class="chip ok">done</span></td></tr>
+          <tr><td>Packaged</td><td><code>EKReports_1.0.tsep</code>, into <code>macros\modeling</code> of every version from 2023 on, with the prefix table</td></tr>
+          <tr><td>Open</td><td>The timber reports EK-812 and EK-813 have no elements in the test model. A time by hand <span class="chip soft">open</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">H</span><h2>Running it</h2></div>
+    <ol>
+      <li>Install the macro with <code>Install-All.bat</code> or by double-clicking <code>EKReports_1.0.tsep</code> from <code>config/release/</code>, then <strong>restart Tekla</strong>. It is in <em>Esplan tools</em> in Applications &amp; components.</li>
+      <li>Select assemblies to report only those, or nothing for the whole model, and press <em>Scan</em>.</li>
+      <li>Tick the reports and prefixes, fill in Designer, Revision and Date, and press <em>Export</em>.</li>
+      <li><em>Open folder</em> shows the workbooks in the model's <code>Reports</code> folder.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/macros/modeling/EK Reports.cs &middot; written 2026-10-15 against the macro source<br>
+    C# against Tekla.Structures.Model, DotNetZip and the Organizer presets &middot; verified on Tekla Structures 2025.0 &middot; no time by hand recorded yet
+  </footer>
+
+</div>
+
+</body></html>

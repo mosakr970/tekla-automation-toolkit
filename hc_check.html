@@ -623,7 +623,7 @@
         <thead><tr><th>Route</th><th>Who it is for</th></tr></thead>
         <tbody>
           <tr><td><strong>The macro</strong></td><td>Double-click <code>HCCheck_1.0.tsep</code> and restart Tekla. It installs the macro and the starting ranges into every Tekla version from 2023 on, and the macro then sits in Applications &amp; components as <code>HC Check</code> - no command line, no runtime to match.</td></tr>
-          <tr><td><strong>The window</strong></td><td>Non-modal and topmost, so Tekla stays usable while it is open - which matters, because double-clicking a result row selects and zooms that panel in the model.</td></tr>
+          <tr><td><strong>The window</strong></td><td>Non-modal and topmost, so Tekla stays usable while it is open - which matters, because Enter on result rows selects and zooms their panels in the model, and double-clicking a row does the same for one panel.</td></tr>
           <tr><td><strong>The self-test</strong></td><td>Built into the same file, needs no model, and reports a pass or fail count. It replaces the pytest suite the earlier implementation had, because a macro has no CI, no linter and no type checker behind it.</td></tr>
         </tbody>
       </table>
@@ -651,7 +651,7 @@
       <li>
         <div>
           <h4>Run the check</h4>
-          <p>Measures the panels, fills the results table, colours the failures red. Double-click a row to select and zoom that panel in Tekla. Nothing is written to the model - the colour is a temporary state, and <code>Clear colours</code> removes it.</p>
+          <p>Measures the panels, fills the results table, colours the failures red. Press Enter to select and zoom the selected rows' panels in Tekla, Shift or Ctrl picking several, or double-click a row for one panel. Nothing is written to the model - the colour is a temporary state, and <code>Clear colours</code> removes it.</p>
         </div>
       </li>
       <li>

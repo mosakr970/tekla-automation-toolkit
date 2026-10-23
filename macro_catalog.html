@@ -204,7 +204,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <h3>1. Get the installers</h3>
       <p>There is one installer per macro and one for the plugin, kept here:</p>
       <div class="path"><span class="todo">[MACROS FOLDER PATH]</span>
-└── release\   InsertTendons_1.1.tsep · EKMark_1.1.tsep · HCCheck_1.1.tsep · OpeningMarks_1.1.tsep · AutoDimension_1.1.tsep · DrawingCreator_1.0.tsep · EKReports_1.0.tsep · EKCoordinateMark_1.1.tsep · AutoMaintenance_1.1.tsep · Install-All.bat</div>
+└── release\   InsertTendons_1.1.tsep · EKMark_1.1.tsep · HCCheck_1.1.tsep · OpeningMarks_1.1.tsep · AutoDimension_1.2.tsep · DrawingCreator_1.0.tsep · EKReports_1.0.tsep · EKCoordinateMark_1.1.tsep · AutoMaintenance_1.1.tsep · Install-All.bat</div>
     </div>
 
     <div class="block">
@@ -651,7 +651,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <ol class="tight">
             <li>Open the drawing and select <b>one view</b>. With <b>Grids</b> ticked, the view must show the grid.</li>
             <li>Press <b class="ui">Scan view</b>. The <b>Series</b> tab lists every numbering prefix in the view, with counts.</li>
-            <li>Tick the series to dimension and leave rebar and embeds out. Per series, set <b>OPENINGS</b>, <b>END-ON</b> and <b>DIRECTION</b>.</li>
+            <li>Tick the series to dimension and leave rebar and embeds out. Per series, set <b>OPENINGS</b>, <b>END-ON</b> and <b>DIRECTION</b>. To dimension sub-assemblies, tick <b>Sub-assemblies</b>: they are listed as <b>VU- / EB_HPM24L</b> and so on. Untick the ones you do not want. Untick <b>VU-</b> to dimension the bolts without the concrete.</li>
             <li>Press <b class="ui">Add dimensions</b>. The <b>Results</b> tab logs what was placed and what was skipped.</li>
             <li>The window stays open, so you can dimension the next series and check the drawing in between. Each run avoids what the previous one placed.</li>
           </ol>
@@ -672,8 +672,10 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <tr><td>END-ON</td><td class="def">off</td><td>Per series: dimension elements whose length points into the view, such as columns in a plan</td></tr>
             <tr><td>DIRECTION</td><td class="def">length + cross-section</td><td>Per series: length + cross-section, length only, or cross-section only</td></tr>
             <tr><td>Grids</td><td class="def">on</td><td>Measure to the nearest grid line. Untick to measure only the elements and gaps.</td></tr>
+            <tr><td>Sub-assemblies</td><td class="def">off</td><td>List sub-assemblies as series of their own. Unticked, only assemblies are listed.</td></tr>
+            <tr><td>Rebars</td><td class="def">off</td><td>List the rebars shown in the view, one row per assembly and rebar name and size, such as <b>VU- / rebar: ankurdusvarras 20</b>. Each bar is dimensioned to its centre line. Tick END-ON for vertical bars in a plan.</td></tr>
             <tr><td>Every part</td><td class="def">off</td><td>Dimension every part as its own element, not only main parts</td></tr>
-            <tr><td>No recesses</td><td class="def">off</td><td>Leave out cuts that don't go through</td></tr>
+            <tr><td>Recesses</td><td class="def">off</td><td>Also dimension cuts that stop inside the element. Unticked, only openings that go through are dimensioned.</td></tr>
             <tr><td>Min</td><td class="def">50 mm</td><td>Smallest opening dimensioned. Smaller cuts are notches or bolt holes.</td></tr>
           </table>
         </div>
@@ -688,6 +690,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <span class="label">Watch out for</span>
           <ul class="tight">
             <li>Chamfered or stepped ends are measured to the outer box, not the drawn edge.</li>
+            <li>Round piles and columns (RU / RO profiles) are measured to their centre. One exactly on a grid line gets no dimension on that axis, one a few mm off shows its offset.</li>
             <li>Offsets are in model mm, so the gap on paper changes with the view scale.</li>
             <li>A 5 mm joint at 1:60 is correct but too small to read.</li>
             <li>Grids, Every part and the contour-plate length rule are new and haven't been run inside Tekla yet.</li>

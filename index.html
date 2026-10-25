@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tekla Automation Toolkit | Mohamed Sakr</title>
-<meta name="description" content="Single-file Tekla Structures macros and the EK Coordinate Mark drawing plugin: panel checking, tendon modelling, mark numbering, dimensions, opening marks and coordinate marks.">
+<meta name="description" content="Tekla Structures tools for panel checking, tendon modelling, drawing creation and checking, mark numbering, reports, dimensions, opening marks and coordinate marks.">
 <meta property="og:title" content="Tekla Automation Toolkit | Mohamed Sakr">
 <meta property="og:description" content="Tekla macros and a drawing plugin that take the repetitive measuring, marking and modelling out of work.">
 <meta property="og:type" content="website">
@@ -48,7 +48,7 @@ footer p{margin:.3rem 0}
 <header>
   <div class="eyebrow">Tekla Structures</div>
   <h1>Tekla automation toolkit</h1>
-  <p class="lede">Single-file macros and a drawing plugin that take the repetitive measuring, marking and modelling out of work. Each documents what it does not do.</p>
+  <p class="lede">Tekla macros and a drawing plugin that take the repetitive measuring, marking and modelling out of work. The catalog explains what each tool needs and where it stops.</p>
   <p class="by">Mohamed Sakr · Structural Engineer, BIM &amp; Digital Delivery · Tallinn, Estonia</p>
   <div class="btns">
     <a class="btn p" href="Mohamed_Sakr_CV.pdf">Download CV</a>
@@ -86,6 +86,24 @@ footer p{margin:.3rem 0}
     <div class="status">Numbering verified on a live model; newest window features not yet run in Tekla</div>
     <div class="links"><a href="ek_mark.html">Case study →</a></div>
   </article>
+  <article class="card">
+    <span class="tag">DRAWINGS</span>
+    <h3>Drawing Creator</h3>
+    <p>Makes a GA drawing for each selected model view, with drawing and view properties set per row.</p>
+    <div class="num">6.5–17 s</div>
+    <div class="lab">per drawing across 36 model views</div>
+    <div class="status">Verified on a live project; time by hand not measured</div>
+    <div class="links"><a href="drawing_creator.html">Case study →</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">REPORTING</span>
+    <h3>EK Reports</h3>
+    <p>Writes EK-8xx model summaries to their Excel templates, combining identical pieces into one row.</p>
+    <div class="num">7–9 s</div>
+    <div class="lab">to scan 3,421 assemblies; reports take 0.1–15 s each</div>
+    <div class="status">Verified on a live project; time by hand not measured</div>
+    <div class="links"><a href="ek_reports.html">Case study →</a></div>
+  </article>
 </div>
 
 <h2>Drawing tools</h2>
@@ -116,9 +134,18 @@ footer p{margin:.3rem 0}
     <div class="status">Not yet checked on a live drawing</div>
     <div class="links"><a href="ek_coordinate_mark.html">Case study →</a></div>
   </article>
+  <article class="card">
+    <span class="tag">DRAWING CHECK</span>
+    <h3>Drawing Check</h3>
+    <p>Checks an open drawing against the Esplan drawing checklist and lists what to fix.</p>
+    <div class="num">281 / 287</div>
+    <div class="lab">dimension texts placed as printed in the test</div>
+    <div class="status">Documented in the catalog; installer not yet available</div>
+    <!-- <div class="links"><a href="macro_catalog.html#drawing-check">Macro guide →</a></div> -->
+  </article>
 </div>
 
-<div class="cat">Want all six tools side by side, with what each needs from you and how to install it? See the <a href="macro_catalog.html">Macro Catalog</a>.</div>
+<div class="cat">Want all nine tools side by side, with what each needs from you and how to install it? See the <a href="macro_catalog.html">Macro Catalog</a>.</div>
 
 <h2>How each tool is built</h2>
 <div class="how">

@@ -433,7 +433,7 @@
       <dt>Files</dt><dd>config/plugins/EKCoordinateMark/</dd>
       <dt>Language</dt><dd>C# &middot; Tekla drawing plugin</dd>
       <dt>Built</dt><dd>2026-10-09</dd>
-      <dt>Installer</dt><dd>EKCoordinateMark_1.0.tsep</dd>
+      <dt>Installer</dt><dd>EKCoordinateMark_1.1.tsep</dd>
     </dl>
   </header>
 
@@ -562,7 +562,7 @@
   <section>
     <div class="head"><span class="bubble">E</span><h2>One build for every version</h2></div>
 
-    <p>A plugin is a compiled DLL, not source that Tekla compiles at startup, so it has to be built. It is compiled once against the Tekla 2023 assemblies, the oldest version supported, and later versions load it through their own. <code>Build-Tsep.ps1</code> compiles it and packages it into <code>config/release/EKCoordinateMark_1.0.tsep</code>, which installs it into <code>extensions\EKCoordinateMark</code> of every Tekla version from 2023 on.</p>
+    <p>A plugin is a compiled DLL, not source that Tekla compiles at startup, so it has to be built. It is compiled once against the Tekla 2023 assemblies, the oldest version supported, and later versions load it through their own. <code>Build-Tsep.ps1</code> compiles it and packages it into <code>config/release/EKCoordinateMark_1.1.tsep</code>, which installs it into <code>extensions\EKCoordinateMark</code> of every Tekla version from 2023 on.</p>
   </section>
 
   <section>
@@ -587,7 +587,7 @@
       <table>
         <tbody>
           <tr><td>Compiled against</td><td>Tekla Structures 2023.0, one DLL for every later version</td></tr>
-          <tr><td>Packaged</td><td><code>EKCoordinateMark_1.0.tsep</code>, into <code>extensions\EKCoordinateMark</code> of every version from 2023 on</td></tr>
+          <tr><td>Packaged</td><td><code>EKCoordinateMark_1.1.tsep</code>, into <code>extensions\EKCoordinateMark</code> of every version from 2023 on</td></tr>
           <tr><td>Not yet recorded</td><td>A timed run, and a check of the marks against known base-point coordinates on a live drawing <span class="chip soft">open</span></td></tr>
         </tbody>
       </table>
@@ -597,7 +597,7 @@
   <section>
     <div class="head"><span class="bubble">H</span><h2>Running it</h2></div>
     <ol>
-      <li>Install the plugin: double-click <code>EKCoordinateMark_1.0.tsep</code> from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong>.</li>
+      <li>Install the plugin: double-click <code>EKCoordinateMark_1.1.tsep</code> from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong>.</li>
       <li>Open a drawing, and check the view's <em>Location by</em> is the base point the coordinates should be measured from.</li>
       <li>Start <em>EKCoordinateMark</em> from Applications &amp; components. Set the coordinates, order, unit and decimals, and <em>Save</em> them under a name to use again.</li>
       <li>Pick the coordinate point, then pick where the text goes, in the same view.</li>

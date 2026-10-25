@@ -702,7 +702,7 @@
     <span class="sec-mark">08 - build notes</span>
     <h2>How it is put together</h2>
     <ul>
-      <li><strong>One file.</strong> The whole tool travels as a single macro, installed by <code>InsertTendons_1.0.tsep</code> into <code>macros\modeling</code> of every Tekla version from 2023 on. Tekla compiles it at startup.</li>
+      <li><strong>One file.</strong> The whole tool travels as a single macro, installed by <code>InsertTendons_1.1.tsep</code> into <code>macros\modeling</code> of every Tekla version from 2023 on. Tekla compiles it at startup.</li>
       <li><strong>Written to a pre-C#6 subset,</strong> matching the other macros in the repository: no interpolation, no null-conditional, no null-coalescing.</li>
       <li><strong>Styled with HC Check</strong> - the same flat palette, hairline cards and tab bar, so the macros read as one toolset.</li>
       <li><strong>Debugged by probe.</strong> Each geometry bug was settled by a throwaway read-only macro, run through the MCP server's <code>run_macro</code>, writing the beam's frame, box and the tendons' points to a text file. It never ships.</li>

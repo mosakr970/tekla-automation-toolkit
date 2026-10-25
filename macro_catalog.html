@@ -155,7 +155,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <p>Tekla macros and one drawing plugin that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each one has its own <code>.tsep</code> installer. A double-click installs it into every Tekla version from 2023 on.</p>
     </div>
     <div class="tb-cells">
-      <div class="tb-cell"><span class="eyebrow">Macros · Plugins</span><b>7 · 1</b></div>
+      <div class="tb-cell"><span class="eyebrow">Macros · Plugins</span><b>8 · 1</b></div>
       <div class="tb-cell"><span class="eyebrow">Tekla</span><b>2023.0 · 2025.0</b></div>
       <div class="tb-cell"><span class="eyebrow">Install</span><b>Double-click 1 .tsep</b></div>
     </div>
@@ -173,6 +173,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <li><a href="#ek-reports">EK Reports</a></li>
       <li><a href="#opening-marks">Opening Marks</a></li>
       <li><a href="#auto-dimension">Auto Dimension</a></li>
+      <li><a href="#drawing-check">Drawing Check</a></li>
       <li><a href="#ek-coordinate-mark">EK Coordinate Mark</a></li>
       <li><a href="#trouble">Troubleshooting</a></li>
     </ol>
@@ -191,6 +192,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td class="nowrap"><a href="#ek-reports">EK Reports</a></td><td><span class="pill mod">Model</span></td><td>Writes every EK-8xx summary to its Excel template, identical pieces on one row</td><td>Scan in 7-9 s, each report in 0.1-15 s. Not measured by hand yet</td></tr>
           <tr><td class="nowrap"><a href="#opening-marks">Opening Marks</a></td><td><span class="pill drw">Drawing</span></td><td>Finds every opening in a floor plan and crosses it out</td><td>1 plan: 24 s, against 6 min by hand</td></tr>
           <tr><td class="nowrap"><a href="#auto-dimension">Auto Dimension</a></td><td><span class="pill drw">Drawing</span></td><td>Dimensions a plan view to the grid, chaining elements in a row</td><td>1 plan: 20 s, against 15 min by hand</td></tr>
+          <tr><td class="nowrap"><a href="#drawing-check">Drawing Check</a></td><td><span class="pill drw">Drawing</span></td><td>Checks the open drawing against the Esplan drawing checklist and lists what to fix</td><td>281 of 287 dimension texts placed as printed</td></tr>
           <tr><td class="nowrap"><a href="#ek-coordinate-mark">EK Coordinate Mark</a></td><td><span class="pill drw">Drawing</span></td><td>Writes a point's coordinates, measured from the base point the view is located by</td><td>Not measured yet</td></tr>
         </tbody>
       </table>
@@ -223,11 +225,11 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <h3>How the windows behave</h3>
       <ul class="tight">
         <li>Every macro opens a small window that stays on top but doesn't block Tekla, so you can keep clicking in the model or drawing while it's open.</li>
-        <li>Nothing happens until you press <b class="ui">Scan</b>. Scanning only reads, it never changes anything. Drawing Creator has no Scan: it lists the model views as it opens, and changes nothing until you press <b class="ui">Create drawings</b>.</li>
+        <li>Nothing happens until you press <b class="ui">Scan</b> (<b class="ui">Scan model</b> in HC Check, <b class="ui">Scan view</b> in Auto Dimension). Scanning only reads, it never changes anything. Drawing Creator has no Scan: it lists the model views as it opens, and changes nothing until you press <b class="ui">Create drawings</b>.</li>
         <li>The window stays open after a run, so you can change a setting and run again.</li>
-        <li>Most settings are remembered for next time.</li>
+        <li>The model macros remember most settings for next time. Opening Marks and Auto Dimension start from their defaults each time.</li>
         <li>Hover over any field for a short explanation.</li>
-        <li>In the lists, press Enter to select the selected rows' elements in the model. Shift or Ctrl picks several rows.</li>
+        <li>In the model macros' lists, press Enter to select the selected rows' elements in the model. In Opening Marks, Enter outlines the openings in the drawing. Drawing Creator's list has no Enter. Shift or Ctrl picks several rows.</li>
       </ul>
     </div>
 
@@ -252,7 +254,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">You need</span>
           <ul class="tight">
-            <li>One Excel sheet per beam position, named like the position (<code>JPT-104.xlsx</code>). For each tendon it lists the stations along the beam, the offset across the width and the height of the duct's underside above the soffit.</li>
+            <li>One Excel sheet per beam position, named like the position (<code>JPT-104.xlsx</code>). Cell A1 holds the position. Each tendon has its own X, Y and Z columns (X1 Y1 Z1, X2 Y2 Z2 and so on) listing the stations along the beam, the offset across the width from the centre and the height of the tendon's underside above the soffit.</li>
             <li>The beams' positions in <code>EK_MARK</code>, or their assembly position when <code>EK_MARK</code> is empty</li>
             <li>The tendon and duct profiles and materials</li>
           </ul>
@@ -260,11 +262,11 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">Step by step</span>
           <ol class="tight">
-            <li><b>Beams</b> tab: check the <b class="ui">Prefix</b> (beams are found by assembly prefix, <code>JPT</code> by default). To work on only some beams, select them in the model first.</li>
+            <li><b>Beams</b> tab: check the <b class="ui">Prefix</b> (concrete beams are found by assembly prefix, <code>JPT</code> by default). To work on only some beams, select them in the model first. The prefix still applies to the selection, so empty it if the selected beams have another prefix.</li>
             <li>Press <b class="ui">Scan</b>. Beams are listed one row per position, with the number of beams.</li>
-            <li>Press <b class="ui">From folder</b> and pick the folder with the Excel sheets. Each sheet is matched to its position by file name. You can also use <b class="ui">Browse</b> on a single row, or press Delete on a row to clear its file. Untick <b class="ui">Use</b> to leave a position out.</li>
+            <li>Press <b class="ui">From folder</b> and pick the folder with the Excel sheets. Each sheet is matched to its position by file name. You can also use <b class="ui">Browse</b> on a single row, or press Delete on a row to clear its file. Untick <b class="ui">Use</b> to leave a position out. The <b class="ui">Sheet</b> column shows how many tendons each file holds, in red if the file can't be read or its A1 names another position. Check those before inserting.</li>
             <li><b>Tendon &amp; duct</b> tab: set profile, material, name and class for the tendon and for the duct. Leave the duct profile empty for no duct.</li>
-            <li>Press <b class="ui">Insert tendons</b>. The <b>Results</b> tab shows one row per beam: inserted, skipped (already has tendons), no file, or failed with the reason. Press Enter to select the selected rows' beams in the model, or double-click a row to zoom to its beam.</li>
+            <li>Press <b class="ui">Insert tendons</b>. The <b>Results</b> tab shows one row per beam: Inserted, Skipped (already holds tendons), No Excel file, Unreadable sheet or Failed, each with the reason. Press Enter to select the selected rows' beams in the model, or double-click a row to zoom to its beam.</li>
           </ol>
         </div>
         <div class="block">
@@ -272,11 +274,11 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <table class="settings">
             <tr><td>Prefix</td><td class="def">JPT</td><td>Assembly prefix the beams are found by. Required for a whole-model scan.</td></tr>
             <tr><td>Name</td><td class="def">TENDON / DUCT</td><td>Part name. It is also how earlier tendons are recognised: a beam already holding parts with this name is skipped. A different name adds a second set.</td></tr>
-            <tr><td>Prefix / Start number</td><td class="def">-</td><td>Part numbering for the tendons and ducts</td></tr>
+            <tr><td>Prefix / Start number</td><td class="def">empty / 1</td><td>Part numbering for the tendons and ducts. Leave empty for Tekla's default.</td></tr>
             <tr><td>Offset up</td><td class="def">0</td><td>Height of the duct relative to the tendon</td></tr>
             <tr><td>Create as</td><td class="def">Sub-assembly</td><td>Sub-assembly in the cast unit, or loose parts</td></tr>
           </table>
-          <p style="font-size:13.5px;color:var(--muted)">Settings, recent profiles and each position's file are remembered per model.</p>
+          <p style="font-size:13.5px;color:var(--muted)">Settings, recent profiles and materials, the last folder and each position's file are remembered per model, in <code>InsertTendons.settings</code> in the model folder.</p>
         </div>
       </div>
       <div>
@@ -326,9 +328,9 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <span class="label">Step by step</span>
           <ol class="tight">
             <li>Select assemblies in the model to work on only those, or select nothing for the whole model.</li>
-            <li>Press <b class="ui">Scan</b>. The <b>Groups</b> tab lists one row per prefix and start number, with how many pieces already carry a mark. Press Enter to select the selected rows' pieces in the model, so you can look before numbering.</li>
+            <li>Press <b class="ui">Scan</b>. The <b>Groups</b> tab lists one row per prefix and start number, with how many pieces already carry a mark. Press Enter to select the selected rows' pieces in the model, so you can look before numbering. Clear the selection in the model before the next Scan, or it covers only those pieces.</li>
             <li>Select the rows to number and press <b class="ui">Number</b>.</li>
-            <li>The <b>Results</b> tab shows each piece's old and new mark and what happened: kept, same as another mark, new mark, conflict, or no mark. Sort by the new mark to see each set together. Press Enter to select the selected rows' pieces in the model.</li>
+            <li>The <b>Results</b> tab shows each piece's old and new mark and what happened: Kept, Same as another mark, New mark, Conflict or No mark. A red "Kept - identical to" row means two marks hold identical pieces, so tick Overwrite to merge them. Clear lists each piece as Cleared. Sort by the new mark to see each set together. Press Enter to select the selected rows' pieces in the model.</li>
           </ol>
         </div>
         <div class="block">
@@ -345,10 +347,10 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">Settings</span>
           <table class="settings">
-            <tr><td>Overwrite</td><td class="def">off</td><td>Clears the selected rows' marks and numbers them afresh, after asking. Use it when identical pieces have ended up with two marks.</td></tr>
-            <tr><td>Unique</td><td class="def">off</td><td>Compares nothing and gives every piece its own number</td></tr>
+            <tr><td>Overwrite</td><td class="def">off</td><td>Clears the selected rows' marks and numbers them afresh, after asking. Use it when identical pieces have ended up with two marks. It is always off when the window opens.</td></tr>
+            <tr><td>Unique</td><td class="def">off</td><td>Compares nothing and gives every unmarked piece its own number. Tick Overwrite as well to renumber pieces that already have a mark.</td></tr>
             <tr><td>Order</td><td class="def">XYZ</td><td>Direction numbers run in, by each piece's centre of gravity: XYZ, YXZ, ZXY or ZYX</td></tr>
-            <tr><td>Digits</td><td class="def">3</td><td>Digits in the number (<span class="mono">001</span>)</td></tr>
+            <tr><td>Digits</td><td class="def">3</td><td>Digits in a new number (<span class="mono">001</span>), from 1 to 9. Existing marks are kept as written.</td></tr>
             <tr><td>Tol</td><td class="def">1 mm</td><td>How far points may differ and still match</td></tr>
             <tr><td>Welds / Rebar</td><td class="def">on</td><td>Include welds and rebar in the comparison. Rebar off is about three times faster.</td></tr>
             <tr><td>Clear</td><td class="def">-</td><td>Empties <code>EK_MARK</code> on the selected rows</td></tr>
@@ -371,6 +373,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <li>A piece whose number would run into the next range (TT-100 reaching TT-200) gets no mark and is shown in red.</li>
             <li>Tekla's object lock doesn't protect <code>EK_MARK</code>, and the macro doesn't check the lock yet. Select only what you mean to number.</li>
             <li><b class="ui">Clear</b> can't be undone.</li>
+            <li>If rebar numbering is out of date, the macro asks before writing. Cancel, number the model, and run again.</li>
           </ul>
         </div>
       </div>
@@ -400,11 +403,11 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">Step by step</span>
           <ol class="tight">
-            <li>Press <b class="ui">Scan model</b>. Every profile in use is listed with a count, and new profiles are added with empty ranges.</li>
-            <li>Pick a profile and fill in <b>Standard full width</b>, the <b>Width bands</b> for narrowed panels, and the four <b>cut limits</b> rows. Leave a cell blank where the catalog sets no limit. Press <b class="ui">Save</b>.</li>
+            <li>Press <b class="ui">Scan model</b>. Every profile in use is added to the <b class="ui">Panel profiles</b> list, new ones with empty ranges, and the status line gives the count for each. You can also type a profile name and press <b class="ui">Add profile</b>, or <b class="ui">Remove</b> one so it isn't checked.</li>
+            <li>Pick a profile and fill in <b class="ui">Standard full width</b>, then the widths a narrowed panel may have under <b class="ui">Cut panel widths</b> (press <b class="ui">Add band</b> for each Min and Max row), and the four rows under <b class="ui">Cut limits</b>. Leave a cell blank where the catalog sets no limit. Press <b class="ui">Save</b>.</li>
             <li>Press <b class="ui">Run check</b>. Failing panels turn red in the model and are listed on the <b>Results</b> tab with the reason. Press Enter to select and zoom to the selected rows' panels, or double-click a row for one panel.</li>
-            <li>Read the first line of the <b>Log</b> tab, "Ribs checked on N, not on M", to confirm the rib check actually ran.</li>
-            <li><b class="ui">Clear colours</b> removes the red. <b class="ui">Write report</b> saves the full results to a file.</li>
+            <li>Read the first line of the <b>Log</b> tab, "N panels measured. Ribs checked on X, not on Y", to confirm the rib check actually ran.</li>
+            <li><b class="ui">Clear colours</b> removes the red. <b class="ui">Write report</b> saves every measured number to <code>hc_check_report.txt</code> in the model folder.</li>
           </ol>
           <p style="font-size:13.5px;color:var(--muted)">With panels selected, only those are scanned and checked. With nothing selected, the whole model is checked by prefix.</p>
         </div>
@@ -413,8 +416,11 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">Settings</span>
           <table class="settings">
-            <tr><td>Prefix</td><td class="def">LP-</td><td>Assembly prefix of the hollow-core panels</td></tr>
-            <tr><td>Ignore partial-depth cuts</td><td class="def">on</td><td>Skips cuts that don't go through, such as tie-bar slots. They're counted, not judged as openings.</td></tr>
+            <tr><td>Prefix</td><td class="def">LP-</td><td>Assembly prefix of the hollow-core panels. Saved with the ranges.</td></tr>
+            <tr><td>Width / Cut size</td><td class="def">1 mm</td><td>How far a width or a cut may go past its limit and still pass</td></tr>
+            <tr><td>Face reach</td><td class="def">1 mm</td><td>How close to a panel end or side face a cut must be to count as a support or edge cut</td></tr>
+            <tr><td>Full depth</td><td class="def">5 mm</td><td>How far short of full thickness a cut may stop and still count as going through</td></tr>
+            <tr><td>Ignore partial-depth cuts</td><td class="def">on</td><td>Set per profile. Skips cuts that don't go through, such as tie-bar slots. They're counted, not judged as openings.</td></tr>
             <tr><td>Flag part-cut ribs</td><td class="def">on</td><td>Reports cuts that leave a sliver of rib standing</td></tr>
             <tr><td>Colour failures</td><td class="def">on</td><td>Colours failing panels red. This is temporary and never saved in the model.</td></tr>
             <tr><td>Show panels that passed</td><td class="def">off</td><td>Lists every panel, not only failures</td></tr>
@@ -433,6 +439,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <ul class="tight">
             <li>Only profiles with ranges entered are checked. The status line says how many panels were skipped and why.</li>
             <li>The pass/fail result is only as good as the catalog entered. Check it against the factory's sheet.</li>
+            <li>Edits to the ranges are only kept after <b class="ui">Save</b>. <b class="ui">Reload</b> drops unsaved edits, and closing the window asks before losing them.</li>
             <li>A profile modelled without its cores can't have its ribs checked. The Log names those panels.</li>
           </ul>
         </div>
@@ -457,7 +464,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <span class="label">You need</span>
           <ul class="tight">
             <li>A saved model view per drawing: the plan of each storey, the view along each axis</li>
-            <li>Saved GA drawing properties (<code>.gd</code>) and drawing view properties (<code>.vi</code>) in the model, project or firm folder</li>
+            <li>Saved GA drawing properties (<code>.gd</code>) and drawing view properties (<code>.vi</code>) in the model, project, firm or system folder, or their <code>attributes</code> folder</li>
             <li>No drawing open. The drawings are made from the model</li>
           </ul>
         </div>
@@ -465,9 +472,9 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <span class="label">Step by step</span>
           <ol class="tight">
             <li>Close any open drawing and start <b>Drawing Creator</b> from the model's <b class="ui">Applications &amp; components</b>.</li>
-            <li>Type in <b class="ui">Filter</b> to narrow the list. The tick box in the list's header ticks or unticks every shown row, and hidden rows keep their ticks.</li>
+            <li>Type in <b class="ui">Filter</b> to narrow the list. The tick box in the list's header ticks or unticks every shown row. Hidden rows keep their ticks but are not made, so clear the filter to make every ticked row.</li>
             <li>Per row, fill in the name and titles and pick the <b class="ui">Drawing properties</b> and <b class="ui">View properties</b>. <code>{view}</code> in a name or title is replaced by the model view's name.</li>
-            <li>Press <b class="ui">Create drawings</b>. The <b>Status</b> column shows each drawing's mark in green, or why the row failed in red.</li>
+            <li>Press <b class="ui">Create drawings</b>. The <b>Status</b> column shows each drawing's mark in green, or why the row failed in red. The line at the top counts what was made and what failed.</li>
             <li>After saving new property files, press <b class="ui">Refresh</b> to read the lists again.</li>
           </ol>
           <p style="font-size:13.5px;color:var(--muted)">The pin beside the close button keeps the window above Tekla. Unpin it to let Tekla come in front. Drag the window by its top row.</p>
@@ -483,7 +490,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <tr><td>Drawing properties</td><td class="def">blank</td><td>A saved GA drawing file, <code>.gd</code></td></tr>
             <tr><td>View properties</td><td class="def">blank</td><td>A saved drawing view file, <code>.vi</code>. Sets the scale, filters and contents</td></tr>
           </table>
-          <p style="font-size:13.5px;color:var(--muted)">Rows, ticks and the pin are remembered per model, in <code>DrawingCreator.settings</code> in the model folder.</p>
+          <p style="font-size:13.5px;color:var(--muted)">Rows, ticks, the filter and the pin are remembered per model, in <code>DrawingCreator.settings</code> in the model folder.</p>
         </div>
         <div class="block">
           <span class="label">Measured</span>
@@ -496,7 +503,8 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">Watch out for</span>
           <ul class="tight">
-            <li>A row naming a property file that isn't there fails with "not found", instead of Tekla quietly using <code>standard</code>.</li>
+            <li>A row naming a property file that isn't in the lists fails with "not found", instead of Tekla quietly using <code>standard</code>. Press <b class="ui">Refresh</b> after saving a new file.</li>
+            <li>A row with no drawing name, drawing properties or view properties fails with "No drawing name", "No drawing properties" or "No view properties". A new row has both properties blank, so pick them before the first run.</li>
             <li>One view per drawing. Add sections beside a plan by hand.</li>
             <li>A 3D model view comes out as a plan of its view plane.</li>
             <li>Nothing stops two rows, or a second run, from making drawings of the same name.</li>
@@ -522,7 +530,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">You need</span>
           <ul class="tight">
-            <li>The <code>EK-8xx_*.propertytemplate</code> presets and the <code>EK-8-8xx</code> Excel templates in the model's <code>ProjectOrganizerData</code> folder</li>
+            <li>The <code>EK-8xx_*.propertytemplate</code> presets in the model's <code>ProjectOrganizerData\PropertyTemplates</code> folder, and the <code>*_EK-8-8xx_*.xltx</code> Excel templates in <code>ProjectOrganizerData\ExcelTemplates</code></li>
             <li>The model numbered. Unnumbered pieces show <code>(?)</code> in their position</li>
             <li><code>EK_MARK</code> on the steel assemblies for EK-851. Run EK Mark first</li>
           </ul>
@@ -530,10 +538,10 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">Step by step</span>
           <ol class="tight">
-            <li>Select assemblies to report only those, or nothing for the whole model, and press <b class="ui">Scan</b>.</li>
-            <li>Each report is listed with its prefixes and their count of elements and positions. Untick a report or a prefix to leave it out. Right-click a prefix and choose <b class="ui">Move to</b> to put it in another report, and <b class="ui">Save</b> to keep that for every model.</li>
+            <li>Select assemblies to report only those, or nothing for the whole model, and press <b class="ui">Scan</b>. EK-862 always lists every bolt of the model.</li>
+            <li>Each report is listed with its prefixes, and <b>Elements</b> and <b>Pos</b> count their elements and positions. Prefixes that go into no report are listed last under <b>Not in a report</b> and are never exported. Untick a report or a prefix to leave it out. The tick box in the header ticks every report, and the prefixes keep their own ticks. Click a report line to fold it. Right-click a prefix and choose <b class="ui">Move to</b> to put it in another report, and press <b class="ui">Save</b> to keep that for every model.</li>
             <li>Press Enter on lines to select their elements in the model, to see what will be listed.</li>
-            <li>Fill in <b class="ui">Designer</b>, <b class="ui">Revision</b> and <b class="ui">Date</b> and press <b class="ui">Export</b>. <b class="ui">Open folder</b> shows the workbooks in the model's <code>Reports</code> folder.</li>
+            <li>Fill in <b class="ui">Designer</b> and <b class="ui">Revision</b>, check <b class="ui">Date</b>, which starts as today, and press <b class="ui">Export</b>. Each workbook is named after its Excel template, with the project number for 23XX, the revision for v01 and the date at the end. <b class="ui">Open folder</b> shows the workbooks in the model's <code>Reports</code> folder.</li>
           </ol>
         </div>
       </div>
@@ -541,11 +549,11 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">Reports beside the assembly ones</span>
           <table class="settings">
-            <tr><td>EK-852 / 853 / 854</td><td class="def">from EK-851</td><td>Every part of the assemblies of EK-851's ticked prefixes, each part once</td></tr>
-            <tr><td>EK-821</td><td class="def">rebar</td><td>The rebar of the cast-in-place elements, each prefix with a tick of its own</td></tr>
-            <tr><td>EK-862</td><td class="def">bolts</td><td>Every bolt of the model, holes and studs left out</td></tr>
+            <tr><td>EK-852 / 853 / 854</td><td class="def">from EK-851</td><td>Every part of the assemblies of EK-851's ticked prefixes, sub-assemblies included, each part once. EK-851 itself can be unticked</td></tr>
+            <tr><td>EK-821</td><td class="def">rebar</td><td>The rebar of the cast-in-place elements, those whose prefix starts with PV, RV, VU, LV, TM, MSN, MBP, MBT, MPL, MTR or MPV. Each prefix has a tick of its own under EK-821</td></tr>
+            <tr><td>EK-862</td><td class="def">bolts</td><td>Every bolt of the model, holes and studs left out, even when only a selection was scanned</td></tr>
           </table>
-          <p style="font-size:13.5px;color:var(--muted)">Where each prefix goes is kept for the office in <code>ek_reports.json</code> beside the macro. The ticks, Designer and Revision are remembered per model, in <code>EKReports.settings</code>.</p>
+          <p style="font-size:13.5px;color:var(--muted)">Where each prefix goes is kept for the office in <code>ek_reports.json</code> in the macro folder, or in your own <code>%LOCALAPPDATA%\EK Reports</code> when that folder can't be written. The ticks, Designer and Revision are remembered per model, in <code>EKReports.settings</code> in the model folder.</p>
         </div>
         <div class="block">
           <span class="label">Measured</span>
@@ -560,6 +568,8 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <ul class="tight">
             <li>Reinstalling replaces <code>ek_reports.json</code>. Keep a copy of a prefix table you have saved.</li>
             <li>A column added to a preset in Organizer needs its head in the Excel template too.</li>
+            <li>The Excel template needs a <code>%&amp;O%&amp;</code> cell where the table starts, with nothing filled in below it.</li>
+            <li>The Kokku row adds up area, volume and weight, never lengths.</li>
             <li>Insulation is told apart by material type, so another MISCELLANEOUS part in a panel counts as insulation.</li>
           </ul>
         </div>
@@ -572,7 +582,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     <div class="sheet-head">
       <span class="sheet-no">DRW-01</span>
       <h3>Opening Marks</h3>
-      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Size dimensions not yet checked</span></div>
+      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Size dimensions and real recesses not yet checked</span></div>
     </div>
     <div class="sheet-intro">
       <p class="lede">Finds every opening and recess in a floor plan view and crosses it out: two diagonals for an opening, one for a recess. It also finds holes no cut makes, such as a stair or shaft hole left between planks and a cast-in-place strip.</p>
@@ -585,9 +595,9 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <ol class="tight">
             <li>Open the drawing and select <b>one view</b>, the plan.</li>
             <li>Press <b class="ui">Scan</b>. The <b>Openings</b> tab lists what was found under five types. Click a type to expand it.</li>
-            <li>Tick <b>MARK</b> for the crossing and <b>DIMS</b> for size dimensions, per opening or for a whole type. Press Enter to outline the selected rows' openings in magenta in the drawing.</li>
+            <li>Tick <b>MARK</b> for the crossing and <b>DIMS</b> for size dimensions, per opening or for a whole type. MARK starts on and DIMS off. Press Enter to outline the selected rows' openings in magenta in the drawing.</li>
             <li>Press <b class="ui">Mark</b>. The <b>Results</b> tab logs what was drawn and what was already there.</li>
-            <li>To take marks off again, tick the types and press <b class="ui">Remove</b>. Only the macro's own lines and dimensions are removed.</li>
+            <li>To take marks off again, tick under <b>MARK</b> for lines and <b>DIMS</b> for dimensions, then press <b class="ui">Remove</b>. One ticked opening is enough to clear its whole type. Only the macro's own lines and dimensions are removed.</li>
           </ol>
         </div>
         <div class="block">
@@ -638,7 +648,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     <div class="sheet-head">
       <span class="sheet-no">DRW-02</span>
       <h3>Auto Dimension</h3>
-      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">3 newest options not yet run in Tekla</span></div>
+      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Grids, Every part and the contour-plate rule not yet run in Tekla</span></div>
     </div>
     <div class="sheet-intro">
       <p class="lede">Dimensions the assemblies in a drawing view the way a detailer would. Each element is measured to the nearest grid line. Elements in a row get one chain showing every length and gap, and openings in walls and slabs join their element's chain. Lines sit on a real face, close to the part, and step aside for existing marks, text and dimensions.</p>
@@ -651,7 +661,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <ol class="tight">
             <li>Open the drawing and select <b>one view</b>. With <b>Grids</b> ticked, the view must show the grid.</li>
             <li>Press <b class="ui">Scan view</b>. The <b>Series</b> tab lists every numbering prefix in the view, with counts.</li>
-            <li>Tick the series to dimension and leave rebar and embeds out. Per series, set <b>OPENINGS</b>, <b>END-ON</b> and <b>DIRECTION</b>. To dimension sub-assemblies, tick <b>Sub-assemblies</b>: they are listed as <b>VU- / EB_HPM24L</b> and so on. Untick the ones you do not want. Untick <b>VU-</b> to dimension the bolts without the concrete.</li>
+            <li>First tick <b>Sub-assemblies</b> or <b>Rebars</b> if you need them. They add rows such as <b>VU- / EB_HPM24L</b>, and changing either rebuilds the list and resets its ticks. Every series starts ticked, so untick the ones you do not want, such as rebar and embeds. Untick <b>VU-</b> to dimension the bolts without the concrete. Then set <b>OPENINGS</b>, <b>END-ON</b> and <b>DIRECTION</b> per series.</li>
             <li>Press <b class="ui">Add dimensions</b>. The <b>Results</b> tab logs what was placed and what was skipped.</li>
             <li>The window stays open, so you can dimension the next series and check the drawing in between. Each run avoids what the previous one placed.</li>
           </ol>
@@ -693,7 +703,93 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <li>Round piles and columns (RU / RO profiles) are measured to their centre. One exactly on a grid line gets no dimension on that axis, one a few mm off shows its offset.</li>
             <li>Offsets are in model mm, so the gap on paper changes with the view scale.</li>
             <li>A 5 mm joint at 1:60 is correct but too small to read.</li>
+            <li>A dimension that repeats one nearby is left out. Nearby means the same axis, within 4500 mm, with points within 25 mm. The Results tab counts these as repeats left out.</li>
             <li>Grids, Every part and the contour-plate length rule are new and haven't been run inside Tekla yet.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Drawing Check -->
+  <article class="sheet" id="drawing-check">
+    <div class="sheet-head">
+      <span class="sheet-no">DRW-03</span>
+      <h3>Drawing Check</h3>
+      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">No installer yet</span></div>
+    </div>
+    <div class="sheet-intro">
+      <p class="lede">Checks the open drawing against the Esplan drawing checklist and lists what it finds in a table. It reads the title block, notes, views, dimensions, marks and pens. It never changes the drawing. So far it knows pile plans, foundation plans (pile caps, pad and strip footings) and anchor bolt plans.</p>
+      <p><b>Use it when</b> a plan is ready to go to the checker. It finds the missing dimensions, marks and note topics that are slow to spot by eye, and it tells you where each one is.</p>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <div class="block">
+          <span class="label">You need</span>
+          <ul class="tight">
+            <li>The macro file <code>Drawing Check.cs</code> copied into the drawings macro folder of Tekla 2025: <code>C:\ProgramData\Trimble\Tekla Structures\2025.0\Environments\common\macros\drawings\</code>. Copy it into the 2025 folder only, because the 2023 folder has an old first version.</li>
+            <li>The project status workbook (<code>.xlsx</code> or <code>.xlsm</code>) with its <code>DokNimekiri</code> sheet. Without it the document list rules show <b>Not checked</b>.</li>
+            <li>Model numbering up to date, and the drawing updated</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">Step by step</span>
+          <ol class="tight">
+            <li>Open the drawing and run <b>Drawing Check</b>. The status line says <b>Open a drawing, then Check.</b></li>
+            <li>The first time in a model, press <b class="ui">Status file...</b> and pick the project status workbook. The choice is saved in the model folder, so you pick it once per model.</li>
+            <li>Press <b class="ui">Check</b>. Findings come first, Must before Should before Note. Rules that passed come last as <b>OK</b>.</li>
+            <li>Hover a rule ID to see the rule and its checklist row. Hover a finding to see any extra detail and the abbreviations spelled out.</li>
+            <li>Double-click a finding to select its objects in the drawing.</li>
+            <li>Press <b class="ui">Copy</b> to put the findings on the clipboard as rows, ready to paste into Excel.</li>
+            <li>Fix the drawing and press <b class="ui">Check</b> again.</li>
+          </ol>
+        </div>
+        <div class="block">
+          <span class="label">Reading the table</span>
+          <table class="settings">
+            <tr><td>SEVERITY</td><td class="def">Must</td><td>Has to be fixed before the drawing is issued. Shown in red.</td></tr>
+            <tr><td></td><td class="def">Should</td><td>Fix it unless you have a reason</td></tr>
+            <tr><td></td><td class="def">Note</td><td>For information, worth a look</td></tr>
+            <tr><td>TYPE</td><td class="def">Error</td><td>Something is missing or wrong</td></tr>
+            <tr><td></td><td class="def">Conflict</td><td>Two places disagree, such as the title block and the file name</td></tr>
+            <tr><td></td><td class="def">Uncertain</td><td>Could be wrong. Look at it yourself.</td></tr>
+            <tr><td></td><td class="def">Not checked</td><td>The rule could not run, and the finding says why. It is never a pass. Shown in grey.</td></tr>
+            <tr><td></td><td class="def">OK</td><td>The rule ran and found nothing. Shown in green.</td></tr>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">Rule groups</span>
+          <table class="settings">
+            <tr><td>UP</td><td class="def">UP-01</td><td>Drawing and numbering up to date</td></tr>
+            <tr><td>TB</td><td class="def">TB-01..09</td><td>Title block, revision row, file name and document list</td></tr>
+            <tr><td>NT</td><td class="def">NT-01..08</td><td>General notes, notes files, note topics and their values against the model</td></tr>
+            <tr><td>VW</td><td class="def">VW-01..03</td><td>View titles, scale and grids shown</td></tr>
+            <tr><td>DM</td><td class="def">DM-01..05</td><td>Dimension text height, grid dimensions, elements tied to the grid, overlapping texts</td></tr>
+            <tr><td>MR</td><td class="def">MR-01..07</td><td>Marks, references, legend and numbering</td></tr>
+            <tr><td>GR</td><td class="def">GR-01..04</td><td>Pens, font, colours and break lines</td></tr>
+            <tr><td>PL</td><td class="def">PL-01</td><td>Pile plans only: pile top levels in the notes against the model</td></tr>
+            <tr><td>FD</td><td class="def">FD-01..03</td><td>Foundation plans only: size dimensions, piles under caps dashed, existing structures thick</td></tr>
+            <tr><td>AB</td><td class="def">AB-01..05</td><td>Anchor bolts and dowel bars: shown, tied to the grid, spacing, foundation edge, marks</td></tr>
+          </table>
+        </div>
+        <div class="block">
+          <span class="label">Measured on test drawings</span>
+          <div class="figures">
+            <div class="fig hi"><b>281 / 287</b><span>dimension texts placed as Tekla prints them</span></div>
+            <div class="fig"><b>170</b><span>piles on the P911 pile plan, findings checked by hand</span></div>
+            <div class="fig"><b>156</b><span>anchor bolts in 39 groups checked on one plan</span></div>
+          </div>
+        </div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>Coordinate marks do not count as dimensions. A pile placed only by a coordinate mark is reported as not tied to the grid.</li>
+            <li>An own element drawn with a thin pen is taken as a neighbour part. It is reported only when it has a mark.</li>
+            <li>Overlaps with dimension texts are worked out, not read, so those findings are Uncertain. Coordinate marks are not checked for overlaps.</li>
+            <li>Foundation size is checked as overall length and width only, not the shape of a non-rectangular cap.</li>
+            <li>Anchor bolts are found by name (HPM, PPM, HIT, HAS and similar). A bolt of another make is not seen.</li>
           </ul>
         </div>
       </div>
@@ -703,7 +799,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
   <!-- EK Coordinate Mark -->
   <article class="sheet" id="ek-coordinate-mark">
     <div class="sheet-head">
-      <span class="sheet-no">DRW-03</span>
+      <span class="sheet-no">DRW-04</span>
       <h3>EK Coordinate Mark</h3>
       <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Not yet checked on a live drawing</span></div>
     </div>
@@ -717,7 +813,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <span class="label">Step by step</span>
           <ol class="tight">
             <li>Open the drawing and check the view's <b class="ui">Location by</b> is the base point the coordinates should be measured from.</li>
-            <li>Start <b>EKCoordinateMark</b> from <b class="ui">Applications &amp; components</b>. Set the coordinates, order, unit and decimals. <b class="ui">Save</b> them under a name to use again.</li>
+            <li>Start <b>EKCoordinateMark</b> from <b class="ui">Applications &amp; components</b>. Set the coordinates, order, unit and decimals, then press <b class="ui">Apply</b> or <b class="ui">OK</b>. Type a name and press <b class="ui">Save</b> to keep them, or pick a name and press <b class="ui">Load</b>.</li>
             <li>Pick the coordinate point, then pick where the text goes. Both picks must be in the same view.</li>
             <li>To change marks already placed, select them, change the settings and press <b class="ui">Modify</b>. <b class="ui">Get</b> reads the settings back from a mark.</li>
           </ol>
@@ -763,15 +859,16 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <tbody>
           <tr><td>The macro isn't listed in Applications &amp; components</td><td>Tekla wasn't restarted after installing, or <code>XS_MACRO_DIRECTORY</code> points at a firm folder instead of the common macro folder the installer writes to.</td></tr>
           <tr><td>A new version behaves like the old one</td><td>Tekla keeps the old version loaded until it restarts. Restart Tekla.</td></tr>
-          <tr><td>Only a few items were scanned or checked</td><td>Something is selected in the model. The model macros work on the selection when there is one. Clear it to cover the whole model.</td></tr>
+          <tr><td>Only a few items were scanned or checked</td><td>Something is selected in the model, for example after pressing Enter in a list. The model macros work on the selection when there is one, except EK Reports' bolt list, EK-862. Clear it to cover the whole model.</td></tr>
           <tr><td>Nothing found</td><td>The prefix doesn't match, or the pieces aren't numbered</td></tr>
           <tr><td>"Select one view" or "No view selected"</td><td>Drawing macros need exactly one view selected in the open drawing</td></tr>
           <tr><td>Drawing Creator: "Close the open drawing first"</td><td>The drawings are made from the model. Close the drawing and press <b class="ui">Create drawings</b> again.</td></tr>
-          <tr><td>Drawing Creator: properties "not found"</td><td>The row names a <code>.gd</code> or <code>.vi</code> file that isn't in the model, project or firm folders. Save the file, press <b class="ui">Refresh</b> and pick it again.</td></tr>
+          <tr><td>Drawing Creator: properties "not found"</td><td>The row names a <code>.gd</code> or <code>.vi</code> file that isn't in the model, project, firm or system folders. Save the file, press <b class="ui">Refresh</b> and pick it again.</td></tr>
+          <tr><td>Auto Dimension: "No grid lines in view"</td><td>Grids is ticked but the view shows no grid. Untick Grids to dimension the elements only, or show the grid in the view.</td></tr>
           <tr><td>Coordinates are measured from the wrong point</td><td>EK Coordinate Mark measures from the view's <b class="ui">Location by</b>. Change it in the view properties, then reopen the drawing or <b class="ui">Modify</b> the marks.</td></tr>
           <tr><td>EK Coordinate Mark placed nothing</td><td>The point was picked outside a view. Pick both points inside the same view.</td></tr>
           <tr><td>The window freezes during a run</td><td>Expected for longer runs, such as EK Mark on a whole model. The work happens on Tekla's thread, so let it finish.</td></tr>
-          <tr><td>EK Reports: a report is missing from the list</td><td>Its <code>.propertytemplate</code> or its Excel template isn't in the model's <code>ProjectOrganizerData</code> folder, or is only in <code>00_arhiiv</code>. They are paired by the EK number in the name.</td></tr>
+          <tr><td>EK Reports: a report is missing from the list</td><td>Its <code>.propertytemplate</code> isn't in the model's <code>ProjectOrganizerData\PropertyTemplates</code> folder or its Excel template isn't in <code>ProjectOrganizerData\ExcelTemplates</code>, or one is only in a subfolder such as <code>00_arhiiv</code>. They are paired by the EK number in the name, <code>EK-8xx_</code> and <code>_EK-8-8xx_</code>.</td></tr>
           <tr><td>EK Reports: a column is empty or in the wrong place</td><td>The preset in Organizer has a column the Excel template has no head for. Add the head to the template.</td></tr>
           <tr><td>EK Reports: a position shows <code>(?)</code></td><td>The model isn't numbered. Number it and Scan again.</td></tr>
           <tr><td>HC Check colours disappeared</td><td>A view redraw clears temporary colours. Run the check again.</td></tr>

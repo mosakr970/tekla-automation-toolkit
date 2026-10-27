@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Tekla Setup</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --paper:        #f7f9fb;
+    --surface:      #ffffff;
+    --surface-sunk: #eef2f6;
+    --ink:          #16202b;
+    --ink-soft:     #4a5765;
+    --ink-faint:    #798696;
+    --hairline:     #dbe2ea;
+    --hairline-hard:#c2cddb;
+    --accent:       #0068bd;
+    --accent-soft:  #e3eefa;
+    --warn:         #a05a05;
+    --warn-soft:    #fbeedb;
+    --stop:         #a3241b;
+    --stop-soft:    #fbe6e4;
+    --ok:           #15694a;
+    --ok-soft:      #dff0e8;
+
+    --measure: 68ch;
+    --step-0: 1rem;
+    --step-1: 1.15rem;
+    --step-2: 1.45rem;
+    --step-3: 1.9rem;
+    --step-4: clamp(2.1rem, 6vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:        #0e141a;
+      --surface:      #151d25;
+      --surface-sunk: #1b242e;
+      --ink:          #e2e9f0;
+      --ink-soft:     #a7b4c2;
+      --ink-faint:    #7d8b9a;
+      --hairline:     #2a3641;
+      --hairline-hard:#3b4a58;
+      --accent:       #56a9ec;
+      --accent-soft:  #142838;
+      --warn:         #e0a758;
+      --warn-soft:    #2e2415;
+      --stop:         #ef8b80;
+      --stop-soft:    #331a18;
+      --ok:           #63c69c;
+      --ok-soft:      #12281f;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:        #0e141a;
+    --surface:      #151d25;
+    --surface-sunk: #1b242e;
+    --ink:          #e2e9f0;
+    --ink-soft:     #a7b4c2;
+    --ink-faint:    #7d8b9a;
+    --hairline:     #2a3641;
+    --hairline-hard:#3b4a58;
+    --accent:       #56a9ec;
+    --accent-soft:  #142838;
+    --warn:         #e0a758;
+    --warn-soft:    #2e2415;
+    --stop:         #ef8b80;
+    --stop-soft:    #331a18;
+    --ok:           #63c69c;
+    --ok-soft:      #12281f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: var(--step-0);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 5rem;
+  }
+
+  /* ---- masthead ---- */
+
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding-block: 3rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .masthead h1 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .masthead h1 span { display: block; color: var(--accent); }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 0.85rem;
+  }
+  .stamp {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.74rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0 1.1rem;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .stamp dt { color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.68rem; }
+  .stamp dd { margin: 0; }
+
+  .standfirst {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 1.75rem 0 2.5rem;
+  }
+
+  /* ---- section scaffolding: grid bubbles, as on a drawing ---- */
+
+  section { margin-block-start: 3.75rem; }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+  }
+  .bubble {
+    flex: 0 0 auto;
+    width: 2.05rem;
+    height: 2.05rem;
+    border: 1.5px solid var(--hairline-hard);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--surface);
+  }
+  .head h2 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-3);
+    letter-spacing: -0.018em;
+    margin: 0;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .head::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--hairline);
+  }
+
+  h3 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+    margin: 2rem 0 0.55rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: 0.45rem; }
+  li::marker { color: var(--ink-faint); }
+
+  code, .num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.86em;
+    font-variant-numeric: tabular-nums;
+  }
+  code {
+    background: var(--surface-sunk);
+    padding: 0.08em 0.36em;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ---- the drawing figure ---- */
+
+  figure { margin: 0 0 1.5rem; }
+  .figframe {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    padding: 1.25rem 1rem 0.75rem;
+  }
+  .figframe svg { display: block; min-width: 620px; width: 100%; height: auto; }
+  figcaption {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    margin-top: 0.7rem;
+    max-width: var(--measure);
+    line-height: 1.6;
+  }
+
+  .part      { fill: var(--surface-sunk); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .void      { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1.1; stroke-dasharray: 4 3; }
+  .gridline  { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 10 4 2 4; }
+  .gridbub   { fill: var(--surface); stroke: var(--ink-faint); stroke-width: 1.2; }
+  .witness   { stroke: var(--accent); stroke-width: 0.9; opacity: 0.55; }
+  .dimline   { stroke: var(--accent); stroke-width: 1.5; }
+  .tick      { stroke: var(--accent); stroke-width: 1.5; }
+  .dimtext   { fill: var(--accent); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500; }
+  .anno      { fill: var(--ink-faint); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10.5px; letter-spacing: 0.07em; }
+  .gridtext  { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 12px; font-weight: 600; }
+
+  /* ---- the run: a real sequence, so it is numbered ---- */
+
+  .run { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .run > li {
+    display: grid;
+    grid-template-columns: 3.1rem 1fr;
+    gap: 0 1rem;
+    padding-block: 1.05rem;
+    border-top: 1px solid var(--hairline);
+    margin: 0;
+  }
+  .run > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .run .step {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    padding-top: 0.2em;
+  }
+  .run h4 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+  }
+  .run p { margin: 0; color: var(--ink-soft); max-width: var(--measure); }
+
+  /* ---- tables ---- */
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--hairline); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  caption {
+    text-align: left;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem 0.6rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  thead th {
+    font-family: "Archivo", sans-serif;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--ink-faint);
+    font-weight: 600;
+    border-top: 1px solid var(--hairline-hard);
+  }
+  tbody tr:nth-child(even) { background: var(--surface-sunk); }
+  td.v {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    font-size: 0.84rem;
+  }
+
+  /* ---- limitations ---- */
+
+  .limits { list-style: none; padding: 0; margin: 0; max-width: none; }
+  .limits > li {
+    border-top: 1px solid var(--hairline);
+    padding-block: 1rem;
+    margin: 0;
+  }
+  .limits > li:last-child { border-bottom: 1px solid var(--hairline); }
+  .limits h4 {
+    font-family: "Archivo", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .limits p { margin: 0; color: var(--ink-soft); }
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 0.18em 0.5em;
+    border-radius: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chip.hard  { background: var(--stop-soft); color: var(--stop); }
+  .chip.soft  { background: var(--warn-soft); color: var(--warn); }
+  .chip.known { background: var(--accent-soft); color: var(--accent); }
+  .chip.ok    { background: var(--ok-soft);   color: var(--ok); }
+
+  /* ---- callout ---- */
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    max-width: var(--measure);
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note .lbl {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ---- estimate panel ---- */
+
+  .est {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    margin: 1.5rem 0;
+  }
+  .est > div { background: var(--surface); padding: 1.1rem 1.1rem 1.2rem; }
+  .est dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.4rem;
+  }
+  .est dd {
+    margin: 0;
+    font-family: "Archivo", sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  .est dd small {
+    display: block;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    margin-top: 0.35rem;
+    line-height: 1.5;
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--ink);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    line-height: 1.8;
+  }
+
+
+  /* ---- tekla setup figure ---- */
+  .win       { fill: var(--surface); stroke: var(--ink-soft); stroke-width: 1.4; }
+  .winhead   { fill: var(--ink); }
+  .wintitle  { fill: var(--paper); font-family: "Archivo", sans-serif; font-size: 13px; font-weight: 600; }
+  .card      { fill: var(--surface); stroke: var(--hairline-hard); stroke-width: 1; }
+  .field     { fill: var(--surface-sunk); stroke: var(--hairline-hard); stroke-width: 0.8; }
+  .cardtext  { fill: var(--ink); font-family: "Archivo", sans-serif; font-size: 11.5px; font-weight: 600; }
+  .pathtext  { fill: var(--ink-soft); font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 10px; }
+  .okt       { fill: var(--ok); font-family: "Archivo", sans-serif; font-size: 11px; font-weight: 700; }
+  .failt     { fill: var(--stop); font-family: "Archivo", sans-serif; font-size: 11px; font-weight: 700; }
+  .runbtn    { fill: #c8102e; }
+  .runtext   { fill: #ffffff; font-family: "Archivo", sans-serif; font-size: 11px; font-weight: 600; }
+
+  @media (max-width: 540px) {
+    .head { gap: 0.65rem; }
+    .bubble { width: 1.75rem; height: 1.75rem; font-size: 0.72rem; }
+    .run > li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div>
+      <p class="kicker">Tekla Structures &middot; setup tool</p>
+      <h1>Tekla Setup <span>a new Tekla version, set up in one window</span></h1>
+    </div>
+    <dl class="stamp">
+      <dt>File</dt><dd>config/tekla-setup/Setup-Tekla.ps1</dd>
+      <dt>Language</dt><dd>PowerShell &middot; WPF, C# launcher</dd>
+      <dt>Built</dt><dd>2026-10-26</dd>
+      <dt>Ships as</dt><dd>config/release/Tekla-Setup.exe</dd>
+    </dl>
+  </header>
+
+  <p class="standfirst">Every new Tekla version and service pack meant working through the office's install guide by hand: the installers in order, then a dozen files copied from the server into folders that differ per version. Tekla Setup puts each step of the guide on a card, with its source on the server and a Browse button. Pick the version, tick the steps, press one button.</p>
+
+  <figure>
+    <div class="figframe">
+      <svg viewBox="0 0 760 290" role="img" aria-label="The setup window: a dark header with the server folder and the version 2026, then step cards with a path and a status each, OK or Failed, and a red Run button at the bottom.">
+        <rect class="win" x="20" y="14" width="720" height="262"/>
+        <rect class="winhead" x="20" y="14" width="720" height="58"/>
+        <text class="wintitle" x="36" y="38">Tekla Structures setup</text>
+        <text class="pathtext" x="36" y="60" style="fill:var(--ink-faint)">Server folder  \\10.168.1.3\Public\...\Tekla Structures</text>
+        <text class="pathtext" x="640" y="38" style="fill:var(--ink-faint)">Version 2026</text>
+
+        <rect class="card" x="36" y="84" width="688" height="36" rx="6"/>
+        <text class="cardtext" x="50" y="106">&#x2611; Service pack</text>
+        <rect class="field" x="230" y="92" width="380" height="20" rx="3"/>
+        <text class="pathtext" x="238" y="106">.\01_Install\TS2026_installerid\TeklaStructures2026...</text>
+        <text class="okt" x="690" y="106">OK</text>
+
+        <rect class="card" x="36" y="126" width="688" height="36" rx="6"/>
+        <text class="cardtext" x="50" y="148">&#x2611; user.ini</text>
+        <rect class="field" x="230" y="134" width="380" height="20" rx="3"/>
+        <text class="pathtext" x="238" y="148">.\TS_FIRM\user.ini</text>
+        <text class="okt" x="690" y="148">OK</text>
+
+        <rect class="card" x="36" y="168" width="688" height="36" rx="6"/>
+        <text class="cardtext" x="50" y="190">&#x2611; Date format</text>
+        <text class="pathtext" x="238" y="190">patched in place, no source</text>
+        <text class="failt" x="676" y="190">Failed</text>
+
+        <rect class="runbtn" x="590" y="226" width="134" height="32" rx="6"/>
+        <text class="runtext" x="604" y="246">Run selected steps</text>
+        <text class="pathtext" x="36" y="246">Select all &#xb7; Clear &#xb7; Logs</text>
+      </svg>
+    </div>
+    <figcaption>An illustration, not a screenshot. Each step is a card with its source and a status. A path starting with <code>.\</code> is in the server folder at the top, any other path is used as written.</figcaption>
+  </figure>
+
+  <section>
+    <div class="head"><span class="bubble">A</span><h2>What it does</h2></div>
+
+    <ol class="run">
+      <li>
+        <span class="step">01</span>
+        <div>
+          <h4>Pick the version</h4>
+          <p>The list holds every version from 2023 on that has an installer folder on the server or is installed on the PC, newest first. Picking one fills every card's source from that version's folder.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">02</span>
+        <div>
+          <h4>Check the sources</h4>
+          <p>Each source starts with <code>.\</code>, meaning the server folder. When a file on the server is replaced, Browse to the new one. A file picked inside the server folder is written with <code>.\</code>, anything else keeps its full path.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step">03</span>
+        <div>
+          <h4>Run the ticked steps</h4>
+          <p>The steps run in order, each card showing Running, OK or Failed. A failed step does not stop the others. <em>Logs</em> opens the full log, with a button to copy it.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">B</span><h2>The steps</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <caption>From the office install guide &middot; one card each</caption>
+        <thead>
+          <tr><th>Step</th><th>Source</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Service pack</td><td class="v">.\01_Install\TS20xx_installerid</td><td>Runs the newest <code>TeklaStructures*ServicePack*.exe</code> and waits for its wizard</td></tr>
+          <tr><td>Environments</td><td class="v">same folder</td><td>Default, Finland and Estonia, one card each, run the same way</td></tr>
+          <tr><td>user.ini</td><td class="v">.\TS_FIRM\user.ini</td><td>Replaces the one in <code>UserSettings</code>. Needs Tekla started once first</td></tr>
+          <tr><td>Logos</td><td class="v">.\TS_FIRM\template</td><td><code>Esplan_logo2.png</code> and <code>PCC-logo-RGB.png</code> into <code>common\symbols</code>, for the title block</td></tr>
+          <tr><td>Date format</td><td class="v">-</td><td>Sets <code>LAST_DATE_CREATE</code> in <code>contentattributes_global.lst</code> to <code>yyyy-mm-dd</code>, for the file names</td></tr>
+          <tr><td>Paper sizes</td><td class="v">-</td><td>Renames <code>PaperSizesForDrawings.dat</code> in <code>common\system</code> to <code>.bak</code>, so the firm's list is used</td></tr>
+          <tr><td>Ribbons</td><td class="v">...\Ribbons &amp; shortcuts\2023</td><td>Every <code>albl_up_*.xml</code> of the folder into <code>UI\Ribbons</code></td></tr>
+          <tr><td>Property templates</td><td class="v">...\2022\PropertyTemplates.xml</td><td>The property panel with <code>EK_MARK</code>, into <code>UI\PropertyTemplates</code></td></tr>
+          <tr><td>Keyboard shortcuts</td><td class="v">...\2023\Shortcuts-Mohamed.xml</td><td>Checked to be a shortcuts export, then copied to <code>Settings\KeyboardShortcuts.xml</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:1rem">The first time a file is overwritten, the original is kept beside it as <code>.bak</code>. Later runs leave that <code>.bak</code> alone, so it stays the file Tekla installed.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">C</span><h2>Patching, not copying</h2></div>
+
+    <p>The guide copies a ready-made <code>contentattributes_global.lst</code> from the server. The server only has it up to TS2023, and Tekla ships a new one with every version, so copying an old file over a new one would lose the new version's attributes. The tool changes the one line instead, in the file the version installed.</p>
+    <p>The file is read and written as Latin-1, which maps every byte to one character, so everything but that line is written back byte for byte. Tested on the TS2026 file: the line went from <code>dd.mm.yyyy</code> to <code>yyyy-mm-dd</code>, and a second run found nothing to change.</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">D</span><h2>The traps</h2></div>
+
+    <p>Each of these broke the tool without saying why.</p>
+
+    <ul>
+      <li><strong>An admin session does not see mapped drives.</strong> The first version read everything from <code>P:</code>. Run as administrator, every server step failed with "Source not found", because Windows keeps mapped drives per logon session. The server folder is now the network path itself, <code>\\10.168.1.3\Public\...</code>.</li>
+      <li><strong>cmd mangles a quoted argument when elevated.</strong> A batch file that restarted itself as administrator closed straight after the admin prompt. It is now an exe whose manifest asks for admin rights before anything runs.</li>
+      <li><strong>A hidden console swallows the error.</strong> With no window, a failed start looked like nothing happened. Anything that stops the script now shows in a message box.</li>
+      <li><strong>A WPF window can only own another once it is shown.</strong> The logs window is given its owner when <em>Logs</em> is first pressed, not at start.</li>
+    </ul>
+
+    <div class="note">
+      <span class="lbl">One file</span>
+      <p><code>Tekla-Setup.exe</code> is a small C# launcher, compiled with the compiler that comes with Windows, with the PowerShell script stored inside it. It writes the script to the temp folder, runs it with no console and deletes it. Nothing to install, and <code>Build-Exe.ps1</code> rebuilds it after a change.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">E</span><h2>Measured</h2></div>
+
+    <dl class="est">
+      <div><dt>Steps</dt><dd>12<small>every step of the guide but the part mark format</small></dd></div>
+      <div><dt>Real run</dt><dd>2 of 12<small>date format and paper sizes, TS2026</small></dd></div>
+      <div><dt>With the tool</dt><dd>-<small>not timed yet</small></dd></div>
+      <div><dt>By hand</dt><dd>-<small>not measured yet</small></dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">F</span><h2>Limitations</h2></div>
+
+    <ul class="limits">
+      <li>
+        <h4>Another admin account gets the user files <span class="chip hard">open</span></h4>
+        <p>If IT approves the admin prompt with their own account, <code>user.ini</code>, ribbons, property templates and shortcuts go to that account's AppData, not the user's.</p>
+      </li>
+      <li>
+        <h4>The exe is not signed <span class="chip soft">workflow</span></h4>
+        <p>Windows may show "Windows protected your PC" or "Unknown publisher", and some antivirus programs flag a new unsigned exe.</p>
+      </li>
+      <li>
+        <h4>Old UI files <span class="chip known">known</span></h4>
+        <p>The newest ribbons on the server are for 2023 and the newest property panel is in the 2022 folder. Whether 2026 takes a <code>Format="2023.0"</code> shortcuts file is not checked yet.</p>
+      </li>
+      <li>
+        <h4>Tekla must have been started once <span class="chip known">known</span></h4>
+        <p><code>UserSettings</code> appears only on the first start, so the steps that need it fail until then.</p>
+      </li>
+      <li>
+        <h4>The window waits for the installers <span class="chip soft">workflow</span></h4>
+        <p>Each installer's wizard is clicked through, and the window does not respond until it closes.</p>
+      </li>
+      <li>
+        <h4>Part mark elevation format is not a step <span class="chip known">known</span></h4>
+        <p>The guide only links to it, so it is still done by hand.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">G</span><h2>Where it stands</h2></div>
+
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><td>Run on</td><td>Tekla Structures 2026.0: date format patched and paper sizes moved <span class="chip ok">done</span></td></tr>
+          <tr><td>Checked</td><td>Every default source found on the server for 2026, the window built and the logs window opened, copied and closed in a test <span class="chip ok">done</span></td></tr>
+          <tr><td>Packaged</td><td><code>config/release/Tekla-Setup.exe</code>, asks for admin rights on start</td></tr>
+          <tr><td>Open</td><td>A full run of the copy steps and the installers through the tool. A time with the tool and by hand <span class="chip soft">open</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head"><span class="bubble">H</span><h2>Running it</h2></div>
+    <ol>
+      <li>Double-click <code>Tekla-Setup.exe</code> and accept the admin prompt.</li>
+      <li>Pick the version. Untick the installers if the version is already installed.</li>
+      <li>For a brand-new version, start Tekla once and close it before running the <code>user.ini</code>, ribbons, property templates and shortcuts steps.</li>
+      <li>Press <em>Run selected steps</em>. A Failed card says why in <em>Logs</em>.</li>
+      <li>Check in Tekla: <b>Ctrl+E</b>, File locations, <code>XS_FIRM</code> points at the server.</li>
+    </ol>
+  </section>
+
+  <footer>
+    Tekla MCP Server &middot; config/tekla-setup/Setup-Tekla.ps1 &middot; written 2026-10-26 against the script source<br>
+    PowerShell 5.1 and WPF, C# launcher built with the Windows .NET Framework compiler &middot; run on Tekla Structures 2026.0 &middot; no times recorded yet
+  </footer>
+
+</div>
+
+</body></html>

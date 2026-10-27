@@ -100,6 +100,7 @@ td a:hover { text-decoration: underline; }
 .pill.drw { background: var(--sheet); color: var(--ink); border: 1px solid var(--ink); }
 .pill.ok { background: var(--ok-soft); color: var(--ok); }
 .pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.app { background: var(--ink); color: var(--sheet); }
 
 /* Plain panels */
 .panel { background: var(--sheet); border: 1px solid var(--rule); padding: 20px 22px; display: grid; gap: 14px; }
@@ -152,10 +153,10 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     <div class="tb-main">
       <span class="eyebrow">Tekla Structures · Macros · Guide</span>
       <h1>Macro Guide</h1>
-      <p>Tekla macros and one drawing plugin that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each one has its own <code>.tsep</code> installer. A double-click installs it into every Tekla version from 2023 on.</p>
+      <p>Tekla macros and one drawing plugin that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each one has its own <code>.tsep</code> installer. A double-click installs it into every Tekla version from 2023 on. <a href="#tekla-setup">Tekla Setup</a> sets up a newly installed Tekla version itself.</p>
     </div>
     <div class="tb-cells">
-      <div class="tb-cell"><span class="eyebrow">Macros · Plugins</span><b>8 · 1</b></div>
+      <div class="tb-cell"><span class="eyebrow">Macros · Plugins · Apps</span><b>8 · 1 · 1</b></div>
       <div class="tb-cell"><span class="eyebrow">Tekla</span><b>2023.0 · 2025.0</b></div>
       <div class="tb-cell"><span class="eyebrow">Install</span><b>Double-click 1 .tsep</b></div>
     </div>
@@ -175,6 +176,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <li><a href="#auto-dimension">Auto Dimension</a></li>
       <li><a href="#drawing-check">Drawing Check</a></li>
       <li><a href="#ek-coordinate-mark">EK Coordinate Mark</a></li>
+      <li><a href="#tekla-setup">Tekla Setup</a></li>
       <li><a href="#trouble">Troubleshooting</a></li>
     </ol>
   </nav>
@@ -194,6 +196,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td class="nowrap"><a href="#auto-dimension">Auto Dimension</a></td><td><span class="pill drw">Drawing</span></td><td>Dimensions a plan view to the grid, chaining elements in a row</td><td>1 plan: 20 s, against 15 min by hand</td></tr>
           <tr><td class="nowrap"><a href="#drawing-check">Drawing Check</a></td><td><span class="pill drw">Drawing</span></td><td>Checks the open drawing against the Esplan drawing checklist and lists what to fix</td><td>281 of 287 dimension texts placed as printed</td></tr>
           <tr><td class="nowrap"><a href="#ek-coordinate-mark">EK Coordinate Mark</a></td><td><span class="pill drw">Drawing</span></td><td>Writes a point's coordinates, measured from the base point the view is located by</td><td>Not measured yet</td></tr>
+          <tr><td class="nowrap"><a href="#tekla-setup">Tekla Setup</a></td><td><span class="pill app">Windows</span></td><td>Sets up a newly installed Tekla version from the server: installers, <code>user.ini</code>, logos, date format, ribbons, shortcuts</td><td>Not timed yet</td></tr>
         </tbody>
       </table>
     </div>
@@ -206,7 +209,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <h3>1. Get the installers</h3>
       <p>There is one installer per macro and one for the plugin, kept here:</p>
       <div class="path"><span class="todo">[MACROS FOLDER PATH]</span>
-└── release\   InsertTendons_1.1.tsep · EKMark_1.1.tsep · HCCheck_1.1.tsep · OpeningMarks_1.1.tsep · AutoDimension_1.2.tsep · DrawingCreator_1.0.tsep · EKReports_1.0.tsep · EKCoordinateMark_1.1.tsep · AutoMaintenance_1.1.tsep · Install-All.bat</div>
+└── release\   InsertTendons_1.1.tsep · EKMark_1.1.tsep · HCCheck_1.1.tsep · OpeningMarks_1.1.tsep · AutoDimension_1.3.tsep · DrawingCreator_1.0.tsep · EKReports_1.0.tsep · EKCoordinateMark_1.1.tsep · AutoMaintenance_1.1.tsep · Install-All.bat · Tekla-Setup.exe</div>
     </div>
 
     <div class="block">
@@ -648,7 +651,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     <div class="sheet-head">
       <span class="sheet-no">DRW-02</span>
       <h3>Auto Dimension</h3>
-      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Grids, Every part and the contour-plate rule not yet run in Tekla</span></div>
+      <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Every part and the contour-plate rule not yet run in Tekla</span></div>
     </div>
     <div class="sheet-intro">
       <p class="lede">Dimensions the assemblies in a drawing view the way a detailer would. Each element is measured to the nearest grid line. Elements in a row get one chain showing every length and gap, and openings in walls and slabs join their element's chain. Lines sit on a real face, close to the part, and step aside for existing marks, text and dimensions.</p>
@@ -680,13 +683,14 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <table class="settings">
             <tr><td>OPENINGS</td><td class="def">on</td><td>Per series: dimension window, door and service openings in the element's chain</td></tr>
             <tr><td>END-ON</td><td class="def">off</td><td>Per series: dimension elements whose length points into the view, such as columns in a plan</td></tr>
-            <tr><td>DIRECTION</td><td class="def">length + cross-section</td><td>Per series: length + cross-section, length only, or cross-section only</td></tr>
+            <tr><td>DIRECTION</td><td class="def">both</td><td>Per series: length + cross-section, length only, or cross-section only</td></tr>
             <tr><td>Grids</td><td class="def">on</td><td>Measure to the nearest grid line. Untick to measure only the elements and gaps.</td></tr>
             <tr><td>Sub-assemblies</td><td class="def">off</td><td>List sub-assemblies as series of their own. Unticked, only assemblies are listed.</td></tr>
             <tr><td>Rebars</td><td class="def">off</td><td>List the rebars shown in the view, one row per assembly and rebar name and size, such as <b>VU- / rebar: ankurdusvarras 20</b>. Each bar is dimensioned to its centre line. Tick END-ON for vertical bars in a plan.</td></tr>
             <tr><td>Every part</td><td class="def">off</td><td>Dimension every part as its own element, not only main parts</td></tr>
             <tr><td>Recesses</td><td class="def">off</td><td>Also dimension cuts that stop inside the element. Unticked, only openings that go through are dimensioned.</td></tr>
             <tr><td>Min</td><td class="def">50 mm</td><td>Smallest opening dimensioned. Smaller cuts are notches or bolt holes.</td></tr>
+            <tr><td>Max-gap</td><td class="def">2000 mm</td><td>Largest gap between aligned elements that still joins them in one chain. Wider gaps get separate dimensions. Piles and bars chain up to at least 4500 mm.</td></tr>
           </table>
         </div>
         <div class="block">
@@ -703,8 +707,10 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <li>Round piles and columns (RU / RO profiles) are measured to their centre. One exactly on a grid line gets no dimension on that axis, one a few mm off shows its offset.</li>
             <li>Offsets are in model mm, so the gap on paper changes with the view scale.</li>
             <li>A 5 mm joint at 1:60 is correct but too small to read.</li>
-            <li>A dimension that repeats one nearby is left out. Nearby means the same axis, within 4500 mm, with points within 25 mm. The Results tab counts these as repeats left out.</li>
-            <li>Grids, Every part and the contour-plate length rule are new and haven't been run inside Tekla yet.</li>
+            <li>A dimension that repeats one nearby is left out. Nearby means the same axis, within 3000 mm, with points within 25 mm. The Results tab counts these as repeats left out.</li>
+            <li>With two grid sets in the view, each element is measured to a grid line that really reaches it, so a small local grid is used only for the elements it covers.</li>
+            <li>Rows a grid bay apart chain only when <b>Max-gap</b> is larger than the gap between them, such as 6000 for 6 m bays.</li>
+            <li>Every part and the contour-plate length rule are new and haven't been run inside Tekla yet.</li>
           </ul>
         </div>
       </div>
@@ -851,8 +857,75 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     </div>
   </article>
 
-  <section class="wrap" style="gap:12px" id="trouble">
-    <div class="section-head"><h2>Troubleshooting</h2><span>Common problems and what causes them</span></div>
+  <!-- Tekla Setup -->
+  <article class="sheet" id="tekla-setup">
+    <div class="sheet-head">
+      <span class="sheet-no">APP-01</span>
+      <h3>Tekla Setup</h3>
+      <div class="pills"><span class="pill app">Windows</span><span class="pill warn">Partly run on Tekla 2026</span></div>
+    </div>
+    <div class="sheet-intro">
+      <p class="lede">Sets up a newly installed Tekla version the office way, from one window: the service pack and environments, <code>user.ini</code>, the title block logos, the date format, paper sizes, ribbons, the property panel and keyboard shortcuts. It is a program, not a macro, so it runs with Tekla closed.</p>
+      <p><b>Use it when</b> a new Tekla version or service pack is installed, or a PC is set up. Without it, every step of the install guide is copied by hand into folders that differ per version.</p>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <div class="block">
+          <span class="label">You need</span>
+          <ul class="tight">
+            <li><code>Tekla-Setup.exe</code>, and admin rights on the PC. It asks for them as it starts.</li>
+            <li>Access to the server folder, <code>\\10.168.1.3\Public\Abimaterjalid\EK-OSAKOND\02_EK-tarkvarad\Tekla Structures</code></li>
+            <li>For a brand-new version: Tekla started once and closed, so its <code>UserSettings</code> folder exists</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">Step by step</span>
+          <ol class="tight">
+            <li>Close Tekla. Double-click <code>Tekla-Setup.exe</code> and accept the admin prompt.</li>
+            <li>Pick the <b class="ui">Version</b>. Every card fills its source from that version's folder on the server.</li>
+            <li>Untick what isn't needed, for example the installers when the version is already installed. <b class="ui">Select all</b> and <b class="ui">Clear</b> tick or untick every card.</li>
+            <li>If a file on the server has been replaced, press <b class="ui">Browse</b> on its card and pick the new one.</li>
+            <li>Press <b class="ui">Run selected steps</b>. Each card shows OK or Failed. <b class="ui">Logs</b> opens the full log, and <b class="ui">Copy all</b> copies it.</li>
+            <li>Start Tekla and check <b class="ui">Ctrl+E → File locations</b>: <code>XS_FIRM</code> points at the server.</li>
+          </ol>
+        </div>
+        <div class="block">
+          <span class="label">Paths</span>
+          <table class="settings">
+            <tr><td>Server folder</td><td class="def">\\10.168.1.3\...</td><td>The folder every <code>.\</code> path starts from. Change it at the top of the window.</td></tr>
+            <tr><td><code>.\</code> path</td><td class="def">default</td><td>A file in the server folder, for example <code>.\TS_FIRM\user.ini</code></td></tr>
+            <tr><td>Full path</td><td class="def">-</td><td>Any other path, such as <code>C:\...</code>, is used as written</td></tr>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="block">
+          <span class="label">The steps</span>
+          <table class="settings">
+            <tr><td>Installers</td><td class="def">run</td><td>Service pack, then the Default, Finland and Estonia environments, each wizard clicked through</td></tr>
+            <tr><td>user.ini</td><td class="def">copy</td><td>From <code>TS_FIRM</code> into <code>UserSettings</code></td></tr>
+            <tr><td>Logos</td><td class="def">copy</td><td><code>Esplan_logo2.png</code> and <code>PCC-logo-RGB.png</code> into <code>common\symbols</code></td></tr>
+            <tr><td>Date format</td><td class="def">patch</td><td><code>yyyy-mm-dd</code> in <code>contentattributes_global.lst</code>, changed in place</td></tr>
+            <tr><td>Paper sizes</td><td class="def">rename</td><td><code>PaperSizesForDrawings.dat</code> in <code>common\system</code> renamed to <code>.bak</code></td></tr>
+            <tr><td>UI files</td><td class="def">copy</td><td>Ribbons, property panel and shortcuts from <code>UI-customisations</code> into the version's <code>UI\Ribbons</code>, <code>UI\PropertyTemplates</code> and <code>Settings</code></td></tr>
+          </table>
+          <p style="font-size:13.5px;color:var(--muted)">An overwritten file is first kept beside it as <code>.bak</code>, once, so the <code>.bak</code> stays the file Tekla installed.</p>
+        </div>
+        <div class="block">
+          <span class="label">Watch out for</span>
+          <ul class="tight">
+            <li>Approve the admin prompt with your own account. If IT types in theirs, the user files go to their AppData, not yours.</li>
+            <li>The exe isn't signed, so Windows may warn about it. Press <b class="ui">More info → Run anyway</b>.</li>
+            <li>The window doesn't respond while an installer's wizard is open. Finish the wizard.</li>
+            <li>The ribbons are from 2023 and the property panel from 2022, the newest on the server.</li>
+            <li>The part mark elevation format is still done by hand.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <section class="wrap" style="gap:12px" id="trouble">    <div class="section-head"><h2>Troubleshooting</h2><span>Common problems and what causes them</span></div>
     <div class="table-scroll">
       <table>
         <thead><tr><th>Problem</th><th>Cause and fix</th></tr></thead>
@@ -871,6 +944,9 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td>EK Reports: a report is missing from the list</td><td>Its <code>.propertytemplate</code> isn't in the model's <code>ProjectOrganizerData\PropertyTemplates</code> folder or its Excel template isn't in <code>ProjectOrganizerData\ExcelTemplates</code>, or one is only in a subfolder such as <code>00_arhiiv</code>. They are paired by the EK number in the name, <code>EK-8xx_</code> and <code>_EK-8-8xx_</code>.</td></tr>
           <tr><td>EK Reports: a column is empty or in the wrong place</td><td>The preset in Organizer has a column the Excel template has no head for. Add the head to the template.</td></tr>
           <tr><td>EK Reports: a position shows <code>(?)</code></td><td>The model isn't numbered. Number it and Scan again.</td></tr>
+          <tr><td>Tekla Setup: every server step fails with &quot;Source not found&quot;</td><td>The server folder at the top can't be reached. Check the network, or Browse to where the files are.</td></tr>
+          <tr><td>Tekla Setup: &quot;No UserSettings yet&quot;</td><td>This Tekla version has never been started. Start it once, close it, and run those steps again.</td></tr>
+          <tr><td>Tekla Setup closes right after the admin prompt</td><td>Company policy may block PowerShell scripts. Ask IT, and send the message the window shows, if any.</td></tr>
           <tr><td>HC Check colours disappeared</td><td>A view redraw clears temporary colours. Run the check again.</td></tr>
         </tbody>
       </table>

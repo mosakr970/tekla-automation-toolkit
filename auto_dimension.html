@@ -525,7 +525,7 @@
         <span class="step">06</span>
         <div>
           <h4>Chain the rows, dimension the loners</h4>
-          <p>Assemblies on the same line and within <code>Max-gap</code> of each other (<code>2000 mm</code> by default, set in the window; <code>4500 mm</code> or <code>Max-gap</code>, whichever is larger, between two round ones - bars and piles) become <strong>one gap chain</strong> - grid, then every element end and opening edge in position order, so lengths, holes and joints all read off one line. A run is split again wherever no single face reaches every member, and whatever falls out gets its own overall dimension instead. Never both: two lines for one row is exactly the clutter this removes.</p>
+          <p>Assemblies on the same line and within <code>Max-gap</code> of each other (<code>4500 mm</code> by default, set in the window, the same for bars and piles) become <strong>one gap chain</strong> - grid, then every element end and opening edge in position order, so lengths, holes and joints all read off one line. A run is split again wherever no single face reaches every member, and whatever falls out gets its own overall dimension instead. Never both: two lines for one row is exactly the clutter this removes.</p>
         </div>
       </li>
       <li>
@@ -587,8 +587,7 @@
           <tr><td><code>CornerTolerance</code></td><td class="v">2</td><td>How close an outline vertex must come to a candidate point for that point to be a real corner</td></tr>
           <tr><td><code>LineInsideTolerance</code></td><td class="v">1</td><td>How far outside a member's width a chain line may sit and still count as running through it</td></tr>
           <tr><td><code>AlignmentTolerance</code></td><td class="v">300</td><td>Placement lines this close count as the same row or column</td></tr>
-          <tr><td><code>DefaultMaxChainGap</code></td><td class="v">2000</td><td>Starting value of <code>Max-gap</code> in the window - beyond this clear gap, neighbours are no longer chained together</td></tr>
-          <tr><td><code>RoundMaxChainGap</code></td><td class="v">4500</td><td>The same between two round neighbours, never below <code>Max-gap</code> - rebars along a grid line sit 2 to 4.3 m apart</td></tr>
+          <tr><td><code>DefaultMaxChainGap</code></td><td class="v">4500</td><td>Starting value of <code>Max-gap</code> in the window - beyond this clear gap, neighbours are no longer chained together</td></tr>
           <tr><td><code>DuplicateReach</code></td><td class="v">3000</td><td>How far apart two identical dimensions count as one repeated, carried along the row</td></tr>
           <tr><td><code>RepeatTolerance</code></td><td class="v">25</td><td>Points this close count as the same point when judging a repeat</td></tr>
           <tr><td><code>EndOnProjectionFraction</code></td><td class="v">0.05</td><td>Fraction of its true length an axis must keep in the view to count as lying in it</td></tr>

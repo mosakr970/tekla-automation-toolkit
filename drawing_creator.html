@@ -437,7 +437,7 @@
       <dt>File</dt><dd>config/macros/modeling/Drawing Creator.cs</dd>
       <dt>Language</dt><dd>C# &middot; Tekla macro</dd>
       <dt>Built</dt><dd>2026-10-14</dd>
-      <dt>Installer</dt><dd>DrawingCreator_1.0.tsep</dd>
+      <dt>Installer</dt><dd>DrawingCreator_1.1.tsep</dd>
     </dl>
   </header>
 
@@ -550,7 +550,7 @@
 
     <div class="note">
       <span class="lbl">The window</span>
-      <p>It stays above Tekla while pinned, and the pin beside the close button lets Tekla come in front. It runs a real message loop on its own STA thread, so the list scrolls smoothly, and the window is dragged by its top row.</p>
+      <p>It stays above Tekla, and the pin beside the close button keeps it above every other application too. It runs a real message loop on its own STA thread, so the list scrolls smoothly, and the window is dragged by its top row.</p>
     </div>
   </section>
 
@@ -596,7 +596,7 @@
         <tbody>
           <tr><td>Verified on</td><td>Tekla Structures 2025.0, Kuressaare E-korpus model: plans at 1:100 and axis views at 1:50 <span class="chip ok">done</span></td></tr>
           <tr><td>Placement</td><td>Every view centred on the sheet, in runs from outside Tekla and inside it <span class="chip ok">done</span></td></tr>
-          <tr><td>Packaged</td><td><code>DrawingCreator_1.0.tsep</code>, into <code>macros\modeling</code> of every version from 2023 on</td></tr>
+          <tr><td>Packaged</td><td><code>DrawingCreator_1.1.tsep</code>, into <code>macros\modeling</code> of every version from 2023 on</td></tr>
           <tr><td>Open</td><td>One early run inside Tekla left two views in the corner, which no later run repeated. A time by hand <span class="chip soft">open</span></td></tr>
         </tbody>
       </table>
@@ -606,7 +606,7 @@
   <section>
     <div class="head"><span class="bubble">H</span><h2>Running it</h2></div>
     <ol>
-      <li>Install the macro: double-click <code>DrawingCreator_1.0.tsep</code> from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong>.</li>
+      <li>Install the macro: double-click <code>DrawingCreator_1.1.tsep</code> from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong>.</li>
       <li>Close any open drawing. Start <em>Drawing Creator</em> from the model's Applications &amp; components, under Macros.</li>
       <li>Filter the list if needed, tick the rows, and fill in the name, titles and properties.</li>
       <li>Press <em>Create drawings</em>. The Status column shows each drawing's mark, or why it failed.</li>

@@ -704,7 +704,7 @@
       </li>
       <li>
         <h4>The window is fixed size and blocks while running <span class="chip ux">interface</span></h4>
-        <p>It cannot be resized; what overflows scrolls instead. Tekla calls run on the main thread, so the window is unresponsive during a scan or a check. That is deliberate: the Open API is not thread-safe and the check moves the work plane per panel, so a background thread could corrupt the geometry being read.</p>
+        <p>It cannot be resized; what overflows scrolls instead. Tekla calls run on the window's own thread, so it is unresponsive during a scan or a check. That is deliberate: the Open API is not thread-safe and the check moves the work plane per panel, so a background thread could corrupt the geometry being read.</p>
       </li>
       <li>
         <h4>One profile edited at a time <span class="chip ux">interface</span></h4>

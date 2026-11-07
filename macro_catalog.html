@@ -480,7 +480,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <li>Press <b class="ui">Create drawings</b>. The <b>Status</b> column shows each drawing's mark in green, or why the row failed in red. The line at the top counts what was made and what failed.</li>
             <li>After saving new property files, press <b class="ui">Refresh</b> to read the lists again.</li>
           </ol>
-          <p style="font-size:13.5px;color:var(--muted)">The window stays above Tekla. The pin beside the close button keeps it above every other application too. Drag the window by its top row.</p>
+          <p style="font-size:13.5px;color:var(--muted)">The window stays above Tekla. Drag the window by its top row.</p>
         </div>
       </div>
       <div>
@@ -493,7 +493,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <tr><td>Drawing properties</td><td class="def">blank</td><td>A saved GA drawing file, <code>.gd</code></td></tr>
             <tr><td>View properties</td><td class="def">blank</td><td>A saved drawing view file, <code>.vi</code>. Sets the scale, filters and contents</td></tr>
           </table>
-          <p style="font-size:13.5px;color:var(--muted)">Rows, ticks, the filter and the pin are remembered per model, in <code>DrawingCreator.settings</code> in the model folder.</p>
+          <p style="font-size:13.5px;color:var(--muted)">Rows, ticks and the filter are remembered per model, in <code>DrawingCreator.settings</code> in the model folder.</p>
         </div>
         <div class="block">
           <span class="label">Measured</span>
@@ -618,7 +618,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <div class="block">
           <span class="label">Settings</span>
           <table class="settings">
-            <tr><td>Min</td><td class="def">50 mm</td><td>Smallest opening marked</td></tr>
+            <tr><td>Min</td><td class="def">50 mm</td><td>Smallest opening marked. Min, Joint and Recess take whole mm.</td></tr>
             <tr><td>Joint</td><td class="def">150 mm</td><td>Widest gap between elements that still counts as a joint, not an opening</td></tr>
             <tr><td>Recess</td><td class="def">200 mm</td><td>Recesses narrower than this are ignored, such as cores opened at plank ends</td></tr>
             <tr><td>Color / Line</td><td class="def">Gray / solid</td><td>Line style of the crossings</td></tr>
@@ -689,7 +689,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <tr><td>Rebars</td><td class="def">off</td><td>List the rebars shown in the view, one row per assembly and rebar name and size, such as <b>VU- / rebar: ankurdusvarras 20</b>. Each bar is dimensioned to its centre line. Tick END-ON for vertical bars in a plan.</td></tr>
             <tr><td>Every part</td><td class="def">off</td><td>Dimension every part as its own element, not only main parts</td></tr>
             <tr><td>Recesses</td><td class="def">off</td><td>Also dimension cuts that stop inside the element. Unticked, only openings that go through are dimensioned.</td></tr>
-            <tr><td>Min</td><td class="def">50 mm</td><td>Smallest opening dimensioned. Smaller cuts are notches or bolt holes.</td></tr>
+            <tr><td>Min</td><td class="def">50 mm</td><td>Smallest opening dimensioned. Smaller cuts are notches or bolt holes. Min and Max-gap take whole mm.</td></tr>
             <tr><td>Max-gap</td><td class="def">4500 mm</td><td>Largest gap between aligned elements that still joins them in one chain. Wider gaps get separate dimensions. Bars and piles use the same value.</td></tr>
           </table>
         </div>
@@ -940,7 +940,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td>Auto Dimension: "No grid lines in view"</td><td>Grids is ticked but the view shows no grid. Untick Grids to dimension the elements only, or show the grid in the view.</td></tr>
           <tr><td>Coordinates are measured from the wrong point</td><td>EK Coordinate Mark measures from the view's <b class="ui">Location by</b>. Change it in the view properties, then reopen the drawing or <b class="ui">Modify</b> the marks.</td></tr>
           <tr><td>EK Coordinate Mark placed nothing</td><td>The point was picked outside a view. Pick both points inside the same view.</td></tr>
-          <tr><td>The window freezes during a run</td><td>Expected for longer runs, such as EK Mark on a whole model. The work happens on Tekla's thread, so let it finish.</td></tr>
+          <tr><td>The window freezes during a run</td><td>Expected for longer runs, such as EK Mark on a whole model. The work runs on the window's own thread, so let it finish.</td></tr>
           <tr><td>EK Reports: a report is missing from the list</td><td>Its <code>.propertytemplate</code> isn't in the model's <code>ProjectOrganizerData\PropertyTemplates</code> folder or its Excel template isn't in <code>ProjectOrganizerData\ExcelTemplates</code>, or one is only in a subfolder such as <code>00_arhiiv</code>. They are paired by the EK number in the name, <code>EK-8xx_</code> and <code>_EK-8-8xx_</code>.</td></tr>
           <tr><td>EK Reports: a column is empty or in the wrong place</td><td>The preset in Organizer has a column the Excel template has no head for. Add the head to the template.</td></tr>
           <tr><td>EK Reports: a position shows <code>(?)</code></td><td>The model isn't numbered. Number it and Scan again.</td></tr>

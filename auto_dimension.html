@@ -424,7 +424,7 @@
       <h1>Auto Dimension <span>for drawing views</span></h1>
     </div>
     <dl class="stamp">
-      <dt>Files</dt><dd>config/macros/drawings/</dd>
+      <dt>Files</dt><dd>config/macros/src/AutoDimension/</dd>
       <dt>Language</dt><dd>C# &middot; Tekla macro runtime</dd>
       <dt>Built</dt><dd>2026-09-01 &rarr; 2026-10-05</dd>
       <dt>Current</dt><dd>Auto Dimension.cs</dd>
@@ -719,7 +719,7 @@
   <section>
     <div class="head"><span class="bubble">F</span><h2>What ships</h2></div>
 
-    <p>The tool ships as a single macro in <code>config/macros/drawings/</code>. The first version has been retired to <code>config/macros/_archive/</code>, outside the deployable macro tree.</p>
+    <p>The tool ships as a compiled program, built from <code>config/macros/src/AutoDimension/</code> with a launcher macro in <code>config/macros/launchers/</code> and installed by <code>AutoDimension_1.5.tsep</code>. The first version has been retired to <code>config/macros/_archive/</code>, outside the deployable macro tree.</p>
 
     <div class="tablewrap">
       <table>
@@ -736,7 +736,7 @@
           <tr>
             <td><code>_archive/Auto Dimension V01.cs</code></td>
             <td><span class="chip known">archived</span></td>
-            <td>The first build, kept for reference. It is outside <code>config/macros/drawings/</code>, so it is not deployed to Tekla.</td>
+            <td>The first build, kept for reference. It is outside the deployable macro tree, so it is not deployed to Tekla.</td>
           </tr>
         </tbody>
       </table>
@@ -765,7 +765,7 @@
   </section>
 
   <footer>
-    Tekla MCP Server &middot; config/macros/drawings &middot; revised 2026-10-05 against macro source and commit history<br>
+    Tekla MCP Server &middot; config/macros/src/AutoDimension &middot; revised 2026-10-05 against macro source and commit history<br>
     Auto Dimension.cs &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0, Grids with two grid sets on 2026.0, compiled against 2023.0 and 2025.0 &middot; Every part and the contour-plate length rule not yet run inside Tekla
   </footer>
 

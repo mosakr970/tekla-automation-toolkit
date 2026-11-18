@@ -726,7 +726,7 @@
     <span class="sec-mark">08 - build notes</span>
     <h2>How it is put together</h2>
     <ul>
-      <li><strong>One file.</strong> The whole macro travels as a single file, installed by <code>EKMark_1.2.tsep</code> into <code>macros\modeling</code> of every Tekla version from 2023 on. Tekla compiles it at startup.</li>
+      <li><strong>Ships compiled.</strong> The macro is a compiled program, built by <code>Build-Tsep.ps1</code> and installed by <code>EKMark_1.3.tsep</code> into <code>extensions\EKMark</code> of every Tekla version from 2023 on, with a small launcher macro in <code>macros\modeling</code> that starts it. One binary runs on every version - it binds the running Tekla's Open API at startup.</li>
       <li><strong>The comparison is pure.</strong> The comparer uses no Tekla types, so the self-test runs without a model and the same code was driven from outside Tekla for the live-model test.</li>
       <li><strong>Written to a pre-C#6 subset,</strong> matching the other macros in the repository: no interpolation, no null-conditional, no null-coalescing.</li>
       <li><strong>Styled with HC Check</strong>, with the same flat palette and tab bar, so the macros read as one toolset.</li>
@@ -734,7 +734,7 @@
   </section>
 
   <footer>
-    Tekla MCP Server &middot; config/macros/modeling/EK Mark.cs &middot; written 2026-10-06 against macro source and the live-model comparison over 1,125 assemblies<br>
+    Tekla MCP Server &middot; config/macros/src/EKMark/EKMark.cs &middot; written 2026-10-06 against macro source and the live-model comparison over 1,125 assemblies<br>
     One file &middot; C# against Tekla.Structures.Model &middot; compiled against Tekla Structures 2023.0 and 2025.0
   </footer>
 

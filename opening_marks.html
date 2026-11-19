@@ -431,10 +431,9 @@
       <h1>Opening Marks <span>for floor plans</span></h1>
     </div>
     <dl class="stamp">
-      <dt>Files</dt><dd>config/macros/src/OpeningMarks/</dd>
+      <dt>Installer</dt><dd>OpeningMarks_1.4.tsep</dd>
       <dt>Language</dt><dd>C# &middot; Tekla macro runtime</dd>
       <dt>Built</dt><dd>2026-09-29 &rarr; 2026-10-05</dd>
-      <dt>Current</dt><dd>Opening Marks.cs</dd>
     </dl>
   </header>
 
@@ -691,7 +690,7 @@
       </li>
       <li>
         <h4>Loaded once per Tekla session <span class="chip known">process</span></h4>
-        <p>Editing a deployed <code>.cs</code> makes Tekla recompile it, but the assembly already in memory keeps running. Restart Tekla after updating the macro.</p>
+        <p>Installing a new version while Tekla is open has no effect until you restart, because the version already in memory keeps running. Restart Tekla after updating the macro.</p>
       </li>
     </ul>
   </section>
@@ -713,7 +712,7 @@
   <section>
     <div class="head"><span class="bubble">J</span><h2>Running it</h2></div>
     <ol>
-      <li>Install the macro: double-click its <code>.tsep</code> installer from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong>. Macros are registered only at startup.</li>
+      <li>Install the macro: double-click its <code>.tsep</code> installer, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong>. Macros are registered only at startup.</li>
       <li>Open the drawing and select <strong>exactly one view</strong>, a floor plan.</li>
       <li>Run <em>Opening Marks</em> from Applications &amp; components.</li>
       <li>Set <em>Min</em>, <em>Joint</em> and <em>Recess</em> if the defaults do not suit the model, then press <em>Scan</em>.</li>
@@ -724,8 +723,8 @@
   </section>
 
   <footer>
-    Tekla MCP Server &middot; config/macros/src/OpeningMarks &middot; revised 2026-10-06 against macro source and docs/case_studies.md<br>
-    Opening Marks.cs &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2025.0, compiled against 2023.0 and 2025.0 &middot; dimension placement and real recesses not yet checked
+    Tekla MCP Server &middot; Opening Marks &middot; revised 2026-10-06<br>
+    C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2025.0, compiled against 2023.0 and 2025.0 &middot; dimension placement and real recesses not yet checked
   </footer>
 
 </div>

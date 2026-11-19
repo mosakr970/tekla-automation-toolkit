@@ -438,10 +438,9 @@
       <h1>Tekla Setup <span>a new Tekla version, set up in one window</span></h1>
     </div>
     <dl class="stamp">
-      <dt>File</dt><dd>config/tekla-setup/Setup-Tekla.ps1</dd>
+      <dt>Ships as</dt><dd>Tekla-Setup.exe</dd>
       <dt>Language</dt><dd>PowerShell &middot; WPF, C# launcher</dd>
       <dt>Built</dt><dd>2026-10-26</dd>
-      <dt>Ships as</dt><dd>config/release/Tekla-Setup.exe</dd>
     </dl>
   </header>
 
@@ -556,7 +555,7 @@
 
     <div class="note">
       <span class="lbl">One file</span>
-      <p><code>Tekla-Setup.exe</code> is a small C# launcher, compiled with the compiler that comes with Windows, with the PowerShell script stored inside it. It writes the script to the temp folder, runs it with no console and deletes it. Nothing to install, and <code>Build-Exe.ps1</code> rebuilds it after a change.</p>
+      <p><code>Tekla-Setup.exe</code> is a small C# launcher, compiled with the compiler that comes with Windows, with the PowerShell script stored inside it. It writes the script to the temp folder, runs it with no console and deletes it. Nothing to install.</p>
     </div>
   </section>
 
@@ -610,7 +609,7 @@
         <tbody>
           <tr><td>Run on</td><td>Tekla Structures 2026.0: date format patched and paper sizes moved <span class="chip ok">done</span></td></tr>
           <tr><td>Checked</td><td>Every default source found on the server for 2026, the window built and the logs window opened, copied and closed in a test <span class="chip ok">done</span></td></tr>
-          <tr><td>Packaged</td><td><code>config/release/Tekla-Setup.exe</code>, asks for admin rights on start</td></tr>
+          <tr><td>Packaged</td><td><code>Tekla-Setup.exe</code>, asks for admin rights on start</td></tr>
           <tr><td>Open</td><td>A full run of the copy steps and the installers through the tool. A time with the tool and by hand <span class="chip soft">open</span></td></tr>
         </tbody>
       </table>
@@ -629,7 +628,7 @@
   </section>
 
   <footer>
-    Tekla MCP Server &middot; config/tekla-setup/Setup-Tekla.ps1 &middot; written 2026-10-26 against the script source<br>
+    Tekla MCP Server &middot; Tekla Setup &middot; written 2026-10-26<br>
     PowerShell 5.1 and WPF, C# launcher built with the Windows .NET Framework compiler &middot; run on Tekla Structures 2026.0 &middot; no times recorded yet
   </footer>
 

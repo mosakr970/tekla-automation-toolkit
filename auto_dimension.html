@@ -424,10 +424,9 @@
       <h1>Auto Dimension <span>for drawing views</span></h1>
     </div>
     <dl class="stamp">
-      <dt>Files</dt><dd>config/macros/src/AutoDimension/</dd>
+      <dt>Installer</dt><dd>AutoDimension_1.6.tsep</dd>
       <dt>Language</dt><dd>C# &middot; Tekla macro runtime</dd>
       <dt>Built</dt><dd>2026-09-01 &rarr; 2026-10-05</dd>
-      <dt>Current</dt><dd>Auto Dimension.cs</dd>
     </dl>
   </header>
 
@@ -664,7 +663,7 @@
       </li>
       <li>
         <h4>Not covered by the test suite <span class="chip known">process</span></h4>
-        <p>It is C# running inside Tekla's macro engine, so none of the repository's unit tests touch it - every change is verified by running it on a real drawing. Unlike the print, export and selection macros it is also not auto-installed by the server: it is installed from its own <code>.tsep</code>. Worse, a macro is loaded <strong>once per Tekla session</strong>: editing a deployed <code>.cs</code> makes Tekla recompile it, but the assembly already in memory keeps running, so the first version run in a session is the version you keep. Measured to the second - the cached DLL written at 19:12:29 held the new code, and the report written at 19:12:30 came from the old one. Restart Tekla whenever a change &ldquo;has not applied&rdquo;.</p>
+        <p>It is C# running against Tekla's Open API, so none of the repository's unit tests touch it - every change is verified by running it on a real drawing. It is installed from its own <code>.tsep</code>. A macro is also loaded <strong>once per Tekla session</strong>: installing a new version while Tekla is open has no effect until you restart, because the version already in memory keeps running. Restart Tekla whenever a change &ldquo;has not applied&rdquo;.</p>
       </li>
       <li>
         <h4>Most tuning is still hard-coded <span class="chip soft">workflow</span></h4>
@@ -719,31 +718,10 @@
   <section>
     <div class="head"><span class="bubble">F</span><h2>What ships</h2></div>
 
-    <p>The tool ships as a compiled program, built from <code>config/macros/src/AutoDimension/</code> with a launcher macro in <code>config/macros/launchers/</code> and installed by <code>AutoDimension_1.5.tsep</code>. The first version has been retired to <code>config/macros/_archive/</code>, outside the deployable macro tree.</p>
-
-    <div class="tablewrap">
-      <table>
-        <caption>Files &middot; config/macros/</caption>
-        <thead>
-          <tr><th>File</th><th>Status</th><th>What distinguishes it</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><code>drawings/Auto Dimension.cs</code></td>
-            <td><span class="chip ok">current</span></td>
-            <td>The tool. Series filtering, per-element direction, gap chains, opening dimensioning with a view-depth test, face-based placement lines, optional grid reference and every-part dimensioning, and a window that stays open. This is the one to run.</td>
-          </tr>
-          <tr>
-            <td><code>_archive/Auto Dimension V01.cs</code></td>
-            <td><span class="chip known">archived</span></td>
-            <td>The first build, kept for reference. It is outside the deployable macro tree, so it is not deployed to Tekla.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <p>The tool ships as a compiled program, installed by its <code>.tsep</code> and run from Applications &amp; components. It carries series filtering, per-element direction, gap chains, opening dimensioning with a view-depth test, face-based placement lines, optional grid reference and every-part dimensioning, and a window that stays open. One binary runs on every Tekla version from 2023 on - it binds the running Tekla's Open API at startup.</p>
 
     <h3>The MCP-tool siblings</h3>
-    <p>Two server tools in <code>drawings_provider.py</code> place the same kind of dimension from a chat client, driven by an explicit GUID list rather than a whole view. They are the earlier logic: neither dimensions openings, neither tests the view depth, and both still place on a grid or centre line rather than a face.</p>
+    <p>Two server tools place the same kind of dimension from a chat client, driven by an explicit GUID list rather than a whole view. They are the earlier logic: neither dimensions openings, neither tests the view depth, and both still place on a grid or centre line rather than a face.</p>
     <ul>
       <li><code>add_element_dimensions</code> - a three-point chain per assembly: grid, then the element's own two ends.</li>
       <li><code>add_dimension_chain</code> - one chain across two or more assemblies plus the grid, ordered by actual position. All of it succeeds or none of it does.</li>
@@ -754,7 +732,7 @@
   <section>
     <div class="head"><span class="bubble">G</span><h2>Running it</h2></div>
     <ol>
-      <li>Install the macro: double-click its <code>.tsep</code> installer from <code>config/release/</code>, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong> - macro content is registered only at startup, and a macro already loaded in the session is never replaced.</li>
+      <li>Install the macro: double-click its <code>.tsep</code> installer, or open it in Tekla's <b>Extension Manager</b>. It installs into every Tekla version from 2023 on. Then <strong>restart Tekla</strong> - macro content is registered only at startup, and a macro already loaded in the session is never replaced.</li>
       <li>Open the drawing and select <strong>exactly one view</strong>. With <em>Grids</em> ticked the view must show the grid.</li>
       <li>Run the macro from Applications &amp; components, or through the server's <code>run_macro</code> tool.</li>
       <li>Press <em>Scan view</em>. The series list fills with the prefixes found and their counts.</li>
@@ -765,8 +743,8 @@
   </section>
 
   <footer>
-    Tekla MCP Server &middot; config/macros/src/AutoDimension &middot; revised 2026-10-05 against macro source and commit history<br>
-    Auto Dimension.cs &middot; C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0, Grids with two grid sets on 2026.0, compiled against 2023.0 and 2025.0 &middot; Every part and the contour-plate length rule not yet run inside Tekla
+    Tekla MCP Server &middot; Auto Dimension &middot; revised 2026-10-05<br>
+    C# against Tekla.Structures.Drawing and Tekla.Structures.Model &middot; verified on Tekla Structures 2023.0, Grids with two grid sets on 2026.0, compiled against 2023.0 and 2025.0 &middot; Every part and the contour-plate length rule not yet run inside Tekla
   </footer>
 
 </div>

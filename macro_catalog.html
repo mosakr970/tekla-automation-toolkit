@@ -153,10 +153,10 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     <div class="tb-main">
       <span class="eyebrow">Tekla Structures · Macros · Guide</span>
       <h1>Macro Guide</h1>
-      <p>Tekla macros and one drawing plugin that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each one has its own <code>.tsep</code> installer. A double-click installs it into every Tekla version from 2023 on. <a href="#tekla-setup">Tekla Setup</a> sets up a newly installed Tekla version itself.</p>
+      <p>Tekla macros, a drawing plugin and a model plugin that take the repetitive measuring, marking and modelling out of our work. This guide covers what each one does, how to set it up, how to use it step by step, what every setting means, and where it stops. Each one has its own <code>.tsep</code> installer. A double-click installs it into every Tekla version from 2023 on. <a href="#tekla-setup">Tekla Setup</a> sets up a newly installed Tekla version itself.</p>
     </div>
     <div class="tb-cells">
-      <div class="tb-cell"><span class="eyebrow">Macros · Plugins · Apps</span><b>8 · 1 · 1</b></div>
+      <div class="tb-cell"><span class="eyebrow">Macros · Plugins · Apps</span><b>8 · 2 · 1</b></div>
       <div class="tb-cell"><span class="eyebrow">Tekla</span><b>2023.0 · 2025.0</b></div>
       <div class="tb-cell"><span class="eyebrow">Install</span><b>Double-click 1 .tsep</b></div>
     </div>
@@ -171,11 +171,12 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <li><a href="#ek-mark">EK Mark</a></li>
       <li><a href="#hc-check">HC Check</a></li>
       <li><a href="#drawing-creator">Drawing Creator</a></li>
-      <li><a href="#ek-reports">EK Reports</a></li>
+      <li><a href="#report-creator">Report Creator</a></li>
       <li><a href="#opening-marks">Opening Marks</a></li>
       <li><a href="#auto-dimension">Auto Dimension</a></li>
       <li><a href="#drawing-check">Drawing Check</a></li>
-      <li><a href="#ek-coordinate-mark">EK Coordinate Mark</a></li>
+      <li><a href="#coordinate-mark">Coordinate Mark</a></li>
+      <li><a href="auto_maintenance.html">Auto Maintenance &#8599;</a></li>
       <li><a href="#tekla-setup">Tekla Setup</a></li>
       <li><a href="#trouble">Troubleshooting</a></li>
     </ol>
@@ -191,11 +192,12 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <tr><td class="nowrap"><a href="#ek-mark">EK Mark</a></td><td><span class="pill mod">Model</span></td><td>Gives identical pieces the same <code>EK_MARK</code> and every different piece the next number</td><td>3,421 pieces compared in 3.6-5 min</td></tr>
           <tr><td class="nowrap"><a href="#hc-check">HC Check</a></td><td><span class="pill mod">Model</span></td><td>Flags hollow-core panels the factory can't make</td><td>897 panels in under 1 min, against about 4.4 h by hand</td></tr>
           <tr><td class="nowrap"><a href="#drawing-creator">Drawing Creator</a></td><td><span class="pill mod">Model</span></td><td>Makes one GA drawing per model view, many with one button, with name, titles and saved properties per row</td><td>6.5-17 s per drawing. Not measured by hand yet</td></tr>
-          <tr><td class="nowrap"><a href="#ek-reports">EK Reports</a></td><td><span class="pill mod">Model</span></td><td>Writes every EK-8xx summary to its Excel template, identical pieces on one row</td><td>Scan in 7-9 s, each report in 0.1-15 s. Not measured by hand yet</td></tr>
+          <tr><td class="nowrap"><a href="#report-creator">Report Creator</a></td><td><span class="pill mod">Model</span></td><td>Writes every EK-8xx summary to its Excel template, identical pieces on one row</td><td>Scan in 7-9 s, each report in 0.1-15 s. Not measured by hand yet</td></tr>
           <tr><td class="nowrap"><a href="#opening-marks">Opening Marks</a></td><td><span class="pill drw">Drawing</span></td><td>Finds every opening in a floor plan and crosses it out</td><td>1 plan: 24 s, against 6 min by hand</td></tr>
           <tr><td class="nowrap"><a href="#auto-dimension">Auto Dimension</a></td><td><span class="pill drw">Drawing</span></td><td>Dimensions a plan view to the grid, chaining elements in a row</td><td>1 plan: 20 s, against 15 min by hand</td></tr>
-          <tr><td class="nowrap"><a href="#drawing-check">Drawing Check</a></td><td><span class="pill drw">Drawing</span></td><td>Checks the open drawing against the Esplan drawing checklist and lists what to fix</td><td>281 of 287 dimension texts placed as printed</td></tr>
-          <tr><td class="nowrap"><a href="#ek-coordinate-mark">EK Coordinate Mark</a></td><td><span class="pill drw">Drawing</span></td><td>Writes a point's coordinates, measured from the base point the view is located by</td><td>Not measured yet</td></tr>
+          <tr><td class="nowrap"><a href="#drawing-check">Drawing Check</a></td><td><span class="pill drw">Drawing</span></td><td>Checks the open drawing against the company drawing checklist and lists what to fix</td><td>281 of 287 dimension texts placed as printed</td></tr>
+          <tr><td class="nowrap"><a href="#coordinate-mark">Coordinate Mark</a></td><td><span class="pill drw">Drawing</span></td><td>Writes a point's coordinates, measured from the base point the view is located by</td><td>Not measured yet</td></tr>
+          <tr><td class="nowrap"><a href="auto_maintenance.html">Auto Maintenance &#8599;</a></td><td><span class="pill mod">Model</span></td><td>Runs model housekeeping in one window: save, Organizer sync, diagnose/repair, backup, baseline, zip to server</td><td>Not timed yet</td></tr>
           <tr><td class="nowrap"><a href="#tekla-setup">Tekla Setup</a></td><td><span class="pill app">Windows</span></td><td>Sets up a newly installed Tekla version from the server: installers, <code>user.ini</code>, logos, date format, ribbons, shortcuts</td><td>Not timed yet</td></tr>
         </tbody>
       </table>
@@ -207,21 +209,20 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
 
     <div class="block">
       <h3>1. Get the installers</h3>
-      <p>There is one installer per macro and one for the plugin, kept here:</p>
-      <div class="path"><span class="todo">[MACROS FOLDER PATH]</span>
-└── release\   InsertTendons_1.3.tsep · EKMark_1.3.tsep · HCCheck_1.3.tsep · OpeningMarks_1.3.tsep · AutoDimension_1.5.tsep · DrawingCreator_1.2.tsep · EKReports_1.2.tsep · EKCoordinateMark_1.1.tsep · AutoMaintenance_1.1.tsep · Install-All.bat · Tekla-Setup.exe</div>
+      <p>There is one installer per macro and one for the plugin:</p>
+      <div class="path">InsertTendons_1.4.tsep · EKMark_1.4.tsep · HCCheck_1.4.tsep · OpeningMarks_1.4.tsep · AutoDimension_1.6.tsep · DrawingCreator_1.3.tsep · ReportCreator_1.4.tsep · CoordinateMark_1.2.tsep · AutoMaintenance_1.2.tsep · Install-All.bat · Tekla-Setup.exe</div>
     </div>
 
     <div class="block">
       <h3>2. Install them</h3>
       <p>Double-click <code>Install-All.bat</code> to queue every installer in the folder for each Tekla version from 2023 on. Tekla installs them the next time it starts. Or double-click each <code>.tsep</code>, or open it in Tekla's <b class="ui">Extension Manager</b>. It installs the macro into every Tekla version from 2023 on, for example both 2023.0 and 2025.0, in the common macro folder:</p>
       <div class="path">C:\ProgramData\Trimble\Tekla Structures\&lt;version&gt;\environments\common\macros\</div>
-      <p>Model macros land in <code>modeling\</code>, drawing macros in <code>drawings\</code>. The HC Check installer also puts the starting ranges, <code>hc_check.json</code>, in the macro folder itself. EK Reports does the same with its prefix table, <code>ek_reports.json</code>. Reinstalling replaces these files, so keep a copy of ranges or prefixes you have saved. The plugin installs into <code>extensions\EKCoordinateMark</code> beside the macro folder. If your firm points the <code>XS_MACRO_DIRECTORY</code> advanced option (<b class="ui">File → Settings → Advanced options</b>) at a different folder, the installed macros are not listed.</p>
+      <p>Model macros land in <code>modeling\</code>, drawing macros in <code>drawings\</code>. The HC Check installer also puts the starting ranges, <code>hc_check.json</code>, in the macro folder itself. Report Creator does the same with its prefix table, <code>ek_reports.json</code>. Reinstalling replaces these files, so keep a copy of ranges or prefixes you have saved. The plugin installs into <code>extensions\EKCoordinateMark</code> beside the macro folder. If your firm points the <code>XS_MACRO_DIRECTORY</code> advanced option (<b class="ui">File → Settings → Advanced options</b>) at a different folder, the installed macros are not listed.</p>
     </div>
 
     <div class="block">
       <h3>3. Restart Tekla and run</h3>
-      <p>Tekla only picks up macros when it starts. After restarting, open <b class="ui">Applications &amp; components</b> and find the tools in the <b class="ui">Esplan tools</b> group, each with its own icon. The group shows after one more restart following the first install. The macros are also under <b class="ui">Macros</b>, and the plugin is found by searching for <b>EKCoordinateMark</b>. Model macros run with the model open. Drawing macros run with the drawing open.</p>
+      <p>Tekla only picks up macros when it starts. After restarting, open <b class="ui">Applications &amp; components</b> and find the tools in the <b class="ui">Esplan tools</b> group, each with its own icon. The group shows after one more restart following the first install. The macros are also under <b class="ui">Macros</b>, and the plugin is found by searching for <b>Coordinate Mark</b>. Model macros run with the model open. Drawing macros run with the drawing open.</p>
     </div>
 
     <div class="block">
@@ -517,11 +518,11 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     </div>
   </article>
 
-  <!-- EK Reports -->
-  <article class="sheet" id="ek-reports">
+  <!-- Report Creator -->
+  <article class="sheet" id="report-creator">
     <div class="sheet-head">
       <span class="sheet-no">MOD-05</span>
-      <h3>EK Reports</h3>
+      <h3>Report Creator</h3>
       <div class="pills"><span class="pill mod">Model</span><span class="pill warn">No time by hand recorded yet</span></div>
     </div>
     <div class="sheet-intro">
@@ -556,7 +557,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
             <tr><td>EK-821</td><td class="def">rebar</td><td>The rebar of the cast-in-place elements, those whose prefix starts with PV, RV, VU, LV, TM, MSN, MBP, MBT, MPL, MTR or MPV. Each prefix has a tick of its own under EK-821</td></tr>
             <tr><td>EK-862</td><td class="def">bolts</td><td>Every bolt of the model, holes and studs left out, even when only a selection was scanned</td></tr>
           </table>
-          <p style="font-size:13.5px;color:var(--muted)">Where each prefix goes is kept for the office in <code>ek_reports.json</code> in the macro folder, or in your own <code>%LOCALAPPDATA%\EK Reports</code> when that folder can't be written. The ticks, Designer and Revision are remembered per model, in <code>EKReports.settings</code> in the model folder.</p>
+          <p style="font-size:13.5px;color:var(--muted)">Where each prefix goes is kept for the office in <code>ek_reports.json</code> in the macro folder, or in your own <code>%LOCALAPPDATA%\Report Creator</code> when that folder can't be written. The ticks, Designer and Revision are remembered per model, in <code>EKReports.settings</code> in the model folder.</p>
         </div>
         <div class="block">
           <span class="label">Measured</span>
@@ -725,7 +726,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
       <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">No installer yet</span></div>
     </div>
     <div class="sheet-intro">
-      <p class="lede">Checks the open drawing against the Esplan drawing checklist and lists what it finds in a table. It reads the title block, notes, views, dimensions, marks and pens. It never changes the drawing. So far it knows pile plans, foundation plans (pile caps, pad and strip footings) and anchor bolt plans.</p>
+      <p class="lede">Checks the open drawing against the company drawing checklist and lists what it finds in a table. It reads the title block, notes, views, dimensions, marks and pens. It never changes the drawing. So far it knows pile plans, foundation plans (pile caps, pad and strip footings) and anchor bolt plans.</p>
       <p><b>Use it when</b> a plan is ready to go to the checker. It finds the missing dimensions, marks and note topics that are slow to spot by eye, and it tells you where each one is.</p>
     </div>
     <div class="sheet-body">
@@ -802,11 +803,11 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
     </div>
   </article>
 
-  <!-- EK Coordinate Mark -->
-  <article class="sheet" id="ek-coordinate-mark">
+  <!-- Coordinate Mark -->
+  <article class="sheet" id="coordinate-mark">
     <div class="sheet-head">
       <span class="sheet-no">DRW-04</span>
-      <h3>EK Coordinate Mark</h3>
+      <h3>Coordinate Mark</h3>
       <div class="pills"><span class="pill drw">Drawing</span><span class="pill warn">Not yet checked on a live drawing</span></div>
     </div>
     <div class="sheet-intro">
@@ -819,7 +820,7 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
           <span class="label">Step by step</span>
           <ol class="tight">
             <li>Open the drawing and check the view's <b class="ui">Location by</b> is the base point the coordinates should be measured from.</li>
-            <li>Start <b>EKCoordinateMark</b> from <b class="ui">Applications &amp; components</b>. Set the coordinates, order, unit and decimals, then press <b class="ui">Apply</b> or <b class="ui">OK</b>. Type a name and press <b class="ui">Save</b> to keep them, or pick a name and press <b class="ui">Load</b>.</li>
+            <li>Start <b>Coordinate Mark</b> from <b class="ui">Applications &amp; components</b>. Set the coordinates, order, unit and decimals, then press <b class="ui">Apply</b> or <b class="ui">OK</b>. Type a name and press <b class="ui">Save</b> to keep them, or pick a name and press <b class="ui">Load</b>.</li>
             <li>Pick the coordinate point, then pick where the text goes. Both picks must be in the same view.</li>
             <li>To change marks already placed, select them, change the settings and press <b class="ui">Modify</b>. <b class="ui">Get</b> reads the settings back from a mark.</li>
           </ol>
@@ -932,18 +933,18 @@ footer { color: var(--muted); font-size: 13.5px; display: grid; gap: 6px; border
         <tbody>
           <tr><td>The macro isn't listed in Applications &amp; components</td><td>Tekla wasn't restarted after installing, or <code>XS_MACRO_DIRECTORY</code> points at a firm folder instead of the common macro folder the installer writes to.</td></tr>
           <tr><td>A new version behaves like the old one</td><td>Tekla keeps the old version loaded until it restarts. Restart Tekla.</td></tr>
-          <tr><td>Only a few items were scanned or checked</td><td>Something is selected in the model, for example after pressing Enter in a list. The model macros work on the selection when there is one, except EK Reports' bolt list, EK-862. Clear it to cover the whole model.</td></tr>
+          <tr><td>Only a few items were scanned or checked</td><td>Something is selected in the model, for example after pressing Enter in a list. The model macros work on the selection when there is one, except Report Creator' bolt list, EK-862. Clear it to cover the whole model.</td></tr>
           <tr><td>Nothing found</td><td>The prefix doesn't match, or the pieces aren't numbered</td></tr>
           <tr><td>"Select one view" or "No view selected"</td><td>Drawing macros need exactly one view selected in the open drawing</td></tr>
           <tr><td>Drawing Creator: "Close the open drawing first"</td><td>The drawings are made from the model. Close the drawing and press <b class="ui">Create drawings</b> again.</td></tr>
           <tr><td>Drawing Creator: properties "not found"</td><td>The row names a <code>.gd</code> or <code>.vi</code> file that isn't in the model, project, firm or system folders. Save the file, press <b class="ui">Refresh</b> and pick it again.</td></tr>
           <tr><td>Auto Dimension: "No grid lines in view"</td><td>Grids is ticked but the view shows no grid. Untick Grids to dimension the elements only, or show the grid in the view.</td></tr>
-          <tr><td>Coordinates are measured from the wrong point</td><td>EK Coordinate Mark measures from the view's <b class="ui">Location by</b>. Change it in the view properties, then reopen the drawing or <b class="ui">Modify</b> the marks.</td></tr>
-          <tr><td>EK Coordinate Mark placed nothing</td><td>The point was picked outside a view. Pick both points inside the same view.</td></tr>
+          <tr><td>Coordinates are measured from the wrong point</td><td>Coordinate Mark measures from the view's <b class="ui">Location by</b>. Change it in the view properties, then reopen the drawing or <b class="ui">Modify</b> the marks.</td></tr>
+          <tr><td>Coordinate Mark placed nothing</td><td>The point was picked outside a view. Pick both points inside the same view.</td></tr>
           <tr><td>The window freezes during a run</td><td>Expected for longer runs, such as EK Mark on a whole model. The work runs on the window's own thread, so let it finish.</td></tr>
-          <tr><td>EK Reports: a report is missing from the list</td><td>Its <code>.propertytemplate</code> isn't in the model's <code>ProjectOrganizerData\PropertyTemplates</code> folder or its Excel template isn't in <code>ProjectOrganizerData\ExcelTemplates</code>, or one is only in a subfolder such as <code>00_arhiiv</code>. They are paired by the EK number in the name, <code>EK-8xx_</code> and <code>_EK-8-8xx_</code>.</td></tr>
-          <tr><td>EK Reports: a column is empty or in the wrong place</td><td>The preset in Organizer has a column the Excel template has no head for. Add the head to the template.</td></tr>
-          <tr><td>EK Reports: a position shows <code>(?)</code></td><td>The model isn't numbered. Number it and Scan again.</td></tr>
+          <tr><td>Report Creator: a report is missing from the list</td><td>Its <code>.propertytemplate</code> isn't in the model's <code>ProjectOrganizerData\PropertyTemplates</code> folder or its Excel template isn't in <code>ProjectOrganizerData\ExcelTemplates</code>, or one is only in a subfolder such as <code>00_arhiiv</code>. They are paired by the EK number in the name, <code>EK-8xx_</code> and <code>_EK-8-8xx_</code>.</td></tr>
+          <tr><td>Report Creator: a column is empty or in the wrong place</td><td>The preset in Organizer has a column the Excel template has no head for. Add the head to the template.</td></tr>
+          <tr><td>Report Creator: a position shows <code>(?)</code></td><td>The model isn't numbered. Number it and Scan again.</td></tr>
           <tr><td>Tekla Setup: every server step fails with &quot;Source not found&quot;</td><td>The server folder at the top can't be reached. Check the network, or Browse to where the files are.</td></tr>
           <tr><td>Tekla Setup: &quot;No UserSettings yet&quot;</td><td>This Tekla version has never been started. Start it once, close it, and run those steps again.</td></tr>
           <tr><td>Tekla Setup closes right after the admin prompt</td><td>Company policy may block PowerShell scripts. Ask IT, and send the message the window shows, if any.</td></tr>

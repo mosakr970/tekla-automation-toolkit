@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tekla Automation Toolkit | Mohamed Sakr</title>
-<meta name="description" content="Tekla Structures tools for panel checking, tendon modelling, drawing creation and checking, mark numbering, reports, dimensions, opening marks and coordinate marks.">
+<meta name="description" content="Tekla Structures macros, plugins and setup tools for panel checking, tendon modelling, drawing creation, reporting, numbering, dimensions, drawing checks and maintenance.">
 <meta property="og:title" content="Tekla Automation Toolkit | Mohamed Sakr">
 <meta property="og:description" content="Tekla macros and a drawing plugin that take the repetitive measuring, marking and modelling out of work.">
 <meta property="og:type" content="website">
@@ -48,7 +48,7 @@ footer p{margin:.3rem 0}
 <header>
   <div class="eyebrow">Tekla Structures</div>
   <h1>Tekla automation toolkit</h1>
-  <p class="lede">Tekla macros and a drawing plugin that take the repetitive measuring, marking and modelling out of work. The catalog explains what each tool needs and where it stops.</p>
+  <p class="lede">Tekla macros, plugins and setup tools that remove repetitive measuring, marking, modelling and maintenance work. The catalog explains what each tool needs and where it stops.</p>
   <p class="by">Mohamed Sakr · Structural Engineer, BIM &amp; Digital Delivery · Tallinn, Estonia</p>
   <div class="btns">
     <a class="btn p" href="Mohamed_Sakr_CV.pdf">Download CV</a>
@@ -63,8 +63,8 @@ footer p{margin:.3rem 0}
     <span class="tag">QUALITY CHECK</span>
     <h3>HC Check</h3>
     <p>Checks every hollow-core panel against what the factory can actually saw, before anything reaches fabrication.</p>
-    <div class="num">851</div>
-    <div class="lab">panels measured, zero disagreements against an independent second implementation</div>
+    <div class="num">897</div>
+    <div class="lab">panels checked in 38–52 s; zero disagreements on 851 panels against a second check</div>
     <div class="status">Verified on a live project model</div>
     <div class="links"><a href="hc_check.html">Case study →</a><a href="https://www.linkedin.com/posts/mosakr970_teklastructures-precastconcrete-structuralengineering-ugcPost-7506329722293940224-snD3/">Demo video ↗</a></div>
   </article>
@@ -72,8 +72,8 @@ footer p{margin:.3rem 0}
     <span class="tag">MODELLING</span>
     <h3>Insert Tendons</h3>
     <p>Models post-tensioning tendons and ducts straight from the designer&#x27;s Excel profile.</p>
-    <div class="num">11,282</div>
-    <div class="lab">points across 59 beams on a live project, none skipped or failed</div>
+    <div class="num">118</div>
+    <div class="lab">beams with 848 parts inserted in 13–17 s</div>
     <div class="status">Verified on a live project</div>
     <div class="links"><a href="insert_tendons.html">Case study →</a></div>
   </article>
@@ -81,9 +81,9 @@ footer p{margin:.3rem 0}
     <span class="tag">NUMBERING</span>
     <h3>EK Mark</h3>
     <p>Gives identical elements the same mark, comparing assemblies part by part.</p>
-    <div class="num">1,356 / 1,357</div>
-    <div class="lab">identical pairs matched Tekla&#x27;s own numbering; no different pieces given one mark</div>
-    <div class="status">Numbering verified on a live model; newest window features not yet run in Tekla</div>
+    <div class="num">3,421</div>
+    <div class="lab">pieces compared in 3.6–5 min; 1,356 / 1,357 identical pairs matched</div>
+    <div class="status">Verified on a live model</div>
     <div class="links"><a href="ek_mark.html">Case study →</a></div>
   </article>
   <article class="card">
@@ -97,12 +97,19 @@ footer p{margin:.3rem 0}
   </article>
   <article class="card">
     <span class="tag">REPORTING</span>
-    <h3>EK Reports</h3>
+    <h3>Report Creator</h3>
     <p>Writes EK-8xx model summaries to their Excel templates, combining identical pieces into one row.</p>
     <div class="num">7–9 s</div>
     <div class="lab">to scan 3,421 assemblies; reports take 0.1–15 s each</div>
     <div class="status">Verified on a live project; time by hand not measured</div>
-    <div class="links"><a href="ek_reports.html">Case study →</a></div>
+    <div class="links"><a href="report_creator.html">Case study →</a></div>
+  </article>
+  <article class="card">
+    <span class="tag">MODEL MAINTENANCE</span>
+    <h3>Auto Maintenance</h3>
+    <p>Runs model save, Organizer sync, diagnostics, repair, backup and server archive steps from one window.</p>
+    <div class="status">Packaged as a plugin; no timed run recorded</div>
+    <div class="links"><a href="auto_maintenance.html">Case study →</a></div>
   </article>
 </div>
 
@@ -113,9 +120,9 @@ footer p{margin:.3rem 0}
     <span class="tag">DRAWINGS</span>
     <h3>Auto Dimension</h3>
     <p>Dimensions a drawing view the way a detailer would: to the grid, chained, and clear of existing marks.</p>
-    <div class="num">52 / 52</div>
-    <div class="lab">dimension points bound to the model, none floating</div>
-    <div class="status">Time saving not yet measured</div>
+    <div class="num">20 s</div>
+    <div class="lab">for the 1st-floor test plan; 15 min by hand</div>
+    <div class="status">Macro run timed; review time not included</div>
     <div class="links"><a href="auto_dimension.html">Case study →</a><a href="https://www.linkedin.com/posts/mosakr970_tekla-teklastructures-bim-ugcPost-7501290967128514560-awLU/">Demo video ↗</a></div>
   </article>
   <article class="card">
@@ -129,10 +136,10 @@ footer p{margin:.3rem 0}
   </article>
   <article class="card">
     <span class="tag">DRAWING PLUGIN</span>
-    <h3>EK Coordinate Mark</h3>
+    <h3>Coordinate Mark</h3>
     <p>Places live coordinate marks on a drawing, measured from the base point the view is located by.</p>
     <div class="status">Not yet checked on a live drawing</div>
-    <div class="links"><a href="ek_coordinate_mark.html">Case study →</a></div>
+    <div class="links"><a href="coordinate_mark.html">Case study →</a></div>
   </article>
   <article class="card">
     <span class="tag">DRAWING CHECK</span>
@@ -145,7 +152,20 @@ footer p{margin:.3rem 0}
   </article>
 </div>
 
-<div class="cat">Want all nine tools side by side, with what each needs from you and how to install it? See the <a href="macro_catalog.html">Macro Catalog</a>.</div>
+<h2>Windows setup tool</h2>
+<p class="sub">Set up a newly installed Tekla version from the office server</p>
+<div class="grid">
+  <article class="card">
+    <span class="tag">SETUP APP</span>
+    <h3>Tekla Setup</h3>
+    <p>Runs the office setup guide: Tekla installers, environments, user settings, logos, date format, ribbons and shortcuts.</p>
+    <div class="num">2 / 12</div>
+    <div class="lab">setup steps run in the real TS2026.0 test; copy and installer steps remain open</div>
+    <div class="links"><a href="tekla_setup.html">Case study →</a></div>
+  </article>
+</div>
+
+<div class="cat">Want all eleven tools side by side, with what each needs from you and how to install it? See the <a href="macro_catalog.html">Macro Catalog</a>.</div>
 
 <h2>How each tool is built</h2>
 <div class="how">
